@@ -2,27 +2,39 @@ package com.project.cfgames.controller;
 
 import java.util.List;
 
+import javax.naming.Binding;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-import com.project.cfgames.Service.ClienteService;
-import com.project.cfgames.entity.Cliente;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.project.cfgames.dao.ClienteDao;
+import com.project.cfgames.entities.Cliente;
+
 
 @Controller
 public class ClienteController {
     
     @Autowired
-    private ClienteService clienteService;
+    private ClienteDao clienteDao;
 
     @GetMapping("/cliente/form/add")
-    public ModelAndView getFormadd() {
-        
+    public ModelAndView getFormadd() { 
         ModelAndView mv = new ModelAndView("cadastro");
-        List<Cliente> clienteList = this.clienteService.getClienteList();
-        mv.addObject("clienteList", clienteList);
-
         return mv;
         
     }
+
+    @PostMapping("/cliente/form/save")
+    public String saveCliente(Cliente cliente, BindingResult result, RedirectAttributes redirect){
+        
+        this.clienteDao.create(cliente);
+        return null;
+
+    }
+
 }
