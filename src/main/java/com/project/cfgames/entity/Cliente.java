@@ -1,4 +1,3 @@
-/*
 package com.project.cfgames.entity;
 
 import javax.persistence.*;
@@ -11,7 +10,6 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column
     private String nome;
     private Integer cpf;
     private Date dataNascimento;
@@ -35,4 +33,3 @@ public class Cliente {
         return id;
     }
 }
-*/
