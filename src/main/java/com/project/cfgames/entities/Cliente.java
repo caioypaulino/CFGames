@@ -2,6 +2,8 @@ package com.project.cfgames.entities;
 
 import javax.persistence.*;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,7 @@ public class Cliente {
 
     private String nome;
     private Integer cpf;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date dataNascimento;
     private Long telefone;
     private String email;
