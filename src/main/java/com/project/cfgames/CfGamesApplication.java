@@ -8,6 +8,6 @@ public class CfGamesApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CfGamesApplication.class, args);
+	
 	}
-
 }

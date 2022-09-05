@@ -2,9 +2,11 @@ package com.project.cfgames.entities;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Data;
 
 import java.util.Date;
 
@@ -23,8 +25,11 @@ public class Cliente {
 
     private String nome;
     private Integer cpf;
+
+    @JsonFormat(pattern="dd-MM-yyyy")
     private Date dataNascimento;
-    private Long telefone;
+
+    private Integer telefone;
     private String email;
     private String senha;
     
