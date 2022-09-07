@@ -40,8 +40,7 @@ public class ClienteController {
         Optional<Cliente> cliente = clienteDao.findById(id);
         if (cliente.isPresent()) {
             return cliente.get();
-        } 
-        else {
+        } else {
             throw new RuntimeException("Cliente não encontrado pelo id: " + id);
         }
     }
@@ -59,8 +58,7 @@ public class ClienteController {
         if (cliente.isPresent()) {
             clienteDao.delete(cliente.get());
             return "Cliente deletado com sucesso, id: " + id;
-        }
-        else {
+        } else {
             throw new RuntimeException("Cliente não encontrado pelo id: " + id);
         }
     }

@@ -1,40 +1,33 @@
 package com.project.cfgames.entities;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-@Table(name = "CLIENTES")
-@Entity(name = "Cliente")
+@Table(name = "ENDERECOS")
+@Entity(name = "Endereco")
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 
-public class Cliente {
+public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    private String nome;
-    private Integer cpf;
+    private String rua;
+    private String bairro;
+    private String cidade;
+    private String estado;
+    private Long cep;
+    private String pais;
 
-    @JsonFormat(pattern="dd-MM-yyyy")
-    private Date dataNascimento;
-
-    private Integer telefone;
-    private String email;
-    private String senha;
-    
 }
