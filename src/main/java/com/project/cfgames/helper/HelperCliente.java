@@ -2,11 +2,16 @@ package com.project.cfgames.helper;
 
 import com.project.cfgames.entities.Cliente;
 
-public class HelperCliente extends Helper{
+public class HelperCliente{
 
     public boolean nomeValidate(Cliente cliente) {
-        if (stringIsNull(cliente.getNome())) {
+        String[] nomeSplit = cliente.getNome().split("\\s+");
+
+        if (cliente.getNome().isBlank()) {
             throw new RuntimeException("Nome vazio");
+        }
+        else if (nomeSplit.length < 2) {
+            throw new RuntimeException("Nome incompleto");
         }
         else if (cliente.getNome().matches("[0-9]*")){
             throw new RuntimeException("Nome inválido");

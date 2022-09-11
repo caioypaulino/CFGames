@@ -28,7 +28,7 @@ public class ClienteController {
     public Cliente saveCliente(@RequestBody Cliente cliente) {
         HelperCliente helperCliente = new HelperCliente();
 
-        if(!helperCliente.allValidates(cliente.getNome())){
+        if(!helperCliente.allValidates(cliente)){
             throw new RuntimeException("Algum dado incorreto");
         }
         return clienteDao.save(cliente);
