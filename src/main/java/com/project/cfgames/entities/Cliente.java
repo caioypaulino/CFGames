@@ -28,12 +28,12 @@ public class Cliente {
     private Long id;
 
     private String nome;
-    private Integer cpf;
+    private String cpf;
 
     @JsonFormat(pattern="dd-MM-yyyy")
     private Date dataNascimento;
 
-    private Integer telefone;
+    private String telefone;
     private String email;
     private String senha;
     

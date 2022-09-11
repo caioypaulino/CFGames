@@ -4,31 +4,53 @@ import com.project.cfgames.entities.Cliente;
 
 public class HelperCliente {
 
-    public boolean nameIsNull(Cliente cliente) {
-        if (cliente.getNome() == " " || cliente.getNome() == null) {
-            return false;
+    public boolean nomeValidate(String string) {
+        if (string.isEmpty()) {
+            throw new RuntimeException("Nome vazio");
         }
-        return true;
+        else if (cliente.getNome().matches("[0-9]*")){
+            throw new RuntimeException("Nome inválido");
+        }
+        else {
+            return true; 
+        }
     }
 
     public boolean cpfValido(Cliente cliente) {
-        if (!cliente.getCpf().matches("[0-9]*")){
-            return false;
+        if (!cliente.getCpf().matches("[0-9]*")) {
+            throw new RuntimeException("Cpf inválido");
         }
-        return true;
+        else {
+            return true; 
+         }
     }
 
     public boolean cpfIsComplete(Cliente cliente) {
-        if (cliente.getCpf().toString().length() != 11){
-            return false;
+        if (cliente.getCpf().length() != 11) {
+            throw new RuntimeException("Cpf incompleto");
         }
-        return true;
+        else {
+           return true; 
+        }
+        
     }
 
     public boolean senhaIsShort(Cliente cliente) {
-        if (cliente.getSenha().toString().length() != 11){
+        if (cliente.getSenha().length() < 8) {
+            throw new RuntimeException("Senha curta");
+        }
+        else {
+            return true;
+        }
+    }
+
+    public boolean allValidates(Cliente cliente) {
+        if(nomeValidate(cliente) && cpfValido(cliente) && cpfIsComplete(cliente) && senhaIsShort(cliente))
+        {
+            return true;
+        }
+        else {
             return false;
         }
-        return true;
     }
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.project.cfgames.dao.ClienteDao;
 import com.project.cfgames.entities.Cliente;
+import com.project.cfgames.helper.HelperCliente;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +26,11 @@ public class ClienteController {
     // create JPA
     @PostMapping("/cliente/form/save")
     public Cliente saveCliente(@RequestBody Cliente cliente) {
+        HelperCliente helperCliente = new HelperCliente();
+
+        if(!helperCliente.allValidates(cliente.getNome())){
+            throw new RuntimeException("Algum dado incorreto");
+        }
         return clienteDao.save(cliente);
     }
 
