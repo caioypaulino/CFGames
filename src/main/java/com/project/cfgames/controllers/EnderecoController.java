@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.project.cfgames.dao.EnderecoDao;
 import com.project.cfgames.entities.Endereco;
+import com.project.cfgames.facade.Facade;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,10 +23,12 @@ public class EnderecoController {
     @Autowired
     EnderecoDao enderecoDao;
 
+    Facade facade = new Facade();
+
     // create JPA
     @PostMapping("/endereco/form/save")
     public Endereco saveEnderecoCliente(@RequestBody Endereco endereco) {
-        return enderecoDao.save(endereco);
+        return enderecoDao.save(facade.validaEndereco(endereco));
     }
 
     // readAll JPA

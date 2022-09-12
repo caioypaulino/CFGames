@@ -1,4 +1,4 @@
-package com.project.cfgames.Strategy;
+package com.project.cfgames.strategy;
 
 import com.project.cfgames.entities.Endereco;
 
@@ -44,6 +44,15 @@ public class StrategyEndereco {
             return false;
         }
         return true;
+    }
+
+    public boolean allValidates(Endereco endereco) {
+        if (ruaValidate(endereco) && bairroValidate(endereco) && cidadeValidate(endereco) && estadoValidate(endereco) && cepValidate(endereco) && paisValidate(endereco)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 }

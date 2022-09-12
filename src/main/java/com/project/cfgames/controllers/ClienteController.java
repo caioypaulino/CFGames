@@ -3,6 +3,11 @@ package com.project.cfgames.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import com.project.cfgames.dao.ClienteDao;
+import com.project.cfgames.entities.Cliente;
+import com.project.cfgames.facade.Facade;
+import com.project.cfgames.strategy.StrategyCliente;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,35 +20,29 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.project.cfgames.dao.ClienteDao;
-import com.project.cfgames.entities.Cliente;
-import com.project.cfgames.helper.StrategyCliente;
-
 @RestController
 public class ClienteController {
 
     @Autowired
     ClienteDao clienteDao;
+    
+    Facade facade = new Facade();
 
     // create JPA
     @PostMapping("/cliente/save")
     public Cliente saveCliente(@RequestBody Cliente cliente) {
-        StrategyCliente StrategyCliente = new StrategyCliente();
-        if(!StrategyCliente.allValidates(cliente)){
-            
-        }
-        return clienteDao.save(cliente);
+        return clienteDao.save(facade.validaCliente(cliente));
     }
 
     // create with model
     @RequestMapping(value = "/cliente/form/save")
-    public String saveCliente(Cliente cliente, RedirectAttributes redirect){
-        StrategyCliente StrategyCliente = new StrategyCliente();
-        if(!StrategyCliente.allValidates(cliente)){
+    public String saveCliente(Cliente cliente, RedirectAttributes redirect) {
+        StrategyCliente strategyCliente = new StrategyCliente();
+        if (!strategyCliente.allValidates(cliente)) {
             redirect.addFlashAttribute("mensagem", "teste");
             return "redirect:/cliente/form/add";
         }
-        System.out.println(cliente);
+
         clienteDao.save(cliente);
         return "redirect:/cliente/form/add";
     }
@@ -87,7 +86,6 @@ public class ClienteController {
     public ModelAndView getFormadd() {
         ModelAndView mv = new ModelAndView("cadastro");
         return mv;
-
     }
 
 }
