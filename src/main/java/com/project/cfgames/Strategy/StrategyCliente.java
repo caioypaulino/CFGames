@@ -1,4 +1,4 @@
-package com.project.cfgames.helper;
+package com.project.cfgames.Strategy;
 
 import com.project.cfgames.entities.Cliente;
 
