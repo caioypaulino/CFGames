@@ -68,7 +68,7 @@ public class EnderecoController {
 
     @GetMapping("/endereco/form/add")
     public ModelAndView getFormadd() {
-        ModelAndView mv = new ModelAndView("cadastro");
+        ModelAndView mv = new ModelAndView("cadastroCliente");
         return mv;
 
     }

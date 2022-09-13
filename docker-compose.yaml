@@ -1,0 +1,10 @@
+services:
+
+  database:
+    image: postgres
+    container_name: cfgames-database
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432

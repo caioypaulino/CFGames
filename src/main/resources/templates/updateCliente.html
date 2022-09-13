@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:if="${mesagem}" th:text="${mensagem}"></div>
+
+<form action="/cliente/${id}" th:id="${cliente.id}" method="post" th:>
+  Nome: <input type="text" id="nome" name="nome">
+  CPF: <input type="text" id="cpf" name="cpf">
+  Data de nascimento: <input type="date" id="dataNascimento" name="dataNascimento">
+  Telefone: <input type="text" id="telefone" name="telefone">
+  Email: <input type="text" id="email" name="email">
+  Senha: <input type="password" id="senha" name="senha">
+
+  <button type="submit">Atualizar</button>
+</form>
+</body>
+</html>

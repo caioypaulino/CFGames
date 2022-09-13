@@ -36,15 +36,14 @@ public class ClienteController {
 
     // create with model
     @RequestMapping(value = "/cliente/form/save")
-    public String saveCliente(Cliente cliente, RedirectAttributes redirect) {
-        StrategyCliente strategyCliente = new StrategyCliente();
-        if (!strategyCliente.allValidates(cliente)) {
+    public ModelAndView saveCliente(Cliente cliente, RedirectAttributes redirect) {
+        if (facade.validaCliente(cliente) != cliente) {
             redirect.addFlashAttribute("mensagem", "teste");
-            return "redirect:/cliente/form/add";
+            return new ModelAndView("redirect:/cliente/form/add");
         }
 
         clienteDao.save(cliente);
-        return "redirect:/cliente/form/add";
+        return new ModelAndView("redirect:/admin/painel");
     }
 
     // readAll JPA
@@ -71,7 +70,7 @@ public class ClienteController {
     }
 
     // delete JPA
-    @DeleteMapping("/cliente/{id}")
+    @DeleteMapping("/cliente/delete/{id}")
     public String deleteCliente(@PathVariable Long id) {
         Optional<Cliente> cliente = clienteDao.findById(id);
         if (cliente.isPresent()) {
@@ -84,8 +83,10 @@ public class ClienteController {
 
     @GetMapping("/cliente/form/add")
     public ModelAndView getFormadd() {
-        ModelAndView mv = new ModelAndView("cadastro");
+        ModelAndView mv = new ModelAndView("cadastroCliente");
         return mv;
     }
+
+
 
 }

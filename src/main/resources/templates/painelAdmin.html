@@ -4,9 +4,53 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <title>PainelAdm</title>
+
 </head>
 <body>
-    <h1>testando o redirect do caso de sucesso no cadastro cliente</h1>
+    <h1>Lista de clientes:</h1>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Telefone</th>
+            <th scope="col">CPF</th>
+            <th scope="col">Email</th>
+            <th scope="col">Data nascimento</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+
+
+        <tr th:each="cliente: ${clienteList}"}>
+            <td th:text="${cliente.id}"></td>
+            <td th:text="${cliente.nome}"></td>
+            <td th:text="${cliente.telefone}"></td>
+            <td th:text="${cliente.cpf}"></td>
+            <td th:text="${cliente.email}"></td>
+            <td th:text="${cliente.dataNascimento}"></td>
+            <td>
+
+                <a th:href="@{/edit/{id}(id=${cliente.id})}">
+                    <button class="btn btn-primary">edit</button>
+                </a>
+
+                <a th:href="@{/cliente/delete/{id}(id=${cliente.id})}">
+                    <button class="btn btn-primary">delete</button>
+                </a>
+            </td>
+
+
+        </tr>
+        </tbody>
+    </table>
 </body>
+
+<a th:href="@{/cliente/form/add}">
+    <button class="btn btn-primary">Formulário cliente</button>
+</a>
 </html>
