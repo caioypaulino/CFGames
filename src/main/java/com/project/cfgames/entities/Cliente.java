@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -35,6 +36,7 @@ public class Cliente implements Serializable {
     private Date dataNascimento;
 
     private String telefone;
+    @Email(message = "Email should be valid")
     private String email;
     private String senha;
     

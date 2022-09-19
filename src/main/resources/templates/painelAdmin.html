@@ -7,9 +7,36 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <title>PainelAdm</title>
 
+    <style>
+        .alert {
+            padding: 20px;
+            background-color: #f44336;
+            color: white;
+        }
+
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .closebtn:hover {
+            color: black;
+        }
+    </style>
 </head>
 <body>
     <h1>Lista de clientes:</h1>
+
+    <div class="alert alert-danger" role="alert" th:if="${mensagem}" >
+        <span  class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <strong  th:text="${mensagem}"></strong>
+    </div>
 
     <table class="table table-striped">
         <thead>
@@ -35,11 +62,11 @@
             <td th:text="${cliente.dataNascimento}"></td>
             <td>
 
-                <a th:href="@{/edit/{id}(id=${cliente.id})}">
+                <a th:href="@{/cliente/form/update/{id}(id=${cliente.id})}">
                     <button class="btn btn-primary">edit</button>
                 </a>
 
-                <a th:href="@{/cliente/delete/{id}(id=${cliente.id})}">
+                <a th:href="@{/delete_cliente/{id}(id=${cliente.id})}">
                     <button class="btn btn-primary">delete</button>
                 </a>
             </td>

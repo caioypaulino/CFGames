@@ -6,10 +6,9 @@ import java.util.Optional;
 import com.project.cfgames.dao.ClienteDao;
 import com.project.cfgames.entities.Cliente;
 import com.project.cfgames.facade.Facade;
-import com.project.cfgames.strategy.StrategyCliente;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.boot.Banner;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -70,12 +69,13 @@ public class ClienteController {
     }
 
     // delete JPA
-    @DeleteMapping("/cliente/delete/{id}")
-    public String deleteCliente(@PathVariable Long id) {
+    @GetMapping("/delete_cliente/{id}")
+    public ModelAndView deleteCliente(@PathVariable Long id, RedirectAttributes redirect) {
         Optional<Cliente> cliente = clienteDao.findById(id);
         if (cliente.isPresent()) {
             clienteDao.delete(cliente.get());
-            return "Cliente deletado com sucesso, id: " + id;
+            redirect.addFlashAttribute("mensagem", "Cliente deletado!");
+            return new ModelAndView("redirect:/admin/painel");
         } else {
             throw new RuntimeException("Cliente não encontrado pelo id: " + id);
         }
@@ -83,10 +83,14 @@ public class ClienteController {
 
     @GetMapping("/cliente/form/add")
     public ModelAndView getFormadd() {
-        ModelAndView mv = new ModelAndView("cadastroCliente");
-        return mv;
+        return new ModelAndView("cadastroCliente");
     }
 
-
-
+    @GetMapping("/cliente/form/update/{id}")
+    public ModelAndView getFormUpdate(@PathVariable("id") Long id){
+        Optional<Cliente> cliente = this.clienteDao.findById(id);
+        ModelAndView mv = new ModelAndView("updateCliente");
+        mv.addObject("cliente", cliente);
+        return mv;
+    }
 }

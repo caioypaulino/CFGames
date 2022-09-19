@@ -7,15 +7,14 @@
 <body>
 <div th:if="${mesagem}" th:text="${mensagem}"></div>
 
-<form action="/cliente/${id}" th:id="${cliente.id}" method="post" th:>
-  Nome: <input type="text" id="nome" name="nome">
-  CPF: <input type="text" id="cpf" name="cpf">
-  Data de nascimento: <input type="date" id="dataNascimento" name="dataNascimento">
-  Telefone: <input type="text" id="telefone" name="telefone">
-  Email: <input type="text" id="email" name="email">
-  Senha: <input type="password" id="senha" name="senha">
-
-  <button type="submit">Atualizar</button>
+<form th:action="@{/update/{id}(id=${cliente.get().getId()})}"
+      th:object="${cliente}"
+      method="post">
+    <label for="nome">Name</label>
+    <input type="text" th:field="${cliente.nome}" id="nome" placeholder="Name">
+    <label for="email">Email</label>
+    <input type="text" th:field="${cliente.email}" id="email" placeholder="Email">
+    <input type="submit" value="Update User">
 </form>
 </body>
 </html>
