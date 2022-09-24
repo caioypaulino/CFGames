@@ -1,27 +1,32 @@
 package com.project.cfgames.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.Set;
 
 
 @Table(name = "ENDERECOS")
 @Entity(name = "Endereco")
 
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Data
 
+@JsonIdentityInfo(
+        scope = Endereco.class,
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "enderecoId")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Endereco {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long enderecoId;
 
     private String rua;
     private String bairro;
@@ -29,5 +34,14 @@ public class Endereco {
     private String estado;
     private String cep;
     private String pais;
+
+    public Endereco(String rua, String bairro, String cidade, String estado, String cep, String pais) {
+        this.rua = rua;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.cep = cep;
+        this.pais = pais;
+    }
 
 }

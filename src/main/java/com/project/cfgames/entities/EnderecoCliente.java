@@ -1,42 +1,50 @@
 package com.project.cfgames.entities;
 
-import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.project.cfgames.entities.enums.TipoEndereco;
-
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.*;
 
 @Table(name = "Possuem")
 @Entity(name = "Possuem")
 
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Data
 
+@JsonIdentityInfo(
+        scope = EnderecoCliente.class,
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "possuemId")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class EnderecoCliente {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long possuemId;
 
     private Integer numero;
     private String complemento;
 
     private TipoEndereco tipo;
 
-    @ManyToMany
-    private List<Cliente> clienteList;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Cliente cliente;
 
-    @ManyToMany
-    private List<Endereco> enderecoList;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Endereco endereco;
+
+    public EnderecoCliente(Integer numero, String complemento, TipoEndereco tipo, Cliente cliente, Endereco endereco) {
+        this.numero = numero;
+        this.complemento = complemento;
+        this.tipo = tipo;
+        this.cliente = cliente;
+        this.endereco = endereco;
+    }
+
 }
