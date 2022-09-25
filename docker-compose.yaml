@@ -5,6 +5,6 @@ services:
     container_name: cfgames-database
     restart: always
     environment:
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: 0000
     ports:
       - 5432:5432

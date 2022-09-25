@@ -21,6 +21,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.testng:testng:7.1.0'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -29,6 +30,17 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.7.3'
 	implementation 'org.springframework.boot:spring-boot-starter-validation:2.3.1.RELEASE'
+	// https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+	implementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
+	// https://mvnrepository.com/artifact/junit/junit
+	testImplementation 'junit:junit:4.12'
+	// https://mvnrepository.com/artifact/info.cukes/cucumber-junit
+	testImplementation 'info.cukes:cucumber-junit:1.2.5'
+	// https://mvnrepository.com/artifact/info.cukes/cucumber-java
+	implementation 'info.cukes:cucumber-java:1.2.5'
+
+
+
 }
 
 tasks.named('test') {
