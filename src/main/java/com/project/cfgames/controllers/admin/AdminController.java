@@ -35,7 +35,7 @@ public class AdminController {
     public ModelAndView updateUser(@PathVariable("id") long id, @Valid Cliente cliente,
                                    BindingResult result, RedirectAttributes redirect) {
         if (result.hasErrors()) {
-            cliente.setId(id);
+            cliente.setClienteId(id);
             redirect.addFlashAttribute("mensagem", "Cliente não encontrado para atualizar");
             return new ModelAndView("redirect:/admin/painel");
         }

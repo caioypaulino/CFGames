@@ -5,16 +5,12 @@ import java.util.Optional;
 
 import com.project.cfgames.dao.EnderecoDao;
 import com.project.cfgames.entities.Endereco;
+import com.project.cfgames.entities.templates.TemplateEndereco;
 import com.project.cfgames.facade.Facade;
 
+import com.project.cfgames.services.EnderecoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
@@ -23,7 +19,20 @@ public class EnderecoController {
     @Autowired
     EnderecoDao enderecoDao;
 
+    @Autowired
+    EnderecoService enderecoService;
+
     Facade facade = new Facade();
+
+    // create JPA API REST (CEP)
+    @GetMapping("/endereco/cep/{cep}")
+    public Endereco verificarEndereco(@PathVariable String cep){
+        TemplateEndereco templateEndereco = enderecoService.buscarCep(cep);
+        
+        String pais = "Brasil";
+        Endereco endereco = new Endereco(templateEndereco, pais);
+        return enderecoDao.save(endereco);
+    }
 
     // create JPA
     @PostMapping("/endereco/form/save")
