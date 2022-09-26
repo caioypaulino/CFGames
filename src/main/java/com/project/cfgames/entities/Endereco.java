@@ -1,14 +1,17 @@
 package com.project.cfgames.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.project.cfgames.entities.relations.EnderecoCliente;
 import com.project.cfgames.entities.templates.TemplateEndereco;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 
 @Table(name = "ENDERECOS")
@@ -31,6 +34,10 @@ public class Endereco {
     private String bairro;
     private String rua;
     private String pais;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "endereco")
+    Set<EnderecoCliente> possuem;
 
     public Endereco(String rua, String bairro, String cidade, String estado, String cep, String pais) {
         this.rua = rua;

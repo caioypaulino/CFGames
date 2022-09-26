@@ -3,6 +3,7 @@ package com.project.cfgames.entities;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.project.cfgames.entities.relations.EnderecoCliente;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
