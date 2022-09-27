@@ -45,9 +45,14 @@ public class Cliente {
     private String senha;
 
     @OneToMany(mappedBy = "cliente")
-    Set<EnderecoCliente> possuem;
+    private Set<EnderecoCliente> possuem;
 
-    public Cliente(String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String senha, Set<EnderecoCliente> possuem) {
+    @ManyToMany
+    @JoinTable(name = "detem", joinColumns = @JoinColumn(name = "cliente_id"), inverseJoinColumns = @JoinColumn(name = "numero_cartao"))
+    private Set<Cartao> cartoes;
+
+    public Cliente(Long clienteId, String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String senha, Set<EnderecoCliente> possuem, Set<Cartao> cartoes) {
+        this.clienteId = clienteId;
         this.nome = nome;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
@@ -55,6 +60,14 @@ public class Cliente {
         this.email = email;
         this.senha = senha;
         this.possuem = possuem;
+        this.cartoes = cartoes;
     }
 
+    public Set<Cartao> getCartoes() {
+        return cartoes;
+    }
+
+    public void cartoesCliente(Cartao cartao) {
+        cartoes.add(cartao);
+    }
 }
