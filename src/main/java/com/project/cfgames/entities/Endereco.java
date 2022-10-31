@@ -37,7 +37,7 @@ public class Endereco {
 
     @JsonIgnore
     @OneToMany(mappedBy = "endereco")
-    Set<EnderecoCliente> possuem;
+    Set<EnderecoCliente> clientes;
 
     public Endereco(String rua, String bairro, String cidade, String estado, String cep, String pais) {
         this.rua = rua;

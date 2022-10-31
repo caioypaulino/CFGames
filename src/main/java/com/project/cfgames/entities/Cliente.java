@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.project.cfgames.entities.relations.EnderecoCliente;
+import com.project.cfgames.responses.ClienteResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,12 +26,13 @@ import java.util.Set;
 @JsonIdentityInfo(
         scope = Cliente.class,
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "clienteId")
+        property = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long clienteId;
+    @Column(name = "cliente_id")
+    private Long id;
 
     private String nome;
     private String cpf;
@@ -45,21 +47,20 @@ public class Cliente {
     private String senha;
 
     @OneToMany(mappedBy = "cliente")
-    private Set<EnderecoCliente> possuem;
+    private Set<EnderecoCliente> enderecos;
 
     @ManyToMany
     @JoinTable(name = "detem", joinColumns = @JoinColumn(name = "cliente_id"), inverseJoinColumns = @JoinColumn(name = "numero_cartao"))
     private Set<Cartao> cartoes;
 
-    public Cliente(Long clienteId, String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String senha, Set<EnderecoCliente> possuem, Set<Cartao> cartoes) {
-        this.clienteId = clienteId;
+    public Cliente(String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String senha, Set<EnderecoCliente> enderecos, Set<Cartao> cartoes) {
         this.nome = nome;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
         this.telefone = telefone;
         this.email = email;
         this.senha = senha;
-        this.possuem = possuem;
+        this.enderecos = enderecos;
         this.cartoes = cartoes;
     }
 
@@ -69,5 +70,11 @@ public class Cliente {
 
     public void cartoesCliente(Cartao cartao) {
         cartoes.add(cartao);
+    }
+
+    public ClienteResponse toResponse() {
+        return new ClienteResponse(
+                id, nome, cpf, dataNascimento, telefone, email
+        );
     }
 }

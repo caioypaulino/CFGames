@@ -1,6 +1,6 @@
 package com.project.cfgames.controllers.admin;
 
-import com.project.cfgames.repository.ClienteRepository;
+import com.project.cfgames.repositories.ClienteRepository;
 import com.project.cfgames.entities.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,7 +34,7 @@ public class AdminController {
     public ModelAndView updateUser(@PathVariable("id") long id, @Valid Cliente cliente,
                                    BindingResult result, RedirectAttributes redirect) {
         if (result.hasErrors()) {
-            cliente.setClienteId(id);
+            cliente.setId(id);
             redirect.addFlashAttribute("mensagem", "Cliente não encontrado para atualizar");
             return new ModelAndView("redirect:/admin/painel");
         }

@@ -2,10 +2,13 @@ package com.project.cfgames.controllers;
 
 import com.project.cfgames.entities.Cartao;
 import com.project.cfgames.entities.Cliente;
-import com.project.cfgames.facade.Facade;
-import com.project.cfgames.repository.CartaoRepository;
-import com.project.cfgames.repository.ClienteRepository;
+import com.project.cfgames.facades.Facade;
+import com.project.cfgames.repositories.CartaoRepository;
+import com.project.cfgames.repositories.ClienteRepository;
+import com.project.cfgames.responses.ClienteResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -14,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/clientes")
 public class ClienteController {
 
     @Autowired
@@ -25,13 +29,15 @@ public class ClienteController {
     Facade facade = new Facade();
 
     // create JPA
-    @PostMapping("/cliente/save")
-    public Cliente saveCliente(@RequestBody Cliente cliente) {
-        return clienteRepository.save(facade.validaCliente(cliente));
+    @PostMapping("/save")
+    public ResponseEntity<ClienteResponse> saveCliente(@RequestBody Cliente cliente) {
+        var clienteSalvo = clienteRepository.save(facade.validaCliente(cliente));
+        var clienteResponse = clienteSalvo.toResponse();
+        return ResponseEntity.status(HttpStatus.CREATED).body(clienteResponse);
     }
 
     // create with model
-    @RequestMapping(value = "/cliente/form/save")
+    @RequestMapping(value = "/form/save")
     public ModelAndView saveCliente(Cliente cliente, RedirectAttributes redirect) {
         if (facade.validaCliente(cliente) != cliente) {
             redirect.addFlashAttribute("mensagem", "teste");
@@ -43,13 +49,13 @@ public class ClienteController {
     }
 
     // readAll JPA
-    @GetMapping("/cliente")
+    @GetMapping("/read")
     public List<Cliente> readAllCliente() {
         return clienteRepository.findAll();
     }
 
     // readById JPA
-    @GetMapping("/cliente/{id}")
+    @GetMapping("/read/{id}")
     public Cliente readByIdCliente(@PathVariable Long id) {
         Optional<Cliente> cliente = clienteRepository.findById(id);
         if (cliente.isPresent()) {
@@ -59,17 +65,30 @@ public class ClienteController {
         }
     }
 
-    // add cartao
-    @PutMapping("/cliente/{clienteId}/cartao/{numeroCartao}")
-    public Cliente addCategoria(@PathVariable Long clienteId, @PathVariable Long numeroCartao) {
-        Cliente cliente = clienteRepository.findById(clienteId).get();
+    // add Cartao
+    @PutMapping("/{clienteId}/cartao/{numeroCartao}")
+    public Cliente addCartao(@PathVariable Long id, @PathVariable String numeroCartao) {
+        Cliente cliente = clienteRepository.findById(id).get();
         Cartao cartao = cartaoRepository.findById(numeroCartao).get();
         cliente.cartoesCliente(cartao);
         return clienteRepository.save(cliente);
     }
 
+    // remove Cartao
+    @DeleteMapping("{clienteId}/cartao/{numeroCartao}")
+    public ResponseEntity removeCartao(@PathVariable Long id, @PathVariable String numeroCartao) {
+        Optional<Cliente> cliente = clienteRepository.findById(id);
+        Optional<Cartao> cartao = cartaoRepository.findById(numeroCartao);
+        if (cliente.isPresent() && cartao.isPresent()) {
+            clienteRepository.removeCartao(id, numeroCartao);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } else {
+            throw new RuntimeException("Cliente ou Cartão não encontrados pelo clienteId " + id + " e numeroCartao " + numeroCartao);
+        }
+    }
+
     // update JPA
-    @PutMapping("/cliente")
+    @PutMapping("/update")
     public Cliente updateCliente(@RequestBody Cliente cliente) {
         return clienteRepository.save(cliente);
     }
@@ -87,12 +106,12 @@ public class ClienteController {
         }
     }
 
-    @GetMapping("/cliente/form/add")
+    @GetMapping("/form/add")
     public ModelAndView getFormadd() {
         return new ModelAndView("cadastroCliente");
     }
 
-    @GetMapping("/cliente/form/update/{id}")
+    @GetMapping("/form/update/{id}")
     public ModelAndView getFormUpdate(@PathVariable("id") Long id){
         Optional<Cliente> cliente = this.clienteRepository.findById(id);
         ModelAndView mv = new ModelAndView("updateCliente");

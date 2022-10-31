@@ -1,8 +1,8 @@
 package com.project.cfgames.controllers;
 
 import com.project.cfgames.entities.Cartao;
-import com.project.cfgames.facade.Facade;
-import com.project.cfgames.repository.CartaoRepository;
+import com.project.cfgames.repositories.CartaoRepository;
+import com.project.cfgames.services.CartaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,63 +12,78 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/cartoes")
 public class CartaoController {
 
     @Autowired
     CartaoRepository cartaoRepository;
 
-    Facade facade = new Facade();
+    @Autowired
+    CartaoService cartaoService;
 
     // create JPA
-    @PostMapping("/cartao/save")
+    @PostMapping("/save")
     public Cartao saveCartao(@RequestBody Cartao cartao) {
+        cartao.setBandeira(cartaoService.retornaBandeira(cartao.getNumeroCartao()));
         return cartaoRepository.save(cartao);
     }
 
     // readAll JPA
-    @GetMapping("/cartao")
+    @GetMapping("/read")
     public List<Cartao> readAllCartao() {
         return cartaoRepository.findAll();
     }
 
     // readById JPA
-    @GetMapping("/cartao/{id}")
-    public Cartao readByIdCartao(@PathVariable Long id) {
-        Optional<Cartao> cartao = cartaoRepository.findById(id);
+    @GetMapping("/read/{numeroCartao}")
+    public Cartao readByIdCartao(@PathVariable String numeroCartao) {
+        Optional<Cartao> cartao = cartaoRepository.findById(numeroCartao);
         if (cartao.isPresent()) {
             return cartao.get();
         } else {
-            throw new RuntimeException("Cartao não encontrado pelo id: " + id);
+            throw new RuntimeException("Cartao não encontrado pelo número: " + numeroCartao);
         }
     }
 
     // update JPA
-    @PutMapping("/cartao")
+    @PutMapping("/update")
     public Cartao updateCartao(@RequestBody Cartao cartao) {
         return cartaoRepository.save(cartao);
     }
 
+    //delete JPA
+    @DeleteMapping("/delete/{numeroCartao}")
+    public void deleteCartao(@PathVariable String numeroCartao){
+        Optional<Cartao> cartao = cartaoRepository.findById(numeroCartao);
+        if (cartao.isPresent()) {
+            cartaoRepository.delete(cartao.get());
+        } else {
+            throw new RuntimeException("Cartao não encontrado pelo número: " + numeroCartao);
+        }
+    }
+
+
     // delete JPA
-    @GetMapping("/delete_cartao/{id}")
-    public ModelAndView deleteCartao(@PathVariable Long id, RedirectAttributes redirect) {
-        Optional<Cartao> cartao = cartaoRepository.findById(id);
+    @GetMapping("/delete_cartao/{numeroCartao}")
+    public ModelAndView deleteCartao(@PathVariable String numeroCartao, RedirectAttributes redirect) {
+        Optional<Cartao> cartao = cartaoRepository.findById(numeroCartao);
         if (cartao.isPresent()) {
             cartaoRepository.delete(cartao.get());
             redirect.addFlashAttribute("mensagem", "Cartao deletado!");
             return new ModelAndView("redirect:/admin/painel");
         } else {
-            throw new RuntimeException("Cartao não encontrado pelo id: " + id);
+            throw new RuntimeException("Cartao não encontrado pelo número: " + numeroCartao);
         }
     }
 
-    @GetMapping("/cartao/form/add")
+    @GetMapping("/form/add")
     public ModelAndView getFormadd() {
         return new ModelAndView("cadastroCartao");
     }
 
-    @GetMapping("/cartao/form/update/{id}")
-    public ModelAndView getFormUpdate(@PathVariable("id") Long id){
-        Optional<Cartao> cartao = this.cartaoRepository.findById(id);
+    @GetMapping("/form/update/{numeroCartao}")
+    public ModelAndView getFormUpdate(@PathVariable("numeroCartao") String numeroCartao){
+        Optional<Cartao> cartao = this.cartaoRepository.findById(numeroCartao);
         ModelAndView mv = new ModelAndView("updateCartao");
         mv.addObject("cartao", cartao);
         return mv;

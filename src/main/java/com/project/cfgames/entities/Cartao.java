@@ -4,11 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.project.cfgames.entities.enums.BandeiraCartao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Table(name = "CARTOES")
@@ -25,20 +28,36 @@ import java.util.Set;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Cartao {
     @Id
-    private Long numeroCartao;
+    @Column(name = "numero_cartao")
+    private String numeroCartao;
 
     private String nomeCartao;
-    private String bandeira;
-    private Integer cvc;
+    private BandeiraCartao bandeira;
+
+
+    private Integer mesVencimento;
+    private Integer anoVencimento;
+    private String cvc;
 
     @JsonIgnore
     @ManyToMany (mappedBy = "cartoes")
     Set<Cliente> clientes;
 
-    public Cartao(Long numeroCartao, String nomeCartao, String bandeira, Integer cvc, Set<Cliente> clientes) {
+    public Cartao(String numeroCartao, String nomeCartao, Integer mesVencimento, Integer anoVencimento, String cvc, Set<Cliente> clientes) {
+        this.numeroCartao = numeroCartao;
+        this.nomeCartao = nomeCartao;
+        this.mesVencimento = mesVencimento;
+        this.anoVencimento = anoVencimento;
+        this.cvc = cvc;
+        this.clientes = clientes;
+    }
+
+    public Cartao(String numeroCartao, String nomeCartao, BandeiraCartao bandeira, Integer mesVencimento, Integer anoVencimento, String cvc, Set<Cliente> clientes) {
         this.numeroCartao = numeroCartao;
         this.nomeCartao = nomeCartao;
         this.bandeira = bandeira;
+        this.mesVencimento = mesVencimento;
+        this.anoVencimento = anoVencimento;
         this.cvc = cvc;
         this.clientes = clientes;
     }

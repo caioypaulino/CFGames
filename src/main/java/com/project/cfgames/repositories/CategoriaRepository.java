@@ -1,4 +1,4 @@
-package com.project.cfgames.repository;
+package com.project.cfgames.repositories;
 
 import com.project.cfgames.entities.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;

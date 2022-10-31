@@ -3,10 +3,10 @@ package com.project.cfgames.controllers;
 import java.util.List;
 import java.util.Optional;
 
-import com.project.cfgames.repository.EnderecoRepository;
+import com.project.cfgames.repositories.EnderecoRepository;
 import com.project.cfgames.entities.Endereco;
 import com.project.cfgames.entities.templates.TemplateEndereco;
-import com.project.cfgames.facade.Facade;
+import com.project.cfgames.facades.Facade;
 
 import com.project.cfgames.services.EnderecoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
+@RequestMapping("/enderecos")
 public class EnderecoController {
 
     @Autowired
@@ -25,7 +26,7 @@ public class EnderecoController {
     Facade facade = new Facade();
 
     // create JPA API REST (CEP)
-    @GetMapping("/endereco/cep/{cep}")
+    @GetMapping("/cep/{cep}")
     public Endereco verificarEndereco(@PathVariable String cep){
         TemplateEndereco templateEndereco = enderecoService.buscarCep(cep);
         
@@ -35,51 +36,50 @@ public class EnderecoController {
     }
 
     // create JPA
-    @PostMapping("/endereco/form/save")
+    @PostMapping("/form/save")
     public Endereco saveEnderecoCliente(@RequestBody Endereco endereco) {
         return enderecoRepository.save(facade.validaEndereco(endereco));
     }
 
     // readAll JPA
-    @GetMapping("/endereco")
+    @GetMapping("/read")
     public List<Endereco> readAllEnderecoCliente() {
         return enderecoRepository.findAll();
     }
 
     // readById JPA
-    @GetMapping("/endereco/{id}")
-    public Endereco readByIdEnderecoCliente(@PathVariable Long id) {
-        Optional<Endereco> endereco = enderecoRepository.findById(id);
+    @GetMapping("/read/{cep}")
+    public Endereco readByIdEnderecoCliente(@PathVariable String cep) {
+        Optional<Endereco> endereco = enderecoRepository.findById(cep);
         if (endereco.isPresent()) {
             return endereco.get();
         } else {
-            throw new RuntimeException("Endereco não encontrado pelo id: " + id);
+            throw new RuntimeException("Endereco não encontrado pelo cep: " + cep);
         }
     }
 
     // update JPA
-    @PutMapping("/endereco")
+    @PutMapping("/update")
     public Endereco updateEnderecoCliente(@RequestBody Endereco endereco) {
         return enderecoRepository.save(endereco);
     }
 
     // delete JPA
-    @DeleteMapping("/endereco/{id}")
-    public String deleteCliente(@PathVariable Long id) {
-        Optional<Endereco> endereco = enderecoRepository.findById(id);
+    @DeleteMapping("/delete/{cep}")
+    public String deleteCliente(@PathVariable String cep) {
+        Optional<Endereco> endereco = enderecoRepository.findById(cep);
         if (endereco.isPresent()) {
             enderecoRepository.delete(endereco.get());
-            return "Endereco deletado com sucesso, id: " + id;
+            return "Endereco deletado com sucesso, cep: " + cep;
         } else {
-            throw new RuntimeException("Endereco não encontrado pelo id: " + id);
+            throw new RuntimeException("Endereco não encontrado pelo cep: " + cep);
         }
     }
 
-    @GetMapping("/endereco/form/add")
+    @GetMapping("/form/add")
     public ModelAndView getFormadd() {
         ModelAndView mv = new ModelAndView("cadastroCliente");
         return mv;
-
     }
 
 }

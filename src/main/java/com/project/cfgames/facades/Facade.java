@@ -1,10 +1,10 @@
-package com.project.cfgames.facade;
+package com.project.cfgames.facades;
 
 
 import com.project.cfgames.entities.Cliente;
 import com.project.cfgames.entities.Endereco;
-import com.project.cfgames.strategy.StrategyCliente;
-import com.project.cfgames.strategy.StrategyEndereco;
+import com.project.cfgames.strategies.StrategyCliente;
+import com.project.cfgames.strategies.StrategyEndereco;
 
 public class Facade {
     

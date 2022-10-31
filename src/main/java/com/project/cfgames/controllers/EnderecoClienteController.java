@@ -3,39 +3,34 @@ package com.project.cfgames.controllers;
 import java.util.List;
 import java.util.Optional;
 
-import com.project.cfgames.repository.EnderecoClienteRepository;
+import com.project.cfgames.repositories.EnderecoClienteRepository;
 import com.project.cfgames.entities.relations.EnderecoCliente;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
+@RequestMapping("/enderecosclientes")
 public class EnderecoClienteController {
 
     @Autowired
     EnderecoClienteRepository enderecoClienteRepository;
 
     // create JPA
-    @PostMapping("/enderecocliente/form/save")
+    @PostMapping("/form/save")
     public EnderecoCliente saveEnderecoCliente(@RequestBody EnderecoCliente enderecoCliente) {
         return enderecoClienteRepository.save(enderecoCliente);
     }
 
     // readAll JPA
-    @GetMapping("/enderecocliente")
+    @GetMapping("/read")
     public List<EnderecoCliente> readAllEnderecoCliente() {
         return enderecoClienteRepository.findAll();
     }
 
     // readById JPA
-    @GetMapping("/enderecocliente/{id}")
+    @GetMapping("/read/{id}")
     public EnderecoCliente readByIdEnderecoCliente(@PathVariable Long id) {
         Optional<EnderecoCliente> enderecoCliente = enderecoClienteRepository.findById(id);
         if (enderecoCliente.isPresent()) {
@@ -46,13 +41,13 @@ public class EnderecoClienteController {
     }
 
     // update JPA
-    @PutMapping("/enderecocliente")
+    @PutMapping("/update")
     public EnderecoCliente updateEnderecoCliente(@RequestBody EnderecoCliente enderecoCliente) {
         return enderecoClienteRepository.save(enderecoCliente);
     }
 
     // delete JPA
-    @DeleteMapping("/enderecocliente/{id}")
+    @DeleteMapping("/delete/{id}")
     public String deleteCliente(@PathVariable Long id) {
         Optional<EnderecoCliente> enderecoCliente = enderecoClienteRepository.findById(id);
         if (enderecoCliente.isPresent()) {
@@ -63,11 +58,10 @@ public class EnderecoClienteController {
         }
     }
 
-    @GetMapping("/enderecocliente/form/add")
+    @GetMapping("/form/add")
     public ModelAndView getFormadd() {
         ModelAndView mv = new ModelAndView("cadastroCliente");
         return mv;
-
     }
 
 }

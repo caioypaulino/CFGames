@@ -21,12 +21,13 @@ import java.util.Set;
 @JsonIdentityInfo(
         scope = Categoria.class,
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "categoriaId")
+        property = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoriaId;
+    @Column(name = "categoria_id")
+    private Long id;
 
     private String nome;
 
@@ -34,8 +35,8 @@ public class Categoria {
     @ManyToMany (mappedBy = "categorias")
     Set<Produto> produtos;
 
-    public Categoria(Long categoriaId, String nome, Set<Produto> produtos) {
-        this.categoriaId = categoriaId;
+    public Categoria(Long id, String nome, Set<Produto> produtos) {
+        this.id = id;
         this.nome = nome;
         this.produtos = produtos;
     }

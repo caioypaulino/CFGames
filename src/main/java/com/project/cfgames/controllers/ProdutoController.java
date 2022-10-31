@@ -2,9 +2,9 @@ package com.project.cfgames.controllers;
 
 import com.project.cfgames.entities.Categoria;
 import com.project.cfgames.entities.Produto;
-import com.project.cfgames.facade.Facade;
-import com.project.cfgames.repository.CategoriaRepository;
-import com.project.cfgames.repository.ProdutoRepository;
+import com.project.cfgames.facades.Facade;
+import com.project.cfgames.repositories.CategoriaRepository;
+import com.project.cfgames.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/produtos")
 public class ProdutoController {
 
     @Autowired
@@ -25,19 +26,19 @@ public class ProdutoController {
     Facade facade = new Facade();
 
     // create JPA
-    @PostMapping("/produto/save")
+    @PostMapping("/save")
     public Produto saveProduto(@RequestBody Produto produto) {
         return produtoRepository.save(produto);
     }
 
     // readAll JPA
-    @GetMapping("/produto")
+    @GetMapping("/read")
     public List<Produto> readAllProduto() {
         return produtoRepository.findAll();
     }
 
     // readById JPA
-    @GetMapping("/produto/{id}")
+    @GetMapping("/read/{id}")
     public Produto readByIdProduto(@PathVariable Long id) {
         Optional<Produto> produto = produtoRepository.findById(id);
         if (produto.isPresent()) {
@@ -48,15 +49,15 @@ public class ProdutoController {
     }
 
     // update JPA
-    @PutMapping("/produto")
+    @PutMapping("/update")
     public Produto updateProduto(@RequestBody Produto produto) {
         return produtoRepository.save(produto);
     }
 
     // add categoria
-    @PutMapping("/produto/{produtoId}/categoria/{categoriaId}")
-    public Produto addCategoria(@PathVariable Long produtoId, @PathVariable Long categoriaId) {
-        Produto produto = produtoRepository.findById(produtoId).get();
+    @PutMapping("/{id}/categoria/{categoriaId}")
+    public Produto addCategoria(@PathVariable Long id, @PathVariable Long categoriaId) {
+        Produto produto = produtoRepository.findById(id).get();
         Categoria categoria = categoriaRepository.findById(categoriaId).get();
         produto.categoriasProduto(categoria);
         return produtoRepository.save(produto);
@@ -75,12 +76,12 @@ public class ProdutoController {
         }
     }
 
-    @GetMapping("/produto/form/add")
+    @GetMapping("/form/add")
     public ModelAndView getFormadd() {
         return new ModelAndView("cadastroProduto");
     }
 
-    @GetMapping("/produto/form/update/{id}")
+    @GetMapping("/form/update/{id}")
     public ModelAndView getFormUpdate(@PathVariable("id") Long id){
         Optional<Produto> produto = this.produtoRepository.findById(id);
         ModelAndView mv = new ModelAndView("updateProduto");

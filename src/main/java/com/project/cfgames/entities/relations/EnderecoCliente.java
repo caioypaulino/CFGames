@@ -22,13 +22,14 @@ import javax.persistence.*;
 @JsonIdentityInfo(
         scope = EnderecoCliente.class,
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "possuemId")
+        property = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class EnderecoCliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long possuemId;
+    @Column(name =  "possuem_id")
+    private Long id;
 
     private Integer numero;
     private String complemento;

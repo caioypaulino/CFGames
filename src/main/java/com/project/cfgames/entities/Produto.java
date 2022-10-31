@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.project.cfgames.entities.enums.Plataforma;
+import com.project.cfgames.entities.enums.StatusProduto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,12 +24,13 @@ import java.util.Set;
 @JsonIdentityInfo(
         scope = Produto.class,
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "produtoId")
+        property = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long produtoId;
+    @Column(name = "produto_id")
+    private Long id;
 
     private String titulo;
     private String descricao;
@@ -42,14 +44,14 @@ public class Produto {
     private String dimensoes;
     private String codigoBarras;
     private Integer quantidade;
-    private Boolean status;
+    private StatusProduto status;
 
     @ManyToMany
     @JoinTable(name = "pertencem", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
     private Set<Categoria> categorias;
 
-    public Produto(Long produtoId, String titulo, String descricao, Plataforma plataforma, LocalDate dataLancamento, String marca, String publisher, String dimensoes, String codigoBarras, Integer quantidade, Boolean status, Set<Categoria> categorias) {
-        this.produtoId = produtoId;
+    public Produto(Long id, String titulo, String descricao, Plataforma plataforma, LocalDate dataLancamento, String marca, String publisher, String dimensoes, String codigoBarras, Integer quantidade, StatusProduto status, Set<Categoria> categorias) {
+        this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
         this.plataforma = plataforma;
@@ -66,7 +68,6 @@ public class Produto {
     public Set<Categoria> getCategorias() {
         return categorias;
     }
-
     public void categoriasProduto(Categoria categoria) {
         categorias.add(categoria);
     }
