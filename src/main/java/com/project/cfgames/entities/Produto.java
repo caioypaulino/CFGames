@@ -44,13 +44,14 @@ public class Produto {
     private String dimensoes;
     private String codigoBarras;
     private Integer quantidade;
+    private Float preco;
     private StatusProduto status;
 
     @ManyToMany
     @JoinTable(name = "pertencem", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
     private Set<Categoria> categorias;
 
-    public Produto(Long id, String titulo, String descricao, Plataforma plataforma, LocalDate dataLancamento, String marca, String publisher, String dimensoes, String codigoBarras, Integer quantidade, StatusProduto status, Set<Categoria> categorias) {
+    public Produto(Long id, String titulo, String descricao, Plataforma plataforma, LocalDate dataLancamento, String marca, String publisher, String dimensoes, String codigoBarras, Integer quantidade, Float preco, StatusProduto status, Set<Categoria> categorias) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
@@ -61,6 +62,7 @@ public class Produto {
         this.dimensoes = dimensoes;
         this.codigoBarras = codigoBarras;
         this.quantidade = quantidade;
+        this.preco = preco;
         this.status = status;
         this.categorias = categorias;
     }

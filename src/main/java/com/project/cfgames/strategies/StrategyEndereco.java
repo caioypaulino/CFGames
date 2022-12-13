@@ -46,6 +46,7 @@ public class StrategyEndereco {
         return true;
     }
 
+
     public boolean allValidates(Endereco endereco) {
         if (ruaValidate(endereco) && bairroValidate(endereco) && cidadeValidate(endereco) && estadoValidate(endereco) && cepValidate(endereco) && paisValidate(endereco)) {
             return true;
@@ -54,5 +55,4 @@ public class StrategyEndereco {
             return false;
         }
     }
-
 }

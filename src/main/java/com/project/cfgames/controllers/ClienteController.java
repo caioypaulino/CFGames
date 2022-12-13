@@ -66,7 +66,7 @@ public class ClienteController {
     }
 
     // add Cartao
-    @PutMapping("/{clienteId}/cartao/{numeroCartao}")
+    @PutMapping("/{id}/cartao/{numeroCartao}")
     public Cliente addCartao(@PathVariable Long id, @PathVariable String numeroCartao) {
         Cliente cliente = clienteRepository.findById(id).get();
         Cartao cartao = cartaoRepository.findById(numeroCartao).get();
@@ -75,15 +75,15 @@ public class ClienteController {
     }
 
     // remove Cartao
-    @DeleteMapping("{clienteId}/cartao/{numeroCartao}")
-    public ResponseEntity removeCartao(@PathVariable Long id, @PathVariable String numeroCartao) {
+    @DeleteMapping("{id}/cartao/{numeroCartao}")
+    public ResponseEntity<String> removeCartao(@PathVariable Long id, @PathVariable String numeroCartao) {
         Optional<Cliente> cliente = clienteRepository.findById(id);
         Optional<Cartao> cartao = cartaoRepository.findById(numeroCartao);
         if (cliente.isPresent() && cartao.isPresent()) {
             clienteRepository.removeCartao(id, numeroCartao);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return ResponseEntity.ok("Cartão removido com sucesso!");
         } else {
-            throw new RuntimeException("Cliente ou Cartão não encontrados pelo clienteId " + id + " e numeroCartao " + numeroCartao);
+            return ResponseEntity.badRequest().body("Cliente ou Cartão não encontrados pelo clienteId " + id + " e numeroCartao " + numeroCartao);
         }
     }
 

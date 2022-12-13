@@ -1,4 +1,4 @@
-package com.project.cfgames.entities.templates;
+package com.project.cfgames.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +10,7 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class TemplateEndereco {
+public class EnderecoDTO {
     public String code;
     public String state;
     public String city;
