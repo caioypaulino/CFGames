@@ -94,7 +94,7 @@ public class ClienteController {
     }
 
     // delete JPA
-    @GetMapping("/delete_cliente/{id}")
+    @DeleteMapping("/delete_cliente/{id}")
     public ModelAndView deleteCliente(@PathVariable Long id, RedirectAttributes redirect) {
         Optional<Cliente> cliente = clienteRepository.findById(id);
         if (cliente.isPresent()) {

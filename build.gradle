@@ -21,6 +21,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.google.code.gson:gson:2.9.0'
 	testImplementation 'org.testng:testng:7.1.0'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -38,9 +39,8 @@ dependencies {
 	testImplementation 'info.cukes:cucumber-junit:1.2.5'
 	// https://mvnrepository.com/artifact/info.cukes/cucumber-java
 	implementation 'info.cukes:cucumber-java:1.2.5'
-
-
-
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.5'
 }
 
 tasks.named('test') {

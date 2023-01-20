@@ -1,6 +1,7 @@
 package com.project.cfgames.entities.relations;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.project.cfgames.entities.Cliente;
@@ -12,8 +13,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Table(name = "Possuem")
-@Entity(name = "Possuem")
+@Table(name = "ENDERECOS_CLIENTES")
+@Entity(name = "EnderecoCliente")
 
 @Getter
 @Setter
@@ -28,7 +29,7 @@ public class EnderecoCliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name =  "possuem_id")
+    @Column(name =  "endereco_cliente_id")
     private Long id;
 
     private Integer numero;
@@ -36,7 +37,6 @@ public class EnderecoCliente {
 
     //enum
     private TipoEndereco tipo;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Cliente cliente;

@@ -4,7 +4,6 @@ import com.project.cfgames.entities.ItemCarrinho;
 import com.project.cfgames.entities.Produto;
 import com.project.cfgames.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,38 +21,28 @@ public class CarrinhoCompraService {
         float valorItem = 0f;
 
         for (ItemCarrinho item: itensCarrinho) {
-            Optional<Produto> produto = produtoRepository.findById(item.getProduto().getId());
+            Produto produto = produtoRepository.getReferenceById(item.getProduto().getId());
 
-            if (produto.isPresent()) {
-                valorItem = ((produto.get().getPreco()) * item.getQuantidade());
-                item.setValorItem(valorItem);
-                valorTotal += valorItem;
-            }
+            valorItem = ((produto.getPreco()) * item.getQuantidade());
+            item.setValorItem(valorItem);
+            valorTotal += valorItem;
         }
 
         return valorTotal;
     }
 
-    public boolean quantidadeValidate(Set<ItemCarrinho> itensCarrinho){
-        int quantidadeItem = 0;
-        int quantidadeEstoque = 0;
+    // calcula peso total da compra
+    public Integer pesoItens(Set<ItemCarrinho> itensCarrinho){
+        int pesoTotal = 0;
+        int pesoItem = 0;
 
         for (ItemCarrinho item: itensCarrinho) {
-            Optional<Produto> produto = produtoRepository.findById(item.getProduto().getId());
+            Produto produto = produtoRepository.getReferenceById(item.getProduto().getId());
 
-            if (produto.isPresent()){
-                quantidadeEstoque = produto.get().getQuantidade();
-                quantidadeItem = item.getQuantidade();
-
-                if (quantidadeItem > quantidadeEstoque){
-                    ResponseEntity.ok("Quantidade em estoque indisponível");
-                    return false;
-                }
-                else {
-                    return true;
-                }
-            }
+            pesoItem = ((produto.getPeso()) * item.getQuantidade());
+            pesoTotal += pesoItem;
         }
-        return false;
+
+        return pesoTotal;
     }
 }

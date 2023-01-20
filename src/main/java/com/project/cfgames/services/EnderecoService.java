@@ -1,6 +1,6 @@
 package com.project.cfgames.services;
 
-import com.project.cfgames.requests.EnderecoDTO;
+import com.project.cfgames.responses.EnderecoDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,3 +18,4 @@ public class EnderecoService {
         }
     }
 }
+

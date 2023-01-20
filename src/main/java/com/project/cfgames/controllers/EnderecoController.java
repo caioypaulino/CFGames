@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.project.cfgames.repositories.EnderecoRepository;
 import com.project.cfgames.entities.Endereco;
-import com.project.cfgames.requests.EnderecoDTO;
+import com.project.cfgames.responses.EnderecoDTO;
 import com.project.cfgames.facades.Facade;
 
 import com.project.cfgames.services.EnderecoService;

@@ -2,15 +2,17 @@ package com.project.cfgames.controllers;
 
 import com.project.cfgames.entities.CarrinhoCompra;
 import com.project.cfgames.entities.ItemCarrinho;
+import com.project.cfgames.entities.Pedido;
 import com.project.cfgames.repositories.CarrinhoCompraRepository;
 import com.project.cfgames.repositories.ItemCarrinhoRepository;
 import com.project.cfgames.services.CarrinhoCompraService;
 import com.project.cfgames.strategies.StrategyCarrinhoCompra;
-import org.checkerframework.checker.units.qual.A;
+import feign.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +37,8 @@ public class CarrinhoCompraController {
     public ResponseEntity<String> saveCarrinho(@RequestBody CarrinhoCompra carrinhoCompra) {
         // validação de dados
         if (strategyCarrinhoCompra.allValidates(carrinhoCompra)){
-            carrinhoCompra.setValorTotal(carrinhoCompraService.valorItens(carrinhoCompra.getItensCarrinho()));
+            carrinhoCompra.setValorCarrinho(carrinhoCompraService.valorItens(carrinhoCompra.getItensCarrinho()));
+            carrinhoCompra.setPesoTotal(carrinhoCompraService.pesoItens(carrinhoCompra.getItensCarrinho()));
             carrinhoCompraRepository.save(carrinhoCompra);
 
             return ResponseEntity.ok("Carrinho de Compra adicionado com sucesso!");
@@ -48,22 +51,24 @@ public class CarrinhoCompraController {
     // add item carrinho
     @PutMapping("/{id}/itemcarrinho/")
     public ResponseEntity<String> addItem(@PathVariable Long id, @RequestBody ItemCarrinho itemCarrinho) {
-        Optional<CarrinhoCompra> carrinhoCompra = carrinhoCompraRepository.findById(id);
+        try {
+            // instanciando objetos para acessar atributos da classe
+            CarrinhoCompra carrinhoCompra = carrinhoCompraRepository.getReferenceById(id);
 
-        if (carrinhoCompra.isPresent()){
             // validação de dados
-            if (strategyCarrinhoCompra.allValidates(carrinhoCompra.get())){
-                carrinhoCompra.get().itensPedido(itemCarrinho);
-                carrinhoCompra.get().setValorTotal(carrinhoCompraService.valorItens(carrinhoCompra.get().getItensCarrinho()));
+            if (strategyCarrinhoCompra.allValidates(carrinhoCompra)){
+                carrinhoCompra.itensPedido(itemCarrinho);
+                carrinhoCompra.setValorCarrinho(carrinhoCompraService.valorItens(carrinhoCompra.getItensCarrinho()));
+                carrinhoCompra.setPesoTotal(carrinhoCompraService.pesoItens(carrinhoCompra.getItensCarrinho()));
 
-                carrinhoCompraRepository.save(carrinhoCompra.get());
+                carrinhoCompraRepository.save(carrinhoCompra);
                 return ResponseEntity.ok("Item adicionado com sucesso!");
             }
             else {
                 return ResponseEntity.badRequest().body("Erro Validação Item");
             }
         }
-        else {
+        catch(EntityNotFoundException e) {
             return ResponseEntity.badRequest().body("Carrinho não encontrado pelo carrinho_compra_id " + id);
         }
     }
@@ -71,19 +76,20 @@ public class CarrinhoCompraController {
     // remove item carrinho
     @DeleteMapping("{id}/itemcarrinho/{itemId}")
     public ResponseEntity<String> removeItem(@PathVariable Long id, @PathVariable Long itemId) {
-        Optional<CarrinhoCompra> carrinhoCompra = carrinhoCompraRepository.findById(id);
-        Optional<ItemCarrinho> itemCarrinho = itemCarrinhoRepository.findById(itemId);
+        try {
+            CarrinhoCompra carrinhoCompra = carrinhoCompraRepository.getReferenceById(id);
+            ItemCarrinho itemCarrinho = itemCarrinhoRepository.getReferenceById(itemId);
 
-        if (carrinhoCompra.isPresent() && itemCarrinho.isPresent()) {
-            itemCarrinhoRepository.removeItem(itemId, id);
+            // validação item carrinho
+                itemCarrinhoRepository.removeItem(itemCarrinho.getId(), id);
 
-            carrinhoCompra.get().setValorTotal(carrinhoCompraService.valorItens(carrinhoCompra.get().getItensCarrinho()));
-            carrinhoCompraRepository.save(carrinhoCompra.get());
+                carrinhoCompra.setValorCarrinho(carrinhoCompraService.valorItens(carrinhoCompra.getItensCarrinho()));
+                carrinhoCompraRepository.save(carrinhoCompra);
 
-            return ResponseEntity.ok("Item removido com sucesso!");
+                return ResponseEntity.ok("Item removido com sucesso!");
         }
-        else {
-            return ResponseEntity.badRequest().body("Carrinho ou Item não encontrados pelo carrinho_compra_id " + id + " e item_carrinho_id " + itemId);
+        catch(EntityNotFoundException e) {
+            return ResponseEntity.badRequest().body("Carrinho de Compra ou item do Carrinho não encontrados pelo carrinho_compra_id " + id + "item_carrinho_id " + itemId);
         }
     }
 
@@ -95,12 +101,14 @@ public class CarrinhoCompraController {
 
     // readById JPA
     @GetMapping("/read/{id}")
-    public CarrinhoCompra readByIdCarrinho(@PathVariable Long id) {
+    public ResponseEntity<?> readByIdCarrinho(@PathVariable Long id) {
         Optional<CarrinhoCompra> carrinhoCompra = carrinhoCompraRepository.findById(id);
+
         if (carrinhoCompra.isPresent()) {
-            return carrinhoCompra.get();
-        } else {
-            throw new RuntimeException("Carrinho de compra não encontrado pelo id: " + id);
+            return ResponseEntity.ok().body(carrinhoCompra.get());
+        }
+        else {
+            return ResponseEntity.badRequest().body("Carrinho de Compra não encontrado pelo id: " + id);
         }
     }
 
@@ -109,7 +117,7 @@ public class CarrinhoCompraController {
     public ResponseEntity<String> updateCarrinho(@RequestBody CarrinhoCompra carrinhoCompra) {
         // validação de dados
         if (strategyCarrinhoCompra.allValidates(carrinhoCompra)){
-            carrinhoCompra.setValorTotal(carrinhoCompraService.valorItens(carrinhoCompra.getItensCarrinho()));
+            carrinhoCompra.setValorCarrinho(carrinhoCompraService.valorItens(carrinhoCompra.getItensCarrinho()));
             carrinhoCompraRepository.save(carrinhoCompra);
 
             return ResponseEntity.ok("Carrinho de Compra atualizado com sucesso!");
@@ -122,13 +130,24 @@ public class CarrinhoCompraController {
     // delete JPA
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteCarrinho(@PathVariable Long id) {
-        Optional<CarrinhoCompra> carrinhoCompra = carrinhoCompraRepository.findById(id);
-        if (carrinhoCompra.isPresent()) {
-            itemCarrinhoRepository.deleteItens(id);
-            carrinhoCompraRepository.delete(carrinhoCompra.get());
-            return ResponseEntity.ok("Carrinho de compra deletado com sucesso!");
-        } else {
-            return ResponseEntity.badRequest().body("Carrinho de compra não encontrado pelo id: " + id);
+        try {
+            CarrinhoCompra carrinhoCompra = carrinhoCompraRepository.getReferenceById(id);
+            Long pedidoId = carrinhoCompraRepository.selectPedidoId(id);
+
+            if (pedidoId != null) {
+                return ResponseEntity.badRequest().body("Carrinho de Compra não pode ser deletado por estar relacionado a um pedido! id pedido: " + pedidoId);
+            }
+            else {
+                // delete itens carrinho de compra
+                itemCarrinhoRepository.deleteItens(id);
+                // delete carrinho de compra
+                carrinhoCompraRepository.delete(carrinhoCompra);
+
+                return ResponseEntity.ok("Carrinho de Compra deletado com sucesso!");
+            }
+        }
+        catch (EntityNotFoundException e) {
+            return ResponseEntity.badRequest().body("Carrinho de Compra não encontrado pelo id: " + id);
         }
     }
 }

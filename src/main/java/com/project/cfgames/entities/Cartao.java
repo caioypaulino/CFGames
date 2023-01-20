@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.project.cfgames.entities.enums.BandeiraCartao;
+import com.project.cfgames.entities.relations.CartaoPedido;
+import com.project.cfgames.entities.relations.EnderecoCliente;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -42,6 +44,10 @@ public class Cartao {
     @JsonIgnore
     @ManyToMany (mappedBy = "cartoes")
     Set<Cliente> clientes;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "cartao")
+    private Set<CartaoPedido> pedidos;
 
     public Cartao(String numeroCartao, String nomeCartao, Integer mesVencimento, Integer anoVencimento, String cvc, Set<Cliente> clientes) {
         this.numeroCartao = numeroCartao;

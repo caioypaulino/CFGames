@@ -1,15 +1,12 @@
-package com.project.cfgames.requests;
+package com.project.cfgames.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Embeddable;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Embeddable
 public class EnderecoDTO {
     public String code;
     public String state;

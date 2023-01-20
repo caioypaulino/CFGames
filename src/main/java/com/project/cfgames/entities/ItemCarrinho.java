@@ -27,7 +27,7 @@ public class ItemCarrinho {
     @Column(name = "item_carrinho_id")
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     private Produto produto;
 
     private Integer quantidade;

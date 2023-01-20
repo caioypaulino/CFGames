@@ -50,7 +50,7 @@ public class Cliente {
     private Set<EnderecoCliente> enderecos;
 
     @ManyToMany
-    @JoinTable(name = "detem", joinColumns = @JoinColumn(name = "cliente_id"), inverseJoinColumns = @JoinColumn(name = "numero_cartao"))
+    @JoinTable(name = "cartoes_clientes", joinColumns = @JoinColumn(name = "cliente_id"), inverseJoinColumns = @JoinColumn(name = "numero_cartao"))
     private Set<Cartao> cartoes;
 
     public Cliente(String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String senha, Set<EnderecoCliente> enderecos, Set<Cartao> cartoes) {

@@ -1,9 +1,9 @@
 package com.project.cfgames.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.project.cfgames.entities.enums.StatusPedido;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,14 +31,17 @@ public class CarrinhoCompra {
     @Column(name = "carrinho_compra_id")
     private Long id;
 
-    @OneToOne
+
+    @ManyToOne
     private Cliente cliente;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "carrinho_compra_id", referencedColumnName = "carrinho_compra_id")
     private Set<ItemCarrinho> itensCarrinho;
 
-    private Float valorTotal;
+    private Integer pesoTotal;
+
+    private Float valorCarrinho;
 
     public CarrinhoCompra(Cliente cliente) {
         this.cliente = cliente;
