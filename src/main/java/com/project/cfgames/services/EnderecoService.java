@@ -1,21 +1,19 @@
 package com.project.cfgames.services;
 
-import com.project.cfgames.responses.EnderecoDTO;
+import com.project.cfgames.clients.EnderecoClient;
+import com.project.cfgames.clients.responses.EnderecoResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 @Service
 public class EnderecoService {
 
-    public EnderecoDTO buscarCep(String cep){
-        try {
-            RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    EnderecoClient enderecoClient;
 
-            return restTemplate.getForObject("https://cdn.apicep.com/file/apicep/" + cep + ".json", EnderecoDTO.class);
-        }
-        catch (RuntimeException exception){
-            throw new RuntimeException("Cep inválido ou inexistente");
-        }
+    // retorna endereco através da feign client api (EnderecoClient) e gera uma responseDTO (EnderecoResponse)
+    public EnderecoResponse buscarCep(String cep){
+        return enderecoClient.getEndereco(cep);
     }
 }
 

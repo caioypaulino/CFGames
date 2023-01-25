@@ -1,4 +1,4 @@
-package com.project.cfgames.responses;
+package com.project.cfgames.clients.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EnderecoDTO {
+public class EnderecoResponse {
     public String code;
     public String state;
     public String city;

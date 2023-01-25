@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.project.cfgames.entities.relations.EnderecoCliente;
-import com.project.cfgames.responses.EnderecoDTO;
+import com.project.cfgames.clients.responses.EnderecoResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -48,12 +48,12 @@ public class Endereco {
         this.pais = pais;
     }
 
-    public Endereco(EnderecoDTO enderecoDTO, String pais) {
-        this.cep = enderecoDTO.getCode();
-        this.rua = enderecoDTO.getAddress();
-        this.bairro = enderecoDTO.getDistrict();
-        this.cidade = enderecoDTO.getCity();
-        this.estado = enderecoDTO.getState();
+    public Endereco(EnderecoResponse enderecoResponse, String pais) {
+        this.cep = enderecoResponse.getCode();
+        this.rua = enderecoResponse.getAddress();
+        this.bairro = enderecoResponse.getDistrict();
+        this.cidade = enderecoResponse.getCity();
+        this.estado = enderecoResponse.getState();
         this.pais = pais;
     }
 }

@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.project.cfgames.repositories.EnderecoRepository;
 import com.project.cfgames.entities.Endereco;
-import com.project.cfgames.responses.EnderecoDTO;
+import com.project.cfgames.clients.responses.EnderecoResponse;
 import com.project.cfgames.facades.Facade;
 
 import com.project.cfgames.services.EnderecoService;
@@ -28,10 +28,11 @@ public class EnderecoController {
     // create JPA API REST (CEP)
     @GetMapping("/cep/{cep}")
     public Endereco verificarEndereco(@PathVariable String cep){
-        EnderecoDTO enderecoDTO = enderecoService.buscarCep(cep);
+        EnderecoResponse enderecoResponse = enderecoService.buscarCep(cep);
         
         String pais = "Brasil";
-        Endereco endereco = new Endereco(enderecoDTO, pais);
+        Endereco endereco = new Endereco(enderecoResponse, pais);
+
         return enderecoRepository.save(endereco);
     }
 
