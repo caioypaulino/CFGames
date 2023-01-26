@@ -4,10 +4,12 @@ import com.project.cfgames.entities.Cartao;
 import com.project.cfgames.repositories.CartaoRepository;
 import com.project.cfgames.services.CartaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,9 +25,11 @@ public class CartaoController {
 
     // create JPA
     @PostMapping("/save")
-    public Cartao saveCartao(@RequestBody Cartao cartao) {
+    public ResponseEntity<String> saveCartao(@RequestBody Cartao cartao) {
         cartao.setBandeira(cartaoService.retornaBandeira(cartao.getNumeroCartao()));
-        return cartaoRepository.save(cartao);
+        cartaoRepository.save(cartao);
+
+        return ResponseEntity.ok().body("Cartão de Crédito adicionado com sucesso!");
     }
 
     // readAll JPA
@@ -36,32 +40,38 @@ public class CartaoController {
 
     // readById JPA
     @GetMapping("/read/{numeroCartao}")
-    public Cartao readByIdCartao(@PathVariable String numeroCartao) {
+    public ResponseEntity<?> readByIdCartao(@PathVariable String numeroCartao) {
         Optional<Cartao> cartao = cartaoRepository.findById(numeroCartao);
+
         if (cartao.isPresent()) {
-            return cartao.get();
-        } else {
-            throw new RuntimeException("Cartao não encontrado pelo número: " + numeroCartao);
+            return ResponseEntity.ok().body(cartao.get());
+        }
+        else {
+            return ResponseEntity.badRequest().body("Cartao não encontrado pelo número: " + numeroCartao);
         }
     }
 
     // update JPA
     @PutMapping("/update")
-    public Cartao updateCartao(@RequestBody Cartao cartao) {
-        return cartaoRepository.save(cartao);
+    public ResponseEntity<String> updateCartao(@RequestBody Cartao cartao) {
+        cartaoRepository.save(cartao);
+
+        return ResponseEntity.ok().body("Cartão de Crédito atualizado com sucesso!");
     }
 
     //delete JPA
     @DeleteMapping("/delete/{numeroCartao}")
-    public void deleteCartao(@PathVariable String numeroCartao){
-        Optional<Cartao> cartao = cartaoRepository.findById(numeroCartao);
-        if (cartao.isPresent()) {
-            cartaoRepository.delete(cartao.get());
-        } else {
-            throw new RuntimeException("Cartao não encontrado pelo número: " + numeroCartao);
+    public ResponseEntity<String> deleteCartao(@PathVariable String numeroCartao){
+        try {
+            Cartao cartao = cartaoRepository.getReferenceById(numeroCartao);
+
+            cartaoRepository.delete(cartao);
+            return ResponseEntity.ok().body("Cartão de Crédito deletado com sucesso!");
+        }
+        catch (EntityNotFoundException e){
+            return ResponseEntity.badRequest().body("Cartão de Crédito não encontrado pelo numeroCartao: " + numeroCartao);
         }
     }
-
 
     // delete JPA
     @GetMapping("/delete_cartao/{numeroCartao}")
