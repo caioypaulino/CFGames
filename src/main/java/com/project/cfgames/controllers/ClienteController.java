@@ -6,6 +6,7 @@ import com.project.cfgames.facades.Facade;
 import com.project.cfgames.repositories.CartaoRepository;
 import com.project.cfgames.repositories.ClienteRepository;
 import com.project.cfgames.responses.ClienteResponse;
+import com.project.cfgames.services.CartaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/clientes")
@@ -25,6 +28,9 @@ public class ClienteController {
 
     @Autowired
     CartaoRepository cartaoRepository;
+
+    @Autowired
+    CartaoService cartaoService;
 
     Facade facade = new Facade();
 
@@ -60,30 +66,45 @@ public class ClienteController {
         Optional<Cliente> cliente = clienteRepository.findById(id);
         if (cliente.isPresent()) {
             return cliente.get();
-        } else {
+        }
+        else {
             throw new RuntimeException("Cliente não encontrado pelo id: " + id);
         }
     }
 
     // add Cartao
-    @PutMapping("/{id}/cartao/{numeroCartao}")
-    public Cliente addCartao(@PathVariable Long id, @PathVariable String numeroCartao) {
-        Cliente cliente = clienteRepository.findById(id).get();
-        Cartao cartao = cartaoRepository.findById(numeroCartao).get();
-        cliente.cartoesCliente(cartao);
-        return clienteRepository.save(cliente);
+    @PutMapping("/{id}/cartao")
+    public ResponseEntity<String> addCartao(@PathVariable Long id, @RequestBody Cartao cartao) {
+        try {
+            Cliente cliente = clienteRepository.getReferenceById(id);
+
+            if (cartaoRepository.selectCartao(cartao.getNumeroCartao()) == null) {
+                cartao.setBandeira(cartaoService.retornaBandeira(cartao.getNumeroCartao()));
+                cartaoRepository.save(cartao);
+            }
+            Cartao cartao1 = cartaoRepository.getReferenceById(cartao.getNumeroCartao());
+
+            cliente.cartoesCliente(cartao1);
+            clienteRepository.save(cliente);
+
+            return ResponseEntity.ok().body("Cartão adicionado com sucesso ao Cliente Id: " + id);
+        }
+        catch (EntityNotFoundException e) {
+            return ResponseEntity.badRequest().body("Cliente não encontrado pelo Cliente Id: " + id);
+        }
     }
 
     // remove Cartao
-    @DeleteMapping("{id}/cartao/{numeroCartao}")
-    public ResponseEntity<String> removeCartao(@PathVariable Long id, @PathVariable String numeroCartao) {
-        Optional<Cliente> cliente = clienteRepository.findById(id);
-        Optional<Cartao> cartao = cartaoRepository.findById(numeroCartao);
-        if (cliente.isPresent() && cartao.isPresent()) {
-            clienteRepository.removeCartao(id, numeroCartao);
+    @DeleteMapping("/{id}/cartao")
+    public ResponseEntity<String> removeCartao(@PathVariable Long id, @RequestBody Cartao cartao) {
+        if (cartaoRepository.selectCartaoCliente(id, cartao.getNumeroCartao()) != null) {
+
+            cartaoRepository.removeCartao(id, cartao.getNumeroCartao());
+
             return ResponseEntity.ok("Cartão removido com sucesso!");
-        } else {
-            return ResponseEntity.badRequest().body("Cliente ou Cartão não encontrados pelo clienteId " + id + " e numeroCartao " + numeroCartao);
+        }
+        else {
+            return ResponseEntity.badRequest().body("Cliente ou Cartão não encontrados pelo clienteId " + id + " e numeroCartao " + cartao.getNumeroCartao());
         }
     }
 

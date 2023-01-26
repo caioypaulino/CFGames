@@ -93,7 +93,7 @@ public class PedidoController {
 
     // update JPA
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updatePedido(@PathVariable Long id, @RequestBody PedidoRequest pedidoRequest) {
+    public ResponseEntity<String> updatePedido(@PathVariable Long id, @RequestBody PedidoRequest pedidoRequest) {
         try {
             Pedido pedido = pedidoRepository.getReferenceById(id);
 

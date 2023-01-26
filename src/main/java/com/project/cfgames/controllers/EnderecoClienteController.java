@@ -38,7 +38,6 @@ public class EnderecoClienteController {
                 String pais = "Brasil";
                 Endereco endereco = new Endereco(enderecoResponse, pais);
                 enderecoRepository.save(endereco);
-
             }
 
             enderecoClienteRepository.save(enderecoCliente);

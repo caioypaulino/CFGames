@@ -35,8 +35,6 @@ public class Cartao {
 
     private String nomeCartao;
     private BandeiraCartao bandeira;
-
-
     private Integer mesVencimento;
     private Integer anoVencimento;
     private String cvc;

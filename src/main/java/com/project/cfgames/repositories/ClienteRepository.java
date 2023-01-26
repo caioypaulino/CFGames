@@ -11,8 +11,5 @@ import javax.transaction.Transactional;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
-    @Modifying
-    @Transactional
-    @Query(value = "DELETE FROM public.cartoes_clientes WHERE cliente_id = ? AND numero_cartao = ?", nativeQuery = true)
-    void removeCartao(Long clienteId, String numeroCartao);
+
 }
