@@ -13,6 +13,10 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -31,12 +35,19 @@ import java.util.Set;
 public class Cartao {
     @Id
     @Column(name = "numero_cartao")
+    @NotBlank(message = "Campo não informado!")
     private String numeroCartao;
-
+    @NotBlank(message = "Campo não informado!")
+    @Pattern(regexp = "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$", message = "Nome do cartão não pode conter números ou caractéres especiais.")
     private String nomeCartao;
     private BandeiraCartao bandeira;
+    @Min(value = 1, message = "Mês de vencimento não pode ser 0.")
+    @Max(value = 12 , message = "Mês de vencimento deve ser menor ou igual a 12.")
     private Integer mesVencimento;
+    @Min(value = 2023, message = "Ano de vencimento deve ser maior que 2022")
     private Integer anoVencimento;
+    @NotBlank(message = "Campo não informado!")
+    @Pattern(regexp = "^[0-9]{3,4}$", message = "CVC inválido.")
     private String cvc;
 
     @JsonIgnore

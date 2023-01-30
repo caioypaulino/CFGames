@@ -4,13 +4,19 @@ import com.project.cfgames.entities.Cartao;
 import com.project.cfgames.repositories.CartaoRepository;
 import com.project.cfgames.services.CartaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -25,7 +31,7 @@ public class CartaoController {
 
     // create JPA
     @PostMapping("/save")
-    public ResponseEntity<String> saveCartao(@RequestBody Cartao cartao) {
+    public ResponseEntity<String> saveCartao(@RequestBody @Valid Cartao cartao) {
         cartao.setBandeira(cartaoService.retornaBandeira(cartao.getNumeroCartao()));
         cartaoRepository.save(cartao);
 
@@ -84,6 +90,22 @@ public class CartaoController {
         } else {
             throw new RuntimeException("Cartao não encontrado pelo número: " + numeroCartao);
         }
+    }
+
+    // validation class
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> validationsException(MethodArgumentNotValidException exception) {
+        Map<String, String> erros = new HashMap<>();
+
+        exception.getBindingResult().getAllErrors().forEach((erro) -> {
+            String campoNome = ((FieldError) erro).getField();
+            String mensagemErro = erro.getDefaultMessage();
+
+            erros.put(campoNome, mensagemErro);
+        });
+
+        return erros;
     }
 
     @GetMapping("/form/add")

@@ -82,9 +82,9 @@ public class ClienteController {
                 cartao.setBandeira(cartaoService.retornaBandeira(cartao.getNumeroCartao()));
                 cartaoRepository.save(cartao);
             }
-            Cartao cartao1 = cartaoRepository.getReferenceById(cartao.getNumeroCartao());
+            Cartao cartaoR = cartaoRepository.getReferenceById(cartao.getNumeroCartao());
 
-            cliente.cartoesCliente(cartao1);
+            cliente.cartoesCliente(cartaoR);
             clienteRepository.save(cliente);
 
             return ResponseEntity.ok().body("Cartão adicionado com sucesso ao Cliente Id: " + id);
