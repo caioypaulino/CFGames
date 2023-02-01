@@ -1,8 +1,10 @@
 package com.project.cfgames.controllers;
 
 import com.project.cfgames.entities.Cartao;
+import com.project.cfgames.exceptions.CustomValidationException;
 import com.project.cfgames.repositories.CartaoRepository;
 import com.project.cfgames.services.CartaoService;
+import com.project.cfgames.strategies.StrategyCartao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +31,15 @@ public class CartaoController {
     @Autowired
     CartaoService cartaoService;
 
+    @Autowired
+    StrategyCartao strategyCartao;
+
     // create JPA
     @PostMapping("/save")
-    public ResponseEntity<String> saveCartao(@RequestBody @Valid Cartao cartao) {
-        cartao.setBandeira(cartaoService.retornaBandeira(cartao.getNumeroCartao()));
+    public ResponseEntity<String> saveCartao(@RequestBody @Valid Cartao cartao){
+        strategyCartao.allValidates(cartao);
+
+        cartao.setBandeira(cartaoService.bandeiraCartao(cartao));
         cartaoRepository.save(cartao);
 
         return ResponseEntity.ok().body("Cartão de Crédito adicionado com sucesso!");
@@ -92,10 +99,10 @@ public class CartaoController {
         }
     }
 
-    // validation class
+    // handle validation class
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> validationsException(MethodArgumentNotValidException exception) {
+    public Map<String, String> handleValidationsExceptions(MethodArgumentNotValidException exception) {
         Map<String, String> erros = new HashMap<>();
 
         exception.getBindingResult().getAllErrors().forEach((erro) -> {
@@ -106,6 +113,13 @@ public class CartaoController {
         });
 
         return erros;
+    }
+
+    // handle custom validation class
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CustomValidationException.class)
+    public String handleCustomValidationsExceptions (CustomValidationException exception){
+        return exception.getMessage();
     }
 
     @GetMapping("/form/add")

@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -34,16 +35,19 @@ public class Cliente {
     @Column(name = "cliente_id")
     private Long id;
 
+    @NotBlank(message = "Campo não informado!")
     private String nome;
+    @NotBlank(message = "Campo não informado!")
     private String cpf;
-
+    @NotBlank(message = "Campo não informado!")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dataNascimento;
-
+    @NotBlank(message = "Campo não informado!")
     private String telefone;
-
+    @NotBlank(message = "Campo não informado!")
     @Email(message = "Email should be valid")
     private String email;
+    @NotBlank(message = "Campo não informado!")
     private String senha;
 
     @OneToMany(mappedBy = "cliente")

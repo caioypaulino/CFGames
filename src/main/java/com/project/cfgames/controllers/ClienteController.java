@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/clientes")
@@ -79,7 +78,7 @@ public class ClienteController {
             Cliente cliente = clienteRepository.getReferenceById(id);
 
             if (cartaoRepository.selectCartao(cartao.getNumeroCartao()) == null) {
-                cartao.setBandeira(cartaoService.retornaBandeira(cartao.getNumeroCartao()));
+                cartao.setBandeira(cartaoService.bandeiraCartao(cartao));
                 cartaoRepository.save(cartao);
             }
             Cartao cartaoR = cartaoRepository.getReferenceById(cartao.getNumeroCartao());
