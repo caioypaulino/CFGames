@@ -23,4 +23,12 @@ public interface CartaoRepository extends JpaRepository<Cartao, String> {
     @Transactional
     @Query(value = "DELETE FROM public.cartoes_clientes WHERE cliente_id = ? AND numero_cartao = ?", nativeQuery = true)
     void removeCartao(Long clienteId, String numeroCartao);
+
+    @Transactional
+    @Query(value = "SELECT cliente_id FROM public.cartoes_clientes WHERE numero_cartao = ?", nativeQuery = true)
+    String selectClientesCartao(String numeroCartao);
+
+    @Transactional
+    @Query(value = "SELECT pedido_pedido_id FROM public.cartoes_pedidos WHERE numero_cartao = ?", nativeQuery = true)
+    String selectPedidosCartao(String numeroCartao);
 }

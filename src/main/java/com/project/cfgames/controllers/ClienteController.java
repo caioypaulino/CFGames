@@ -2,20 +2,27 @@ package com.project.cfgames.controllers;
 
 import com.project.cfgames.entities.Cartao;
 import com.project.cfgames.entities.Cliente;
-import com.project.cfgames.facades.Facade;
+import com.project.cfgames.exceptions.CustomValidationException;
 import com.project.cfgames.repositories.CartaoRepository;
 import com.project.cfgames.repositories.ClienteRepository;
-import com.project.cfgames.responses.ClienteResponse;
 import com.project.cfgames.services.CartaoService;
+import com.project.cfgames.validations.ValidationCartao;
+import com.project.cfgames.validations.ValidationCliente;
+import com.project.cfgames.validations.handlers.HandlerCustomValidationsExceptions;
+import com.project.cfgames.validations.handlers.HandlerValidationsExceptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -31,26 +38,21 @@ public class ClienteController {
     @Autowired
     CartaoService cartaoService;
 
-    Facade facade = new Facade();
+    @Autowired
+    ValidationCliente validationCliente;
+
+    @Autowired
+    ValidationCartao validationCartao;
 
     // create JPA
     @PostMapping("/save")
-    public ResponseEntity<ClienteResponse> saveCliente(@RequestBody Cliente cliente) {
-        var clienteSalvo = clienteRepository.save(facade.validaCliente(cliente));
-        var clienteResponse = clienteSalvo.toResponse();
-        return ResponseEntity.status(HttpStatus.CREATED).body(clienteResponse);
-    }
+    public ResponseEntity<String> saveCliente(@RequestBody @Valid Cliente cliente) {
 
-    // create with model
-    @RequestMapping(value = "/form/save")
-    public ModelAndView saveCliente(Cliente cliente, RedirectAttributes redirect) {
-        if (facade.validaCliente(cliente) != cliente) {
-            redirect.addFlashAttribute("mensagem", "teste");
-            return new ModelAndView("redirect:/cliente/form/add");
-        }
+        validationCliente.allValidates(cliente);
 
         clienteRepository.save(cliente);
-        return new ModelAndView("redirect:/admin/painel");
+
+        return ResponseEntity.ok().body("Cliente adicionado com sucesso!");
     }
 
     // readAll JPA
@@ -73,11 +75,12 @@ public class ClienteController {
 
     // add Cartao
     @PutMapping("/{id}/cartao")
-    public ResponseEntity<String> addCartao(@PathVariable Long id, @RequestBody Cartao cartao) {
+    public ResponseEntity<String> addCartao(@PathVariable Long id, @RequestBody @Valid Cartao cartao) {
         try {
             Cliente cliente = clienteRepository.getReferenceById(id);
 
             if (cartaoRepository.selectCartao(cartao.getNumeroCartao()) == null) {
+                validationCartao.allValidates(cartao);
                 cartao.setBandeira(cartaoService.bandeiraCartao(cartao));
                 cartaoRepository.save(cartao);
             }
@@ -97,7 +100,6 @@ public class ClienteController {
     @DeleteMapping("/{id}/cartao")
     public ResponseEntity<String> removeCartao(@PathVariable Long id, @RequestBody Cartao cartao) {
         if (cartaoRepository.selectCartaoCliente(id, cartao.getNumeroCartao()) != null) {
-
             cartaoRepository.removeCartao(id, cartao.getNumeroCartao());
 
             return ResponseEntity.ok("Cartão removido com sucesso!");
@@ -109,11 +111,41 @@ public class ClienteController {
 
     // update JPA
     @PutMapping("/update")
-    public Cliente updateCliente(@RequestBody Cliente cliente) {
-        return clienteRepository.save(cliente);
+    public ResponseEntity<String> updateCliente(@RequestBody @Valid Cliente cliente) {
+        validationCliente.allValidates(cliente);
+
+        clienteRepository.save(cliente);
+
+        return ResponseEntity.ok().body("Cliente atualizado com sucesso!");
     }
 
-    // delete JPA
+    //delete JPA
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteCliente(@PathVariable Long id){
+        try {
+            clienteRepository.deleteById(id);
+
+            return ResponseEntity.ok().body("Cliente deletado com sucesso!");
+        }
+        catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.badRequest().body("Cliente não encontrado pelo Cliente Id: " + id);
+        }
+    }
+
+    // handler @validation exception
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationsExceptions(MethodArgumentNotValidException exception) {
+        return HandlerValidationsExceptions.handler(exception);
+    }
+
+    // handler custom validation exception
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CustomValidationException.class)
+    public String handleCustomValidationsExceptions (CustomValidationException exception){
+        return HandlerCustomValidationsExceptions.handler(exception);
+    }
+
     @DeleteMapping("/delete_cliente/{id}")
     public ModelAndView deleteCliente(@PathVariable Long id, RedirectAttributes redirect) {
         Optional<Cliente> cliente = clienteRepository.findById(id);

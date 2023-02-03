@@ -1,4 +1,4 @@
-package com.project.cfgames.strategies;
+package com.project.cfgames.validations;
 
 import com.project.cfgames.entities.Cartao;
 import com.project.cfgames.entities.enums.BandeiraCartao;
@@ -10,7 +10,8 @@ import java.time.YearMonth;
 import java.util.Map;
 
 @Service
-public class StrategyCartao {
+public class ValidationCartao {
+
     // valida numero cartao
     @SneakyThrows
     public BandeiraCartao numeroCartaoValidade(Cartao cartao) {

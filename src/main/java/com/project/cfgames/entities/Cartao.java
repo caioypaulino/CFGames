@@ -1,20 +1,18 @@
 package com.project.cfgames.entities;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.project.cfgames.entities.enums.BandeiraCartao;
 import com.project.cfgames.entities.relations.CartaoPedido;
-import com.project.cfgames.entities.relations.EnderecoCliente;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.hibernate.validator.constraints.CreditCardNumber;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.time.LocalDate;
-import java.time.Year;
-import java.time.YearMonth;
-import java.util.Date;
 import java.util.Set;
 
 @Table(name = "CARTOES")
@@ -33,6 +31,7 @@ public class Cartao {
     @Id
     @Column(name = "numero_cartao")
     @NotBlank(message = "Campo não informado!")
+    @CreditCardNumber(message = "Número cartão inválido.")
     private String numeroCartao;
     @NotBlank(message = "Campo não informado!")
     @Pattern(regexp = "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$", message = "Nome do cartão não pode conter números ou caractéres especiais.")
@@ -45,7 +44,6 @@ public class Cartao {
     @NotNull(message = "Campo não informado!")
     @Min(value = 2023, message = "Ano Vencimento inválido.")
     private Integer anoVencimento;
-
     @NotBlank(message = "Campo não informado!")
     @Pattern(regexp = "^[0-9]{3,4}$", message = "CVC inválido.")
     private String cvc;

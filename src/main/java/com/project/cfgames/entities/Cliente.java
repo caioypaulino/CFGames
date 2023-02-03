@@ -1,21 +1,19 @@
 package com.project.cfgames.entities;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.project.cfgames.entities.relations.EnderecoCliente;
 import com.project.cfgames.responses.ClienteResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.Set;
-
 
 @Table(name = "CLIENTES")
 @Entity(name = "Cliente")
@@ -36,19 +34,28 @@ public class Cliente {
     private Long id;
 
     @NotBlank(message = "Campo não informado!")
+    @Pattern(regexp = "^(?:[\\p{Lu}&&[\\p{IsLatin}]])(?:(?:')?(?:[\\p{Ll}&&[\\p{IsLatin}]]))+(?:\\-(?:[\\p{Lu}&&[\\p{IsLatin}]])(?:(?:')?(?:[\\p{Ll}&&[\\p{IsLatin}]]))+)*(?: (?:(?:e|y|de(?:(?: la| las| lo| los))?|do|dos|da|das|del|van|von|bin|le) )?(?:(?:(?:d'|D'|O'|Mc|Mac|al\\-))?(?:[\\p{Lu}&&[\\p{IsLatin}]])(?:(?:')?(?:[\\p{Ll}&&[\\p{IsLatin}]]))+|(?:[\\p{Lu}&&[\\p{IsLatin}]])(?:(?:')?(?:[\\p{Ll}&&[\\p{IsLatin}]]))+(?:\\-(?:[\\p{Lu}&&[\\p{IsLatin}]])(?:(?:')?(?:[\\p{Ll}&&[\\p{IsLatin}]]))+)*))+(?: (?:Jr\\.|II|III|IV))?$", message = "Nome inválido ou incompleto.")
     private String nome;
     @NotBlank(message = "Campo não informado!")
+    @CPF(message = "CPF inválido.")
     private String cpf;
-    @NotBlank(message = "Campo não informado!")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @NotNull(message = "Campo não informado!")
+    @PastOrPresent(message = "Data de nascimento inválida.")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dataNascimento;
     @NotBlank(message = "Campo não informado!")
+    @Pattern(regexp = "^\\(?[1-9]{2}\\)? ?(?:[2-8]|9[1-9])[0-9]{3}\\-?[0-9]{4}$", message = "Telefone inválido.")
     private String telefone;
     @NotBlank(message = "Campo não informado!")
-    @Email(message = "Email should be valid")
+    @Email(message = "Email deve ser válido.")
     private String email;
     @NotBlank(message = "Campo não informado!")
+    @Length(min = 8, message = "Senha muito curta (Mínimo de 8 caracteres).")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]+$", message = "Senha fraca ou inválida (Deve conter pelo menos: 1 Letra maiúscula e minúscula, 1 Número, 1 Caracter especial(Exemplos: $*&@#)")
     private String senha;
+    @NotBlank(message = "Campo não informado!")
+    @Transient
+    private String confirmaSenha;
 
     @OneToMany(mappedBy = "cliente")
     private Set<EnderecoCliente> enderecos;

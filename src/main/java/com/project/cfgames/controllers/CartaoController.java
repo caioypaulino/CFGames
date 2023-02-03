@@ -4,19 +4,21 @@ import com.project.cfgames.entities.Cartao;
 import com.project.cfgames.exceptions.CustomValidationException;
 import com.project.cfgames.repositories.CartaoRepository;
 import com.project.cfgames.services.CartaoService;
-import com.project.cfgames.strategies.StrategyCartao;
+import com.project.cfgames.validations.ValidationCartao;
+import com.project.cfgames.validations.handlers.HandlerCustomValidationsExceptions;
+import com.project.cfgames.validations.handlers.HandlerValidationsExceptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -32,12 +34,12 @@ public class CartaoController {
     CartaoService cartaoService;
 
     @Autowired
-    StrategyCartao strategyCartao;
+    ValidationCartao validationCartao;
 
     // create JPA
     @PostMapping("/save")
     public ResponseEntity<String> saveCartao(@RequestBody @Valid Cartao cartao){
-        strategyCartao.allValidates(cartao);
+        validationCartao.allValidates(cartao);
 
         cartao.setBandeira(cartaoService.bandeiraCartao(cartao));
         cartaoRepository.save(cartao);
@@ -76,12 +78,16 @@ public class CartaoController {
     @DeleteMapping("/delete/{numeroCartao}")
     public ResponseEntity<String> deleteCartao(@PathVariable String numeroCartao){
         try {
-            Cartao cartao = cartaoRepository.getReferenceById(numeroCartao);
+            if (cartaoRepository.selectClientesCartao(numeroCartao) != null || cartaoRepository.selectPedidosCartao(numeroCartao) != null) {
+                return ResponseEntity.badRequest().body("Cartão de Crédito associado a um Cliente ou Pedido.");
+            }
+            else {
+                cartaoRepository.deleteById(numeroCartao);
+                return ResponseEntity.ok().body("Cartão de Crédito deletado com sucesso!");
+            }
 
-            cartaoRepository.delete(cartao);
-            return ResponseEntity.ok().body("Cartão de Crédito deletado com sucesso!");
         }
-        catch (EntityNotFoundException e){
+        catch (EmptyResultDataAccessException e){
             return ResponseEntity.badRequest().body("Cartão de Crédito não encontrado pelo numeroCartao: " + numeroCartao);
         }
     }
@@ -99,27 +105,18 @@ public class CartaoController {
         }
     }
 
-    // handle validation class
+    // handler @validation exception
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationsExceptions(MethodArgumentNotValidException exception) {
-        Map<String, String> erros = new HashMap<>();
-
-        exception.getBindingResult().getAllErrors().forEach((erro) -> {
-            String campoNome = ((FieldError) erro).getField();
-            String mensagemErro = erro.getDefaultMessage();
-
-            erros.put(campoNome, mensagemErro);
-        });
-
-        return erros;
+        return HandlerValidationsExceptions.handler(exception);
     }
 
-    // handle custom validation class
+    // handler custom validation exception
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(CustomValidationException.class)
     public String handleCustomValidationsExceptions (CustomValidationException exception){
-        return exception.getMessage();
+        return HandlerCustomValidationsExceptions.handler(exception);
     }
 
     @GetMapping("/form/add")

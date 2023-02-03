@@ -1,21 +1,23 @@
-package com.project.cfgames.services;
+package com.project.cfgames.facades.services;
 
 import com.project.cfgames.entities.Cartao;
 import com.project.cfgames.entities.enums.BandeiraCartao;
-import com.project.cfgames.strategies.StrategyCartao;
+import com.project.cfgames.exceptions.CustomValidationException;
+import com.project.cfgames.validations.ValidationCartao;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
+import javax.validation.ConstraintViolationException;
 
 @Service
 public class CartaoService {
 
     @Autowired
-    StrategyCartao strategyCartao;
+    ValidationCartao validationCartao;
 
     public BandeiraCartao bandeiraCartao(Cartao cartao) {
-        return strategyCartao.numeroCartaoValidade(cartao);
+        return validationCartao.numeroCartaoValidade(cartao);
     }
 
 }

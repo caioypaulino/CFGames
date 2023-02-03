@@ -3,24 +3,14 @@ package com.project.cfgames.facades;
 
 import com.project.cfgames.entities.Cliente;
 import com.project.cfgames.entities.Endereco;
-import com.project.cfgames.strategies.StrategyCliente;
-import com.project.cfgames.strategies.StrategyEndereco;
+import com.project.cfgames.validations.ValidationCliente;
+import com.project.cfgames.validations.StrategyEndereco;
 
 public class Facade {
     
-    StrategyCliente strategyCliente = new StrategyCliente();
+    ValidationCliente validationCliente = new ValidationCliente();
 
     StrategyEndereco strategyEndereco = new StrategyEndereco();
-
-    public Cliente validaCliente(Cliente cliente) {
-
-        if (strategyCliente.allValidates(cliente)) {
-            return cliente;
-        }
-        else {
-            throw new RuntimeException("Erro cadastro Cliente");
-        }
-    }
 
     public Endereco validaEndereco(Endereco endereco) {
 

@@ -11,7 +11,7 @@ import com.project.cfgames.repositories.EnderecoClienteRepository;
 import com.project.cfgames.repositories.PedidoRepository;
 import com.project.cfgames.requests.PedidoRequest;
 import com.project.cfgames.services.PedidoService;
-import com.project.cfgames.strategies.StrategyPedido;
+import com.project.cfgames.validations.StrategyPedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

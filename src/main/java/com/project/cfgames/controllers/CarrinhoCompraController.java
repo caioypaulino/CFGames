@@ -2,12 +2,10 @@ package com.project.cfgames.controllers;
 
 import com.project.cfgames.entities.CarrinhoCompra;
 import com.project.cfgames.entities.ItemCarrinho;
-import com.project.cfgames.entities.Pedido;
 import com.project.cfgames.repositories.CarrinhoCompraRepository;
 import com.project.cfgames.repositories.ItemCarrinhoRepository;
 import com.project.cfgames.services.CarrinhoCompraService;
-import com.project.cfgames.strategies.StrategyCarrinhoCompra;
-import feign.Response;
+import com.project.cfgames.validations.StrategyCarrinhoCompra;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

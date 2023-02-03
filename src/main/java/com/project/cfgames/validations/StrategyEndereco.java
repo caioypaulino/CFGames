@@ -1,4 +1,4 @@
-package com.project.cfgames.strategies;
+package com.project.cfgames.validations;
 
 import com.project.cfgames.entities.Endereco;
 

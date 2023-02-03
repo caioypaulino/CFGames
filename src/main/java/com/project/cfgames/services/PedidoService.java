@@ -1,4 +1,4 @@
-package com.project.cfgames.services;
+package com.project.cfgames.facades.services;
 
 import com.project.cfgames.clients.FreteClient;
 import com.project.cfgames.clients.responses.FreteResponse;
