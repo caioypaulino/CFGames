@@ -1,14 +1,12 @@
-package com.project.cfgames.entities;
+package com.project.cfgames.clients.entities;
 
 import com.fasterxml.jackson.annotation.*;
-import com.project.cfgames.entities.relations.EnderecoCliente;
-import com.project.cfgames.responses.ClienteResponse;
+import com.project.cfgames.clients.entities.relations.EnderecoCliente;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -81,11 +79,5 @@ public class Cliente {
 
     public void cartoesCliente(Cartao cartao) {
         cartoes.add(cartao);
-    }
-
-    public ClienteResponse toResponse() {
-        return new ClienteResponse(
-                id, nome, cpf, dataNascimento, telefone, email
-        );
     }
 }

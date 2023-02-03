@@ -1,7 +1,7 @@
 package com.project.cfgames.validations;
 
-import com.project.cfgames.entities.Pedido;
-import com.project.cfgames.entities.relations.CartaoPedido;
+import com.project.cfgames.clients.entities.Pedido;
+import com.project.cfgames.clients.entities.relations.CartaoPedido;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;

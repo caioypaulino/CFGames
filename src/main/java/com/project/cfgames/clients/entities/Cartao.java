@@ -1,11 +1,11 @@
-package com.project.cfgames.entities;
+package com.project.cfgames.clients.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.project.cfgames.entities.enums.BandeiraCartao;
-import com.project.cfgames.entities.relations.CartaoPedido;
+import com.project.cfgames.clients.entities.enums.BandeiraCartao;
+import com.project.cfgames.clients.entities.relations.CartaoPedido;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

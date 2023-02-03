@@ -1,6 +1,6 @@
 package com.project.cfgames.repositories;
 
-import com.project.cfgames.entities.relations.CartaoPedido;
+import com.project.cfgames.clients.entities.relations.CartaoPedido;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

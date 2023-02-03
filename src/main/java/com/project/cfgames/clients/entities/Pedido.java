@@ -1,12 +1,12 @@
-package com.project.cfgames.entities;
+package com.project.cfgames.clients.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.project.cfgames.entities.enums.StatusPedido;
-import com.project.cfgames.entities.relations.CartaoPedido;
-import com.project.cfgames.entities.relations.EnderecoCliente;
+import com.project.cfgames.clients.entities.enums.StatusPedido;
+import com.project.cfgames.clients.entities.relations.CartaoPedido;
+import com.project.cfgames.clients.entities.relations.EnderecoCliente;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,8 +15,6 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
-
-import static com.project.cfgames.entities.enums.StatusPedido.EM_PROCESSAMENTO;
 
 @Table(name = "PEDIDOS")
 @Entity(name = "Pedido")

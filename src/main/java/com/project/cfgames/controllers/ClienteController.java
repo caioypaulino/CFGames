@@ -1,7 +1,7 @@
 package com.project.cfgames.controllers;
 
-import com.project.cfgames.entities.Cartao;
-import com.project.cfgames.entities.Cliente;
+import com.project.cfgames.clients.entities.Cartao;
+import com.project.cfgames.clients.entities.Cliente;
 import com.project.cfgames.exceptions.CustomValidationException;
 import com.project.cfgames.repositories.CartaoRepository;
 import com.project.cfgames.repositories.ClienteRepository;
@@ -63,13 +63,14 @@ public class ClienteController {
 
     // readById JPA
     @GetMapping("/read/{id}")
-    public Cliente readByIdCliente(@PathVariable Long id) {
+    public ResponseEntity<?> readByIdCliente(@PathVariable Long id) {
         Optional<Cliente> cliente = clienteRepository.findById(id);
+
         if (cliente.isPresent()) {
-            return cliente.get();
+            return ResponseEntity.ok().body(cliente.get());
         }
         else {
-            throw new RuntimeException("Cliente não encontrado pelo id: " + id);
+            return ResponseEntity.badRequest().body("Cliente não encontrado pelo id: " + id);
         }
     }
 

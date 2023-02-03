@@ -1,7 +1,7 @@
 package com.project.cfgames.validations;
 
-import com.project.cfgames.entities.Cartao;
-import com.project.cfgames.entities.enums.BandeiraCartao;
+import com.project.cfgames.clients.entities.Cartao;
+import com.project.cfgames.clients.entities.enums.BandeiraCartao;
 import com.project.cfgames.exceptions.CustomValidationException;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class ValidationCartao {
 
     // valida numero cartao
     @SneakyThrows
-    public BandeiraCartao numeroCartaoValidade(Cartao cartao) {
+    public BandeiraCartao numeroCartaoValidate(Cartao cartao) {
 
         Map<BandeiraCartao, String> validacoes = Map.of(
                 BandeiraCartao.AMEX, "^3[47][0-9]{13}$",
@@ -44,7 +44,7 @@ public class ValidationCartao {
 
     // todas as validações
     public void allValidates(Cartao cartao) {
-        numeroCartaoValidade(cartao);
+        numeroCartaoValidate(cartao);
         vencimentoValidate(cartao);
     }
 }

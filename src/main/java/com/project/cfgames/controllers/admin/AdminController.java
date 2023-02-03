@@ -1,7 +1,7 @@
 package com.project.cfgames.controllers.admin;
 
 import com.project.cfgames.repositories.ClienteRepository;
-import com.project.cfgames.entities.Cliente;
+import com.project.cfgames.clients.entities.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;

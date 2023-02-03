@@ -1,6 +1,6 @@
 package com.project.cfgames.validations;
 
-import com.project.cfgames.entities.Endereco;
+import com.project.cfgames.clients.entities.Endereco;
 
 public class StrategyEndereco {
     

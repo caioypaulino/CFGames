@@ -1,4 +1,4 @@
-package com.project.cfgames.responses;
+package com.project.cfgames.dtos.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

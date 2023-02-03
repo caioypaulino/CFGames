@@ -1,7 +1,6 @@
 package com.project.cfgames.controllers;
 
-import com.project.cfgames.entities.Categoria;
-import com.project.cfgames.facades.Facade;
+import com.project.cfgames.clients.entities.Categoria;
 import com.project.cfgames.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +16,6 @@ public class CategoriaController {
 
     @Autowired
     CategoriaRepository categoriaRepository;
-
-    Facade facade = new Facade();
 
     // create JPA
     @PostMapping("/save")

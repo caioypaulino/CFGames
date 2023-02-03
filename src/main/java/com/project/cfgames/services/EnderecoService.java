@@ -1,4 +1,4 @@
-package com.project.cfgames.facades.services;
+package com.project.cfgames.services;
 
 import com.project.cfgames.clients.EnderecoClient;
 import com.project.cfgames.clients.responses.EnderecoResponse;

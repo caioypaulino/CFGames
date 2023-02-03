@@ -1,17 +1,15 @@
 package com.project.cfgames.controllers;
 
-import java.util.List;
-import java.util.Optional;
-
-import com.project.cfgames.repositories.EnderecoRepository;
-import com.project.cfgames.entities.Endereco;
 import com.project.cfgames.clients.responses.EnderecoResponse;
-import com.project.cfgames.facades.Facade;
-
+import com.project.cfgames.clients.entities.Endereco;
+import com.project.cfgames.repositories.EnderecoRepository;
 import com.project.cfgames.services.EnderecoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/enderecos")
@@ -22,8 +20,6 @@ public class EnderecoController {
 
     @Autowired
     EnderecoService enderecoService;
-
-    Facade facade = new Facade();
 
     // create JPA API REST (CEP)
     @GetMapping("/cep/{cep}")
@@ -39,7 +35,7 @@ public class EnderecoController {
     // create JPA
     @PostMapping("/form/save")
     public Endereco saveEnderecoCliente(@RequestBody Endereco endereco) {
-        return enderecoRepository.save(facade.validaEndereco(endereco));
+        return enderecoRepository.save(endereco);
     }
 
     // readAll JPA

@@ -1,4 +1,4 @@
-package com.project.cfgames.entities;
+package com.project.cfgames.clients.entities;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;

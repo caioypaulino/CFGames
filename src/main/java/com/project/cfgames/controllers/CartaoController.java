@@ -1,6 +1,6 @@
 package com.project.cfgames.controllers;
 
-import com.project.cfgames.entities.Cartao;
+import com.project.cfgames.clients.entities.Cartao;
 import com.project.cfgames.exceptions.CustomValidationException;
 import com.project.cfgames.repositories.CartaoRepository;
 import com.project.cfgames.services.CartaoService;
@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.persistence.EntityNotFoundException;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +66,9 @@ public class CartaoController {
 
     // update JPA
     @PutMapping("/update")
-    public ResponseEntity<String> updateCartao(@RequestBody Cartao cartao) {
+    public ResponseEntity<String> updateCartao(@RequestBody @Valid Cartao cartao) {
+        validationCartao.allValidates(cartao);
+
         cartaoRepository.save(cartao);
 
         return ResponseEntity.ok().body("Cartão de Crédito atualizado com sucesso!");
@@ -78,30 +78,16 @@ public class CartaoController {
     @DeleteMapping("/delete/{numeroCartao}")
     public ResponseEntity<String> deleteCartao(@PathVariable String numeroCartao){
         try {
-            if (cartaoRepository.selectClientesCartao(numeroCartao) != null || cartaoRepository.selectPedidosCartao(numeroCartao) != null) {
-                return ResponseEntity.badRequest().body("Cartão de Crédito associado a um Cliente ou Pedido.");
-            }
-            else {
+            if (cartaoRepository.selectClientesCartao(numeroCartao) == null || cartaoRepository.selectPedidosCartao(numeroCartao) == null) {
                 cartaoRepository.deleteById(numeroCartao);
                 return ResponseEntity.ok().body("Cartão de Crédito deletado com sucesso!");
             }
-
+            else {
+                return ResponseEntity.badRequest().body("Cartão de Crédito associado a um Cliente ou Pedido.");
+            }
         }
         catch (EmptyResultDataAccessException e){
             return ResponseEntity.badRequest().body("Cartão de Crédito não encontrado pelo numeroCartao: " + numeroCartao);
-        }
-    }
-
-    // delete JPA
-    @GetMapping("/delete_cartao/{numeroCartao}")
-    public ModelAndView deleteCartao(@PathVariable String numeroCartao, RedirectAttributes redirect) {
-        Optional<Cartao> cartao = cartaoRepository.findById(numeroCartao);
-        if (cartao.isPresent()) {
-            cartaoRepository.delete(cartao.get());
-            redirect.addFlashAttribute("mensagem", "Cartao deletado!");
-            return new ModelAndView("redirect:/admin/painel");
-        } else {
-            throw new RuntimeException("Cartao não encontrado pelo número: " + numeroCartao);
         }
     }
 
@@ -130,5 +116,18 @@ public class CartaoController {
         ModelAndView mv = new ModelAndView("updateCartao");
         mv.addObject("cartao", cartao);
         return mv;
+    }
+
+    @GetMapping("/delete_cartao/{numeroCartao}")
+    public ModelAndView deleteCartao(@PathVariable String numeroCartao, RedirectAttributes redirect) {
+        Optional<Cartao> cartao = cartaoRepository.findById(numeroCartao);
+        if (cartao.isPresent()) {
+            cartaoRepository.delete(cartao.get());
+            redirect.addFlashAttribute("mensagem", "Cartao deletado!");
+            return new ModelAndView("redirect:/admin/painel");
+        }
+        else {
+            throw new RuntimeException("Cartao não encontrado pelo número: " + numeroCartao);
+        }
     }
 }

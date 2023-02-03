@@ -1,6 +1,6 @@
-package com.project.cfgames.requests;
+package com.project.cfgames.dtos.requests;
 
-import com.project.cfgames.entities.enums.StatusPedido;
+import com.project.cfgames.clients.entities.enums.StatusPedido;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
