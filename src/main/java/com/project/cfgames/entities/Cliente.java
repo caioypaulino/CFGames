@@ -1,7 +1,7 @@
-package com.project.cfgames.clients.entities;
+package com.project.cfgames.entities;
 
 import com.fasterxml.jackson.annotation.*;
-import com.project.cfgames.clients.entities.relations.EnderecoCliente;
+import com.project.cfgames.entities.relations.EnderecoCliente;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

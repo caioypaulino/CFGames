@@ -1,7 +1,7 @@
 package com.project.cfgames.controllers;
 
 import com.project.cfgames.clients.responses.EnderecoResponse;
-import com.project.cfgames.clients.entities.Endereco;
+import com.project.cfgames.entities.Endereco;
 import com.project.cfgames.repositories.EnderecoRepository;
 import com.project.cfgames.services.EnderecoService;
 import org.springframework.beans.factory.annotation.Autowired;

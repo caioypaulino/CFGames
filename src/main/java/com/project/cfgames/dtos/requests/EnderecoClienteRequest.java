@@ -1,7 +1,7 @@
 package com.project.cfgames.dtos.requests;
 
-import com.project.cfgames.clients.entities.Endereco;
-import com.project.cfgames.clients.entities.enums.TipoEndereco;
+import com.project.cfgames.entities.Endereco;
+import com.project.cfgames.entities.enums.TipoEndereco;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

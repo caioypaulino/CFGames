@@ -1,6 +1,6 @@
 package com.project.cfgames.repositories;
 
-import com.project.cfgames.clients.entities.Categoria;
+import com.project.cfgames.entities.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

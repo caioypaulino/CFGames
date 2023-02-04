@@ -1,10 +1,10 @@
 package com.project.cfgames.controllers;
 
 import com.project.cfgames.clients.responses.FreteResponse;
-import com.project.cfgames.clients.entities.CarrinhoCompra;
-import com.project.cfgames.clients.entities.Pedido;
-import com.project.cfgames.clients.entities.enums.StatusPedido;
-import com.project.cfgames.clients.entities.relations.EnderecoCliente;
+import com.project.cfgames.entities.CarrinhoCompra;
+import com.project.cfgames.entities.Pedido;
+import com.project.cfgames.entities.enums.StatusPedido;
+import com.project.cfgames.entities.relations.EnderecoCliente;
 import com.project.cfgames.repositories.CarrinhoCompraRepository;
 import com.project.cfgames.repositories.CartaoPedidoRepository;
 import com.project.cfgames.repositories.EnderecoClienteRepository;

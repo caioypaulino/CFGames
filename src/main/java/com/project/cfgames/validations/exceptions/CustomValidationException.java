@@ -1,4 +1,4 @@
-package com.project.cfgames.exceptions;
+package com.project.cfgames.validations.exceptions;
 
 public class CustomValidationException extends Exception {
     public CustomValidationException(String mensagemErro) {

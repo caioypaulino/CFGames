@@ -1,7 +1,7 @@
 package com.project.cfgames.controllers;
 
-import com.project.cfgames.clients.entities.Cartao;
-import com.project.cfgames.exceptions.CustomValidationException;
+import com.project.cfgames.entities.Cartao;
+import com.project.cfgames.validations.exceptions.CustomValidationException;
 import com.project.cfgames.repositories.CartaoRepository;
 import com.project.cfgames.services.CartaoService;
 import com.project.cfgames.validations.ValidationCartao;

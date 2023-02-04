@@ -1,7 +1,7 @@
 package com.project.cfgames.controllers;
 
-import com.project.cfgames.clients.entities.CarrinhoCompra;
-import com.project.cfgames.clients.entities.ItemCarrinho;
+import com.project.cfgames.entities.CarrinhoCompra;
+import com.project.cfgames.entities.ItemCarrinho;
 import com.project.cfgames.repositories.CarrinhoCompraRepository;
 import com.project.cfgames.repositories.ItemCarrinhoRepository;
 import com.project.cfgames.services.CarrinhoCompraService;

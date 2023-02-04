@@ -1,6 +1,6 @@
 package com.project.cfgames.validations.handlers;
 
-import com.project.cfgames.exceptions.CustomValidationException;
+import com.project.cfgames.validations.exceptions.CustomValidationException;
 
 public class HandlerCustomValidationsExceptions {
 

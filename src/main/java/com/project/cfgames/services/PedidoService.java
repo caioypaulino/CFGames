@@ -2,8 +2,8 @@ package com.project.cfgames.services;
 
 import com.project.cfgames.clients.FreteClient;
 import com.project.cfgames.clients.responses.FreteResponse;
-import com.project.cfgames.clients.entities.Pedido;
-import com.project.cfgames.clients.entities.relations.CartaoPedido;
+import com.project.cfgames.entities.Pedido;
+import com.project.cfgames.entities.relations.CartaoPedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,11 +1,11 @@
 package com.project.cfgames.controllers;
 
-import com.project.cfgames.clients.entities.Endereco;
-import com.project.cfgames.clients.entities.relations.EnderecoCliente;
+import com.project.cfgames.entities.Endereco;
+import com.project.cfgames.entities.relations.EnderecoCliente;
 import com.project.cfgames.clients.responses.EnderecoResponse;
 import com.project.cfgames.dtos.mappers.CustomMapper;
 import com.project.cfgames.dtos.requests.EnderecoClienteRequest;
-import com.project.cfgames.exceptions.CustomValidationException;
+import com.project.cfgames.validations.exceptions.CustomValidationException;
 import com.project.cfgames.repositories.ClienteRepository;
 import com.project.cfgames.repositories.EnderecoClienteRepository;
 import com.project.cfgames.repositories.EnderecoRepository;

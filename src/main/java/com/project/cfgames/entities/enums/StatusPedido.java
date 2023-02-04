@@ -1,4 +1,4 @@
-package com.project.cfgames.clients.entities.enums;
+package com.project.cfgames.entities.enums;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

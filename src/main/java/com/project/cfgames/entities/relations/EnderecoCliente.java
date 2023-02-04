@@ -1,11 +1,11 @@
-package com.project.cfgames.clients.entities.relations;
+package com.project.cfgames.entities.relations;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.project.cfgames.clients.entities.enums.TipoEndereco;
-import com.project.cfgames.clients.entities.Cliente;
-import com.project.cfgames.clients.entities.Endereco;
+import com.project.cfgames.entities.enums.TipoEndereco;
+import com.project.cfgames.entities.Cliente;
+import com.project.cfgames.entities.Endereco;
 import com.project.cfgames.dtos.requests.EnderecoClienteRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

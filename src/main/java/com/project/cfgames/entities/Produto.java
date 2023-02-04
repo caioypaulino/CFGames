@@ -1,10 +1,10 @@
-package com.project.cfgames.clients.entities;
+package com.project.cfgames.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.project.cfgames.clients.entities.enums.StatusProduto;
-import com.project.cfgames.clients.entities.enums.Plataforma;
+import com.project.cfgames.entities.enums.StatusProduto;
+import com.project.cfgames.entities.enums.Plataforma;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

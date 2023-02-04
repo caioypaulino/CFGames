@@ -1,7 +1,7 @@
 package com.project.cfgames.controllers;
 
-import com.project.cfgames.clients.entities.Categoria;
-import com.project.cfgames.clients.entities.Produto;
+import com.project.cfgames.entities.Categoria;
+import com.project.cfgames.entities.Produto;
 import com.project.cfgames.repositories.CategoriaRepository;
 import com.project.cfgames.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;

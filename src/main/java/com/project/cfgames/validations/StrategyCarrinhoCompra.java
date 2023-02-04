@@ -1,9 +1,9 @@
 package com.project.cfgames.validations;
 
-import com.project.cfgames.clients.entities.CarrinhoCompra;
-import com.project.cfgames.clients.entities.Cliente;
-import com.project.cfgames.clients.entities.ItemCarrinho;
-import com.project.cfgames.clients.entities.Produto;
+import com.project.cfgames.entities.CarrinhoCompra;
+import com.project.cfgames.entities.Cliente;
+import com.project.cfgames.entities.ItemCarrinho;
+import com.project.cfgames.entities.Produto;
 import com.project.cfgames.repositories.ClienteRepository;
 import com.project.cfgames.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;

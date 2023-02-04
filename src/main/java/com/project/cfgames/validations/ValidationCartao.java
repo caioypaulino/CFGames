@@ -1,8 +1,8 @@
 package com.project.cfgames.validations;
 
-import com.project.cfgames.clients.entities.Cartao;
-import com.project.cfgames.clients.entities.enums.BandeiraCartao;
-import com.project.cfgames.exceptions.CustomValidationException;
+import com.project.cfgames.entities.Cartao;
+import com.project.cfgames.entities.enums.BandeiraCartao;
+import com.project.cfgames.validations.exceptions.CustomValidationException;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.project.cfgames.clients.entities;
+package com.project.cfgames.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
