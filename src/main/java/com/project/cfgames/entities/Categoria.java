@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Table(name = "CATEGORIAS")
@@ -29,6 +30,7 @@ public class Categoria {
     @Column(name = "categoria_id")
     private Long id;
 
+    @NotBlank(message = "Campo não informado!")
     private String nome;
 
     @JsonIgnore
