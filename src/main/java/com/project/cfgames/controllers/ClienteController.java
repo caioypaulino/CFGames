@@ -102,7 +102,6 @@ public class ClienteController {
     public ResponseEntity<String> removeCartao(@PathVariable Long id, @RequestBody Cartao cartao) {
         if (cartaoRepository.selectCartaoCliente(id, cartao.getNumeroCartao()) != null) {
             cartaoRepository.removeCartao(id, cartao.getNumeroCartao());
-
             return ResponseEntity.ok("Cartão removido com sucesso!");
         }
         else {
