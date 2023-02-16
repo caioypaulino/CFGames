@@ -131,7 +131,7 @@ public class ProdutoController {
     @DeleteMapping("/{id}/categoria")
     public ResponseEntity<String> removeCategoria(@PathVariable Long id, @RequestBody Categoria categoria) {
         if (categoriaRepository.selectCategoriaProduto(id, categoria.getId()) != null) {
-            categoriaRepository.removeCategoria(id, categoria.getId());
+            produtoRepository.removeCategoria(id, categoria.getId());
             return ResponseEntity.ok("Categoria removida com sucesso!");
         }
         else {

@@ -21,6 +21,11 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     @Modifying
     @Transactional
+    @Query(value = "DELETE FROM public.categorias_produtos WHERE produto_id = ? AND categoria_id = ?", nativeQuery = true)
+    void removeCategoria(Long id, Long categoriaId);
+
+    @Modifying
+    @Transactional
     @Query(value = "DELETE FROM public.categorias_produtos WHERE produto_id = ?", nativeQuery = true)
     void removeAllCategorias(Long id);
 }
