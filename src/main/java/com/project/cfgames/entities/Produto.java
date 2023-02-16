@@ -1,16 +1,17 @@
 package com.project.cfgames.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.project.cfgames.entities.enums.StatusProduto;
 import com.project.cfgames.entities.enums.Plataforma;
+import com.project.cfgames.entities.enums.StatusProduto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -32,30 +33,48 @@ public class Produto {
     @Column(name = "produto_id")
     private Long id;
 
+    @NotBlank(message = "Campo não informado!")
     private String titulo;
+    @NotBlank(message = "Campo não informado!")
     private String descricao;
-
-    //enum
+    @NotNull(message = "Campo não informado!")
+    // enum
     private Plataforma plataforma;
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @NotNull(message = "Campo não informado!")
+    @PastOrPresent(message = "Data de lançamento inválida.")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dataLancamento;
+    @NotBlank(message = "Campo não informado!")
     private String marca;
+    @NotBlank(message = "Campo não informado!")
     private String publisher;
-
+    @NotNull(message = "Campo não informado!")
+    @Min(value = 1, message = "Peso inválido.")
     // peso em gramas
     private Integer peso;
-
+    @NotNull(message = "Campo não informado!")
+    @DecimalMin(value = ".1", message = "Comprimento inválido.")
     private Float comprimento;
-
+    @NotNull(message = "Campo não informado!")
+    @DecimalMin(value = ".1", message = "Altura inválida.")
     private Float altura;
-
+    @NotNull(message = "Campo não informado!")
+    @DecimalMin(value = ".1", message = "Largura inválida.")
     private Float largura;
-
+    @NotBlank(message = "Campo não informado!")
+    @Pattern(regexp = "^[0-9]{13}$", message = "Código de barras inválido (necessário 13 dígitos e apenas números).")
     private String codigoBarras;
+    @NotNull(message = "Campo não informado!")
+    @Min(value = 1, message = "Quantidade inválida.")
     private Integer quantidade;
+    @NotNull(message = "Campo não informado!")
+    @DecimalMin(value = "10.0", message = "Preço inválido (mínimo R$10,00).")
     private Float preco;
+    @NotNull(message = "Campo não informado!")
+    // enum
     private StatusProduto status;
 
+    @NotNull(message = "Campo não informado!")
     @ManyToMany
     @JoinTable(name = "categorias_produtos", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
     private Set<Categoria> categorias;

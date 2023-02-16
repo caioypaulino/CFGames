@@ -28,7 +28,6 @@ public class ValidationCategoria {
         }
     }
 
-
     public void allValidates(Categoria categoria) {
         nomeValidate(categoria);
     }

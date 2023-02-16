@@ -74,6 +74,16 @@ public class ClienteController {
         }
     }
 
+    // update JPA
+    @PutMapping("/update")
+    public ResponseEntity<String> updateCliente(@RequestBody @Valid Cliente cliente) {
+        validationCliente.allValidates(cliente);
+
+        clienteRepository.save(cliente);
+
+        return ResponseEntity.ok().body("Cliente atualizado com sucesso!");
+    }
+
     // add Cartao
     @PutMapping("/{id}/cartao")
     public ResponseEntity<String> addCartao(@PathVariable Long id, @RequestBody @Valid Cartao cartao) {
@@ -92,7 +102,7 @@ public class ClienteController {
 
             return ResponseEntity.ok().body("Cartão adicionado com sucesso ao Cliente Id: " + id);
         }
-        catch (EntityNotFoundException e) {
+        catch (EntityNotFoundException ex) {
             return ResponseEntity.badRequest().body("Cliente não encontrado pelo Cliente Id: " + id);
         }
     }
@@ -107,16 +117,6 @@ public class ClienteController {
         else {
             return ResponseEntity.badRequest().body("Cliente ou Cartão não encontrados pelo clienteId " + id + " e numeroCartao " + cartao.getNumeroCartao());
         }
-    }
-
-    // update JPA
-    @PutMapping("/update")
-    public ResponseEntity<String> updateCliente(@RequestBody @Valid Cliente cliente) {
-        validationCliente.allValidates(cliente);
-
-        clienteRepository.save(cliente);
-
-        return ResponseEntity.ok().body("Cliente atualizado com sucesso!");
     }
 
     //delete JPA

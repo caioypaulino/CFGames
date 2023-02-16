@@ -42,8 +42,6 @@ public class EnderecoClienteController {
     EnderecoService enderecoService;
     @Autowired
     ValidationEnderecoCliente validationEnderecoCliente;
-    @Autowired
-    ClienteRepository clienteRepository;
 
     // create JPA
     @PostMapping("/form/save")

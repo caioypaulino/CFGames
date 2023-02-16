@@ -2,10 +2,8 @@ package com.project.cfgames.controllers;
 
 import com.project.cfgames.dtos.mappers.CustomMapper;
 import com.project.cfgames.entities.Categoria;
-import com.project.cfgames.entities.relations.EnderecoCliente;
 import com.project.cfgames.repositories.CategoriaRepository;
 import com.project.cfgames.validations.ValidationCategoria;
-import com.project.cfgames.validations.ValidationCliente;
 import com.project.cfgames.validations.exceptions.CustomValidationException;
 import com.project.cfgames.validations.handlers.HandlerCustomValidationsExceptions;
 import com.project.cfgames.validations.handlers.HandlerValidationsExceptions;
@@ -38,8 +36,10 @@ public class CategoriaController {
     @PostMapping("/save")
     public ResponseEntity<String> saveCategoria(@RequestBody @Valid Categoria categoria) {
         validationCategoria.allValidates(categoria);
+
         categoriaRepository.save(categoria);
-        return ResponseEntity.ok().body("Cliente adicionado com sucesso!");
+
+        return ResponseEntity.ok().body("Categoria adicionada com sucesso!");
     }
 
     // readAll JPA
@@ -55,8 +55,7 @@ public class CategoriaController {
 
         if (categoria.isPresent()) {
             return ResponseEntity.ok().body(categoria.get());
-        }
-        else {
+        } else {
             return ResponseEntity.badRequest().body("Categoria não encontrada pelo id: " + id);
         }
     }
@@ -73,8 +72,7 @@ public class CategoriaController {
             categoriaRepository.save(categoria);
 
             return ResponseEntity.ok().body("Categoria atualizada com sucesso!");
-        }
-        catch (EntityNotFoundException | MappingException ex) {
+        } catch (EntityNotFoundException | MappingException ex) {
             return ResponseEntity.badRequest().body("Categoria não encontrada pelo id: " + id);
         }
     }
@@ -85,8 +83,7 @@ public class CategoriaController {
         try {
             categoriaRepository.deleteById(id);
             return ResponseEntity.ok().body("Categoria deletada com sucesso!");
-        }
-        catch (EmptyResultDataAccessException ex) {
+        } catch (EmptyResultDataAccessException ex) {
             return ResponseEntity.badRequest().body("Categoria não encontrada pela Categoria Id: " + id);
         }
     }
@@ -101,7 +98,7 @@ public class CategoriaController {
     // handler custom validation exception
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(CustomValidationException.class)
-    public String handleCustomValidationsExceptions (CustomValidationException exception){
+    public String handleCustomValidationsExceptions(CustomValidationException exception) {
         return HandlerCustomValidationsExceptions.handler(exception);
     }
 
@@ -111,7 +108,7 @@ public class CategoriaController {
     }
 
     @GetMapping("/form/update/{id}")
-    public ModelAndView getFormUpdate(@PathVariable("id") Long id){
+    public ModelAndView getFormUpdate(@PathVariable("id") Long id) {
         Optional<Categoria> categoria = this.categoriaRepository.findById(id);
         ModelAndView mv = new ModelAndView("updateCategoria");
         mv.addObject("categoria", categoria);
