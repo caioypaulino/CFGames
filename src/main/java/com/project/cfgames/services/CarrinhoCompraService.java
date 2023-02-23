@@ -2,6 +2,7 @@ package com.project.cfgames.services;
 
 import com.project.cfgames.entities.ItemCarrinho;
 import com.project.cfgames.entities.Produto;
+import com.project.cfgames.repositories.ItemCarrinhoRepository;
 import com.project.cfgames.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

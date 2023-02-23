@@ -9,6 +9,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Table(name = "CARRINHOS_COMPRA")
@@ -30,10 +33,11 @@ public class CarrinhoCompra {
     @Column(name = "carrinho_compra_id")
     private Long id;
 
-
+    @NotNull(message = "Campo não informado!")
     @ManyToOne
     private Cliente cliente;
 
+    @NotNull(message = "Campo não informado!")
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "carrinho_compra_id", referencedColumnName = "carrinho_compra_id")
     private Set<ItemCarrinho> itensCarrinho;
@@ -46,7 +50,7 @@ public class CarrinhoCompra {
         this.cliente = cliente;
     }
 
-    public CarrinhoCompra(Cliente cliente, Set<ItemCarrinho> itensCarrinho) {
+    public CarrinhoCompra(Cliente cliente, @Valid Set<ItemCarrinho> itensCarrinho) {
         this.cliente = cliente;
         this.itensCarrinho = itensCarrinho;
     }
@@ -55,7 +59,7 @@ public class CarrinhoCompra {
         return itensCarrinho;
     }
 
-    public void itensPedido(ItemCarrinho itemCarrinho) {
+    public void addItensCarrinho(ItemCarrinho itemCarrinho) {
         itensCarrinho.add(itemCarrinho);
     }
 }

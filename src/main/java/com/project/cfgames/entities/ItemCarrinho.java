@@ -7,8 +7,10 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
-@Table(name = "ITENS_CARRINHO")
+@Table(name = "ITENS_CARRINHOS")
 @Entity(name = "ItemCarrinho")
 
 @Getter
@@ -27,9 +29,12 @@ public class ItemCarrinho {
     @Column(name = "item_carrinho_id")
     private Long id;
 
+    @NotNull(message = "Campo não informado!")
     @ManyToOne
     private Produto produto;
 
+    @NotNull(message = "Campo não informado!")
+    @Min(value = 1, message = "Quantidade inválida.")
     private Integer quantidade;
 
     private Float valorItem;

@@ -77,7 +77,7 @@ public class Cliente {
         return cartoes;
     }
 
-    public void cartoesCliente(Cartao cartao) {
+    public void addCartoesCliente(Cartao cartao) {
         cartoes.add(cartao);
     }
 }

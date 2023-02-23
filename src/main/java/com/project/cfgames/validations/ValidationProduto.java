@@ -20,6 +20,8 @@ public class ValidationProduto {
     @Autowired
     CategoriaRepository categoriaRepository;
 
+
+    // valida categoria
     @SneakyThrows
     public void categoriasValidate (Produto produto) {
         Set<Categoria> categorias = produto.getCategorias();
@@ -31,6 +33,7 @@ public class ValidationProduto {
         }
     }
 
+    // valida codigo de barras
     @SneakyThrows
     public void codigoBarrasValidate (Produto produto) {
         if (produtoRepository.findByCodigoBarras(produto.getCodigoBarras()) != null){
@@ -38,6 +41,7 @@ public class ValidationProduto {
         }
     }
 
+    // valida codigo de barras UPDATE
     @SneakyThrows
     public void updateCodigoBarrasValidate(Produto produto) {
         if (produtoRepository.findByIdAndCodigoBarras(produto.getId(), produto.getCodigoBarras()) != null){

@@ -74,7 +74,7 @@ public class Produto {
     // enum
     private StatusProduto status;
 
-    @NotNull(message = "Campo não informado!")
+    @NotEmpty(message = "Campo não informado!")
     @ManyToMany
     @JoinTable(name = "categorias_produtos", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
     private Set<Categoria> categorias;
@@ -100,7 +100,7 @@ public class Produto {
     public Set<Categoria> getCategorias() {
         return categorias;
     }
-    public void categoriasProduto(Categoria categoria) {
+    public void addCategoriasProduto(Categoria categoria) {
         categorias.add(categoria);
     }
 

@@ -10,8 +10,4 @@ import javax.transaction.Transactional;
 
 @Repository
 public interface CarrinhoCompraRepository extends JpaRepository<CarrinhoCompra, Long> {
-
-    @Transactional
-    @Query(value = "SELECT pedido_id FROM public.pedidos WHERE carrinho_compra_carrinho_compra_id = ?", nativeQuery = true)
-    Long selectPedidoId(Long carrinhoCompraId);
 }

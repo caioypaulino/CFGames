@@ -97,7 +97,7 @@ public class ClienteController {
             }
             Cartao cartaoR = cartaoRepository.getReferenceById(cartao.getNumeroCartao());
 
-            cliente.cartoesCliente(cartaoR);
+            cliente.addCartoesCliente(cartaoR);
             clienteRepository.save(cliente);
 
             return ResponseEntity.ok().body("Cartão adicionado com sucesso ao Cliente Id: " + id);
@@ -127,7 +127,7 @@ public class ClienteController {
 
             return ResponseEntity.ok().body("Cliente deletado com sucesso!");
         }
-        catch (EmptyResultDataAccessException e) {
+        catch (EmptyResultDataAccessException ex) {
             return ResponseEntity.badRequest().body("Cliente não encontrado pelo Cliente Id: " + id);
         }
     }

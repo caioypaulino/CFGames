@@ -20,7 +20,6 @@ import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
@@ -114,7 +113,7 @@ public class ProdutoController {
                 categoriaR = categoriaRepository.getReferenceById(categoria.getId());
             }
 
-            produto.categoriasProduto(categoriaR);
+            produto.addCategoriasProduto(categoriaR);
             produtoRepository.save(produto);
 
             return ResponseEntity.ok().body("Categoria " + categoriaR.getNome()+ " adicionada com sucesso ao Produto Id: " + id);

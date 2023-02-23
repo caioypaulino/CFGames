@@ -13,11 +13,19 @@ import javax.transaction.Transactional;
 public interface ItemCarrinhoRepository extends JpaRepository<ItemCarrinho, Long> {
     @Modifying
     @Transactional
-    @Query(value = "DELETE FROM public.itens_carrinho WHERE item_carrinho_id = ? AND carrinho_compra_id = ?", nativeQuery = true)
+    @Query(value = "DELETE FROM public.itens_carrinhos WHERE item_carrinho_id = ? AND carrinho_compra_id = ?", nativeQuery = true)
     void removeItem(Long itemCarrinhoId, Long carrinhoCompraId);
 
     @Modifying
     @Transactional
-    @Query(value = "DELETE FROM public.itens_carrinho WHERE carrinho_compra_id = ?", nativeQuery = true)
+    @Query(value = "DELETE FROM public.itens_carrinhos WHERE carrinho_compra_id = ?", nativeQuery = true)
     void deleteItens(Long carrinhoCompraId);
+
+    @Transactional
+    @Query(value = "SELECT item_carrinho_id FROM public.itens_carrinhos WHERE carrinho_compra_id = ? AND produto_produto_id = ?", nativeQuery = true)
+    Long selectItemByCarrinhoAndProduto(Long carrinhoCompraId, Long produtoId);
+
+    @Transactional
+    @Query(value = "SELECT item_carrinho_id FROM public.itens_carrinhos WHERE carrinho_compra_id = ? AND item_carrinho_id = ?", nativeQuery = true)
+    Long selectItemByCarrinhoAndItem(Long carrinhoCompraId, Long itemId);
 }
