@@ -1,5 +1,6 @@
 package com.project.cfgames.validations;
 
+import com.project.cfgames.dtos.requests.CartaoRequest;
 import com.project.cfgames.entities.Cartao;
 import com.project.cfgames.entities.enums.BandeiraCartao;
 import com.project.cfgames.validations.exceptions.CustomValidationException;
@@ -41,6 +42,17 @@ public class ValidationCartao {
             throw new CustomValidationException("Vencimento do Cartão Inválido");
         }
     }
+
+    @SneakyThrows
+    public void vencimentoValidate(CartaoRequest request) {
+        YearMonth vencimento = YearMonth.of(request.getAnoVencimento(), request.getMesVencimento());
+
+        if (!(vencimento.isAfter(YearMonth.now()))) {
+            throw new CustomValidationException("Vencimento do Cartão Inválido");
+        }
+    }
+
+    // valida cliente update
 
     // todas as validações
     public void allValidates(Cartao cartao) {

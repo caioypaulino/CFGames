@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ValidationCategoria {
-
     @Autowired
     CategoriaRepository categoriaRepository;
 
@@ -22,7 +21,7 @@ public class ValidationCategoria {
     }
 
     @SneakyThrows
-    public void updateNomeValidate(String nomeCategoria, Long id){
+    public void nomeValidate(String nomeCategoria, Long id){
         if (categoriaRepository.selectCategoriaByNameAndId(nomeCategoria, id) != null) {
             throw new CustomValidationException("Categoria nome: " + nomeCategoria + " ,já existente.");
         }

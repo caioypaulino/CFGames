@@ -10,7 +10,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -37,6 +36,7 @@ public class CarrinhoCompra {
     @ManyToOne
     private Cliente cliente;
 
+    @Valid
     @NotNull(message = "Campo não informado!")
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "carrinho_compra_id", referencedColumnName = "carrinho_compra_id")

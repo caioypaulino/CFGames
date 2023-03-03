@@ -1,6 +1,8 @@
 package com.project.cfgames.controllers;
 
 import com.project.cfgames.clients.responses.FreteResponse;
+import com.project.cfgames.dtos.mappers.CustomMapper;
+import com.project.cfgames.dtos.requests.PedidoRequest;
 import com.project.cfgames.entities.CarrinhoCompra;
 import com.project.cfgames.entities.Pedido;
 import com.project.cfgames.entities.enums.StatusPedido;
@@ -9,22 +11,30 @@ import com.project.cfgames.repositories.CarrinhoCompraRepository;
 import com.project.cfgames.repositories.CartaoPedidoRepository;
 import com.project.cfgames.repositories.EnderecoClienteRepository;
 import com.project.cfgames.repositories.PedidoRepository;
-import com.project.cfgames.dtos.requests.PedidoRequest;
 import com.project.cfgames.services.PedidoService;
-import com.project.cfgames.validations.StrategyPedido;
+import com.project.cfgames.validations.ValidationPedido;
+import com.project.cfgames.validations.exceptions.CustomValidationException;
+import com.project.cfgames.validations.handlers.HandlerCustomValidationsExceptions;
+import com.project.cfgames.validations.handlers.HandlerValidationsExceptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/pedidos")
 public class PedidoController {
     @Autowired
-    StrategyPedido strategyPedido;
+    ValidationPedido validationPedido;
     @Autowired
     PedidoService pedidoService;
     @Autowired
@@ -38,24 +48,29 @@ public class PedidoController {
 
     // create JPA
     @PostMapping("/save")
-    public ResponseEntity<String> savePedido(@RequestBody Pedido pedido) {
+    public ResponseEntity<String> savePedido(@RequestBody @Valid Pedido pedido) {
         try {
+            validationPedido.allValidates(pedido);
+
             // instanciando objetos para acessar atributos da classe
             EnderecoCliente enderecoCliente = enderecoClienteRepository.getReferenceById(pedido.getEnderecoCliente().getId());
             CarrinhoCompra carrinhoCompra = carrinhoCompraRepository.getReferenceById(pedido.getCarrinhoCompra().getId());
 
             // set Valor do Frete através da API FeignClient (FreteClient) e ResponseDTO (FreteResponse)
             FreteResponse freteResponse = pedidoService.calcularFrete(enderecoCliente.getEndereco().getCep(), carrinhoCompra.getPesoTotal());
-            pedido.setFrete(Float.valueOf(freteResponse.getValorsedex().replace(",", ".")));
+            pedido.setFrete(Float.valueOf((freteResponse.getValorsedex().replace(",", "."))));
 
             pedido.setValorTotal(pedidoService.calcularValorTotal(carrinhoCompra.getValorCarrinho(), pedido.getFrete()));
-            pedido.setData(pedidoService.getDateTimeNow());
             pedido.setStatus(StatusPedido.EM_PROCESSAMENTO);
             pedido.setDataAtualizacao(pedidoService.getDateTimeNow());
+            pedido.setData(pedidoService.getDateTimeNow());
 
-            //set Valor Parcial de cada Cartão
-            if (strategyPedido.valorParcialNullValidate(pedido)) {
+            if (validationPedido.valorParcialNullValidate(pedido)) {
+                // set Valor Parcial de cada Cartão
                 pedidoService.valorParcial(pedido.getValorTotal(), pedido.getCartoes());
+            }
+            else {
+                validationPedido.valorParcialValidate(pedido);
             }
 
             // set Valor Parcelas e IdPedido de cada Cartão
@@ -93,17 +108,23 @@ public class PedidoController {
 
     // update JPA
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updatePedido(@PathVariable Long id, @RequestBody PedidoRequest pedidoRequest) {
+    public ResponseEntity<String> updatePedido(@PathVariable Long id, @RequestBody PedidoRequest request) {
         try {
             Pedido pedido = pedidoRepository.getReferenceById(id);
 
-            pedido.setStatus(pedidoRequest.getStatusPedido());
+            CustomMapper.update(request, pedido);
             pedido.setDataAtualizacao(pedidoService.getDateTimeNow());
 
+            // "gambiarra" :C
+            if (request.getStatusPedido() != null) {
+                pedido.setStatus(request.getStatusPedido());
+            }
+
             pedidoRepository.save(pedido);
-            return ResponseEntity.ok("Pedido atualizado com sucesso!");
+
+            return ResponseEntity.ok().body("Pedido atualizado com sucesso!");
         }
-        catch(EntityNotFoundException e) {
+        catch (EntityNotFoundException ex) {
             return ResponseEntity.badRequest().body("Pedido não encontrado pelo id: " + id);
         }
     }
@@ -112,21 +133,40 @@ public class PedidoController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deletePedido(@PathVariable Long id) {
         try {
-            Pedido pedido = pedidoRepository.getReferenceById(id);
-
-            // delete cartoes do pedido
             cartaoPedidoRepository.deleteCartoes(id);
-            // delete pedido
-            pedidoRepository.delete(pedido);
-            return ResponseEntity.ok("Pedido deletado com sucesso!");
+            pedidoRepository.deleteById(id);
+
+            return ResponseEntity.ok().body("Pedido deletado com sucesso!");
         }
-        catch(EntityNotFoundException e) {
+        catch (EmptyResultDataAccessException ex) {
             return ResponseEntity.badRequest().body("Pedido não encontrado pelo id: " + id);
         }
     }
 
+    // calculo frete API
     @GetMapping("/frete/{cepDestino}/{peso}")
     public FreteResponse calcularFrete(@PathVariable String cepDestino, @PathVariable Integer peso) {
         return pedidoService.calcularFrete(cepDestino, peso);
+    }
+
+    // handler @validation exception
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationsExceptions(MethodArgumentNotValidException exception) {
+        return HandlerValidationsExceptions.handler(exception);
+    }
+
+    // handler custom validation exception
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CustomValidationException.class)
+    public String handleCustomValidationsExceptions (CustomValidationException exception){
+        return HandlerCustomValidationsExceptions.handler(exception);
+    }
+
+    // handler Enum type Json exception
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public String handleCustomValidationsExceptions (){
+        return "Status Pedido inválido (Ex:\n0- EM_PROCESSAMENTO,\n1- APROVADO,\n2- EM_TRANSITO,\n3- ENTREGUE,\n4- EM_TROCA,\n5- TROCA_AUTORIZADA,\n6- REPROVADO).";
     }
 }

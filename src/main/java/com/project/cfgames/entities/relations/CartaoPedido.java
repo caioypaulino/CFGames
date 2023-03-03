@@ -11,6 +11,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Table(name = "CARTOES_PEDIDOS")
 @Entity(name = "CartaoPedido")
@@ -25,7 +29,6 @@ import javax.persistence.*;
         property = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class CartaoPedido {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name =  "cartao_pedido_id")
@@ -33,6 +36,9 @@ public class CartaoPedido {
 
     private Float valorParcial;
 
+    @NotNull(message = "Campo não informado!")
+    @Min(value = 1, message = "Número de parcelas inválido.(Min = 1)")
+    @Max(value = 12, message = "Número de parcelas inválido.(Max = 12)")
     private Integer parcelas;
 
     private Float valorParcelas;
@@ -41,6 +47,7 @@ public class CartaoPedido {
     @ManyToOne(fetch = FetchType.LAZY)
     private Pedido pedido;
 
+    @NotNull(message = "Campo não informado!")
     @ManyToOne(fetch = FetchType.LAZY)
     private Cartao cartao;
 

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -47,6 +48,7 @@ public class EnderecoCliente {
     @ManyToOne(fetch = FetchType.LAZY)
     private Cliente cliente;
 
+    @Valid
     @NotNull(message = "Campo não informado!")
     @ManyToOne(fetch = FetchType.LAZY)
     private Endereco endereco;

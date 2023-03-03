@@ -25,12 +25,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/categorias")
 public class CategoriaController {
-
-    @Autowired
-    CategoriaRepository categoriaRepository;
-
     @Autowired
     ValidationCategoria validationCategoria;
+    @Autowired
+    CategoriaRepository categoriaRepository;
 
     // create JPA
     @PostMapping("/save")
@@ -55,7 +53,8 @@ public class CategoriaController {
 
         if (categoria.isPresent()) {
             return ResponseEntity.ok().body(categoria.get());
-        } else {
+        }
+        else {
             return ResponseEntity.badRequest().body("Categoria não encontrada pelo id: " + id);
         }
     }
@@ -64,15 +63,17 @@ public class CategoriaController {
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateCategoria(@PathVariable Long id, @RequestBody @Valid Categoria request) {
         try {
+            validationCategoria.nomeValidate(request.getNome(), id);
+
             Categoria categoria = categoriaRepository.getReferenceById(id);
 
-            validationCategoria.updateNomeValidate(request.getNome(), id);
-
             CustomMapper.update(request, categoria);
+
             categoriaRepository.save(categoria);
 
             return ResponseEntity.ok().body("Categoria atualizada com sucesso!");
-        } catch (EntityNotFoundException | MappingException ex) {
+        }
+        catch (EntityNotFoundException | MappingException ex) {
             return ResponseEntity.badRequest().body("Categoria não encontrada pelo id: " + id);
         }
     }
@@ -82,8 +83,10 @@ public class CategoriaController {
     public ResponseEntity<String> deleteCategoria(@PathVariable Long id) {
         try {
             categoriaRepository.deleteById(id);
+
             return ResponseEntity.ok().body("Categoria deletada com sucesso!");
-        } catch (EmptyResultDataAccessException ex) {
+        }
+        catch (EmptyResultDataAccessException ex) {
             return ResponseEntity.badRequest().body("Categoria não encontrada pela Categoria Id: " + id);
         }
     }
@@ -100,18 +103,5 @@ public class CategoriaController {
     @ExceptionHandler(CustomValidationException.class)
     public String handleCustomValidationsExceptions(CustomValidationException exception) {
         return HandlerCustomValidationsExceptions.handler(exception);
-    }
-
-    @GetMapping("/form/add")
-    public ModelAndView getFormadd() {
-        return new ModelAndView("cadastroCategoria");
-    }
-
-    @GetMapping("/form/update/{id}")
-    public ModelAndView getFormUpdate(@PathVariable("id") Long id) {
-        Optional<Categoria> categoria = this.categoriaRepository.findById(id);
-        ModelAndView mv = new ModelAndView("updateCategoria");
-        mv.addObject("categoria", categoria);
-        return mv;
     }
 }

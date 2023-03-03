@@ -11,5 +11,4 @@ public enum Plataforma {
     NINTENDOWII,
     NINTENDODS,
     NINTENDOSWITCH;
-
 }

@@ -1,5 +1,6 @@
 package com.project.cfgames.validations;
 
+import com.project.cfgames.dtos.requests.ClienteRequest;
 import com.project.cfgames.entities.Cliente;
 import com.project.cfgames.validations.exceptions.CustomValidationException;
 import lombok.SneakyThrows;
@@ -19,6 +20,13 @@ public class ValidationCliente {
         }
     }
 
+    @SneakyThrows
+    private void idadeValidate(ClienteRequest request) {
+        if ((Period.between(request.getDataNascimento(), LocalDate.now()).getYears()) < 18) {
+            throw new CustomValidationException("Data de nascimento deve conter idade maior ou igual a 18 anos.");
+        }
+    }
+
     // valida confirmação de senha
     @SneakyThrows
     public void confirmaSenhaValidate(Cliente cliente) {
@@ -27,8 +35,29 @@ public class ValidationCliente {
         }
     }
 
+    @SneakyThrows
+    public void confirmaSenhaValidate(ClienteRequest request) {
+        if (request.getConfirmaSenha() == null) {
+            throw new CustomValidationException("Confirmação Senha null.");
+        }
+        else if (!(request.getSenha().matches(request.getConfirmaSenha()))) {
+            throw new CustomValidationException("Senha e Confirmação Senha devem ser iguais.");
+        }
+    }
+
     public void allValidates(Cliente cliente) {
         idadeValidate(cliente);
         confirmaSenhaValidate(cliente);
     }
+
+    public void updateAllValidates(ClienteRequest request) {
+        if (request.getDataNascimento() != null) {
+            idadeValidate(request);
+        }
+        if (request.getSenha() != null) {
+            confirmaSenhaValidate(request);
+        }
+    }
+
+
 }

@@ -28,6 +28,6 @@ public interface CartaoRepository extends JpaRepository<Cartao, String> {
     String selectClientesCartao(String numeroCartao);
 
     @Transactional
-    @Query(value = "SELECT pedido_pedido_id FROM public.cartoes_pedidos WHERE numero_cartao = ?", nativeQuery = true)
+    @Query(value = "SELECT pedido_pedido_id FROM public.cartoes_pedidos WHERE cartao_numero_cartao = ?", nativeQuery = true)
     String selectPedidosCartao(String numeroCartao);
 }

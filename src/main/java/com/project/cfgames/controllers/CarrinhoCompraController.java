@@ -31,24 +31,22 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/carrinhos")
 public class CarrinhoCompraController {
-
+    @Autowired
+    ValidationCarrinhoCompra validationCarrinhoCompra;
+    @Autowired
+    CarrinhoCompraService carrinhoCompraService;
     @Autowired
     CarrinhoCompraRepository carrinhoCompraRepository;
+    @Autowired
+    ValidationItemCarrinho validationItemCarrinho;
     @Autowired
     ItemCarrinhoRepository itemCarrinhoRepository;
     @Autowired
     PedidoRepository pedidoRepository;
-    @Autowired
-    CarrinhoCompraService carrinhoCompraService;
-    @Autowired
-    ValidationCarrinhoCompra validationCarrinhoCompra;
-    @Autowired
-    ValidationItemCarrinho validationItemCarrinho;
 
     // create JPA
     @PostMapping("/save")
     public ResponseEntity<String> saveCarrinho(@RequestBody @Valid CarrinhoCompra carrinhoCompra) {
-
         validationCarrinhoCompra.allValidates(carrinhoCompra);
 
         carrinhoCompra.setValorCarrinho(carrinhoCompraService.valorItens(carrinhoCompra.getItensCarrinho()));
@@ -104,10 +102,8 @@ public class CarrinhoCompraController {
     @PutMapping("/{id}/itemcarrinho/")
     public ResponseEntity<String> addItem(@PathVariable Long id, @RequestBody @Valid ItemCarrinho itemCarrinho) {
         try {
-            // instanciando objetos para acessar atributos da classe
             CarrinhoCompra carrinhoCompra = carrinhoCompraRepository.getReferenceById(id);
 
-            // validação de dados
             validationCarrinhoCompra.produtoCarrinhoValidate(carrinhoCompra, itemCarrinho);
             validationItemCarrinho.allValidates(itemCarrinho);
 
@@ -156,15 +152,13 @@ public class CarrinhoCompraController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteCarrinho(@PathVariable Long id) {
         try {
-            Long pedidoId = pedidoRepository.selectPedidoByCarrinho(id);
-
-            if (pedidoId != null) {
-                return ResponseEntity.badRequest().body("Carrinho de Compra não pode ser deletado por estar relacionado a um pedido! id pedido: " + pedidoId);
+            if (pedidoRepository.selectPedidoByCarrinho(id) != null) {
+                return ResponseEntity.badRequest().body("Carrinho de Compra não pode ser deletado por estar relacionado a um pedido! " +
+                                                        "id pedido: " + pedidoRepository.selectPedidoByCarrinho(id));
             }
             else {
-                // delete itens carrinho de compra
+                // delete itens carrinho de compra + delete carrinho de compra
                 itemCarrinhoRepository.deleteItens(id);
-                // delete carrinho de compra
                 carrinhoCompraRepository.deleteById(id);
 
                 return ResponseEntity.ok("Carrinho de Compra deletado com sucesso!");

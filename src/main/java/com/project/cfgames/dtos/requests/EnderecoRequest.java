@@ -1,6 +1,5 @@
 package com.project.cfgames.dtos.requests;
 
-import com.project.cfgames.entities.enums.StatusPedido;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PedidoRequest {
-    private String cupom;
-    private StatusPedido statusPedido;
+public class EnderecoRequest {
+    private String estado;
+    private String cidade;
+    private String bairro;
+    private String rua;
+    private String pais;
 }

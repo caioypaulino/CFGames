@@ -15,4 +15,7 @@ public interface EnderecoClienteRepository extends JpaRepository<EnderecoCliente
     @Query(value = "SELECT endereco_cliente_id FROM public.enderecos_clientes WHERE numero = ? AND cliente_cliente_id = ? AND endereco_cep = ?", nativeQuery = true)
     List<Long> selectEnderecoCliente(String numero, Long clienteId, String cep);
 
+    @Transactional
+    @Query(value = "SELECT endereco_cliente_id FROM public.enderecos_clientes WHERE endereco_cep = ?", nativeQuery = true)
+    List<Long> selectEnderecoCliente(String cep);
 }

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -30,18 +31,14 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
-
-    @Autowired
-    ProdutoRepository produtoRepository;
-
-    @Autowired
-    CategoriaRepository categoriaRepository;
-
     @Autowired
     ValidationProduto validationProduto;
-
+    @Autowired
+    ProdutoRepository produtoRepository;
     @Autowired
     ValidationCategoria validationCategoria;
+    @Autowired
+    CategoriaRepository categoriaRepository;
 
     // create JPA
     @PostMapping("/save")
@@ -131,6 +128,7 @@ public class ProdutoController {
     public ResponseEntity<String> removeCategoria(@PathVariable Long id, @RequestBody Categoria categoria) {
         if (categoriaRepository.selectCategoriaProduto(id, categoria.getId()) != null) {
             produtoRepository.removeCategoria(id, categoria.getId());
+
             return ResponseEntity.ok("Categoria removida com sucesso!");
         }
         else {
@@ -147,7 +145,7 @@ public class ProdutoController {
 
             return ResponseEntity.ok().body("Produto deletado com sucesso!");
         }
-        catch (EmptyResultDataAccessException e) {
+        catch (EmptyResultDataAccessException ex) {
             return ResponseEntity.badRequest().body("Produto não encontrado pelo Produto Id: " + id);
         }
     }
@@ -166,16 +164,11 @@ public class ProdutoController {
         return HandlerCustomValidationsExceptions.handler(exception);
     }
 
-    @GetMapping("/form/add")
-    public ModelAndView getFormadd() {
-        return new ModelAndView("cadastroProduto");
-    }
-
-    @GetMapping("/form/update/{id}")
-    public ModelAndView getFormUpdate(@PathVariable("id") Long id){
-        Optional<Produto> produto = this.produtoRepository.findById(id);
-        ModelAndView mv = new ModelAndView("updateProduto");
-        mv.addObject("produto", produto);
-        return mv;
+    // handler Enum type Json exception
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public String handleCustomValidationsExceptions (){
+        return "Plataforma inválida(Ex:\n0- XBOX360,\n1- XBOXONE,\n2- XBOXS,\n3- PS3,\n4- PS4,\n5- PS5,\n6- PSP,\n7- NINTENDOWII,\n8- NINTENDODS,\n9- NINTENDOSWITCH).\n"
+                + "\nou\n" + "\nStatus Produto inválido(Ex:\n0- INATIVO,\n1- ATIVO,\n2- FORA_DE_MERCADO).\n";
     }
 }

@@ -13,6 +13,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -35,12 +37,15 @@ public class Pedido {
     @Column(name = "pedido_id")
     private Long id;
 
+    @NotNull(message = "Campo não informado!")
     @OneToOne
     private CarrinhoCompra carrinhoCompra;
 
+    @NotNull(message = "Campo não informado!")
     @ManyToOne
     private Cliente cliente;
 
+    @NotNull(message = "Campo não informado!")
     @ManyToOne
     private EnderecoCliente enderecoCliente;
 
@@ -59,6 +64,8 @@ public class Pedido {
     //enum
     private StatusPedido status;
 
+    @Valid
+    @NotNull(message = "Campo não informado!")
     @OneToMany(mappedBy = "pedido")
     private Set<CartaoPedido> cartoes;
 

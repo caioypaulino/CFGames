@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Set;
 
 
@@ -28,6 +30,8 @@ import java.util.Set;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Endereco {
     @Id
+    @NotNull(message = "Campo não informado!")
+    @Pattern(regexp = "^[0-9]{5}-[0-9]{3}$", message = "Formato CEP inválido. Ex:(XXXXX-XXX)")
     private String cep;
     private String estado;
     private String cidade;

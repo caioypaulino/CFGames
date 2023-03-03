@@ -1,21 +1,24 @@
 package com.project.cfgames.controllers;
 
+import com.project.cfgames.dtos.mappers.CustomMapper;
+import com.project.cfgames.dtos.requests.CartaoRequest;
 import com.project.cfgames.entities.Cartao;
-import com.project.cfgames.validations.exceptions.CustomValidationException;
 import com.project.cfgames.repositories.CartaoRepository;
 import com.project.cfgames.services.CartaoService;
 import com.project.cfgames.validations.ValidationCartao;
+import com.project.cfgames.validations.exceptions.CustomValidationException;
 import com.project.cfgames.validations.handlers.HandlerCustomValidationsExceptions;
 import com.project.cfgames.validations.handlers.HandlerValidationsExceptions;
+import org.modelmapper.MappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -24,15 +27,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/cartoes")
 public class CartaoController {
-
-    @Autowired
-    CartaoRepository cartaoRepository;
-
-    @Autowired
-    CartaoService cartaoService;
-
     @Autowired
     ValidationCartao validationCartao;
+    @Autowired
+    CartaoService cartaoService;
+    @Autowired
+    CartaoRepository cartaoRepository;
 
     // create JPA
     @PostMapping("/save")
@@ -40,6 +40,7 @@ public class CartaoController {
         validationCartao.allValidates(cartao);
 
         cartao.setBandeira(cartaoService.bandeiraCartao(cartao));
+
         cartaoRepository.save(cartao);
 
         return ResponseEntity.ok().body("Cartão de Crédito adicionado com sucesso!");
@@ -65,13 +66,22 @@ public class CartaoController {
     }
 
     // update JPA
-    @PutMapping("/update")
-    public ResponseEntity<String> updateCartao(@RequestBody @Valid Cartao cartao) {
-        validationCartao.allValidates(cartao);
+    @PutMapping("/update/{numeroCartao}")
+    public ResponseEntity<String> updateCartao(@PathVariable String numeroCartao, @RequestBody @Valid CartaoRequest request) {
+        try {
+            validationCartao.vencimentoValidate(request);
 
-        cartaoRepository.save(cartao);
+            Cartao cartao = cartaoRepository.getReferenceById(numeroCartao);
 
-        return ResponseEntity.ok().body("Cartão de Crédito atualizado com sucesso!");
+            CustomMapper.update(request, cartao);
+
+            cartaoRepository.save(cartao);
+
+            return ResponseEntity.ok().body("Cartão de Crédito atualizado com sucesso!");
+        }
+        catch (EntityNotFoundException | MappingException ex) {
+            return ResponseEntity.badRequest().body("Cartão de Crédito não encontrado pelo número: " + numeroCartao);
+        }
     }
 
     //delete JPA
@@ -103,31 +113,5 @@ public class CartaoController {
     @ExceptionHandler(CustomValidationException.class)
     public String handleCustomValidationsExceptions (CustomValidationException exception){
         return HandlerCustomValidationsExceptions.handler(exception);
-    }
-
-    @GetMapping("/form/add")
-    public ModelAndView getFormadd() {
-        return new ModelAndView("cadastroCartao");
-    }
-
-    @GetMapping("/form/update/{numeroCartao}")
-    public ModelAndView getFormUpdate(@PathVariable("numeroCartao") String numeroCartao){
-        Optional<Cartao> cartao = this.cartaoRepository.findById(numeroCartao);
-        ModelAndView mv = new ModelAndView("updateCartao");
-        mv.addObject("cartao", cartao);
-        return mv;
-    }
-
-    @GetMapping("/delete_cartao/{numeroCartao}")
-    public ModelAndView deleteCartao(@PathVariable String numeroCartao, RedirectAttributes redirect) {
-        Optional<Cartao> cartao = cartaoRepository.findById(numeroCartao);
-        if (cartao.isPresent()) {
-            cartaoRepository.delete(cartao.get());
-            redirect.addFlashAttribute("mensagem", "Cartao deletado!");
-            return new ModelAndView("redirect:/admin/painel");
-        }
-        else {
-            throw new RuntimeException("Cartao não encontrado pelo número: " + numeroCartao);
-        }
     }
 }

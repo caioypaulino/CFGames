@@ -1,28 +1,27 @@
 package com.project.cfgames.controllers;
 
-import com.project.cfgames.entities.Endereco;
-import com.project.cfgames.entities.relations.EnderecoCliente;
 import com.project.cfgames.clients.responses.EnderecoResponse;
 import com.project.cfgames.dtos.mappers.CustomMapper;
 import com.project.cfgames.dtos.requests.EnderecoClienteRequest;
-import com.project.cfgames.validations.exceptions.CustomValidationException;
-import com.project.cfgames.repositories.ClienteRepository;
+import com.project.cfgames.entities.Endereco;
+import com.project.cfgames.entities.relations.EnderecoCliente;
 import com.project.cfgames.repositories.EnderecoClienteRepository;
 import com.project.cfgames.repositories.EnderecoRepository;
 import com.project.cfgames.services.EnderecoService;
 import com.project.cfgames.validations.ValidationEnderecoCliente;
+import com.project.cfgames.validations.exceptions.CustomValidationException;
 import com.project.cfgames.validations.handlers.HandlerCustomValidationsExceptions;
 import com.project.cfgames.validations.handlers.HandlerValidationsExceptions;
 import feign.FeignException;
 import org.modelmapper.MappingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
@@ -33,31 +32,30 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/enderecosclientes")
 public class EnderecoClienteController {
-
+    @Autowired
+    ValidationEnderecoCliente validationEnderecoCliente;
     @Autowired
     EnderecoClienteRepository enderecoClienteRepository;
     @Autowired
-    EnderecoRepository enderecoRepository;
-    @Autowired
     EnderecoService enderecoService;
     @Autowired
-    ValidationEnderecoCliente validationEnderecoCliente;
+    EnderecoRepository enderecoRepository;
 
     // create JPA
     @PostMapping("/form/save")
     public ResponseEntity<?> saveEnderecoCliente(@RequestBody @Valid EnderecoCliente enderecoCliente) {
-        validationEnderecoCliente.allValidates(enderecoCliente);
-
         try {
+            validationEnderecoCliente.allValidates(enderecoCliente);
+
             if (enderecoRepository.findById(enderecoCliente.getEndereco().getCep()).isEmpty()) {
                 EnderecoResponse enderecoResponse = enderecoService.buscarCep(enderecoCliente.getEndereco().getCep());
+                Endereco endereco = new Endereco(enderecoResponse, "Brasil");
 
-                String pais = "Brasil";
-                Endereco endereco = new Endereco(enderecoResponse, pais);
                 enderecoRepository.save(endereco);
             }
 
             enderecoClienteRepository.save(enderecoCliente);
+
             return ResponseEntity.ok().body("Endereço Cliente adicionado com sucesso!");
         }
         catch (FeignException ex) {
@@ -83,22 +81,20 @@ public class EnderecoClienteController {
             return ResponseEntity.ok().body(enderecoCliente.get());
         }
         else {
-            return ResponseEntity.badRequest().body("EnderecoCliente não encontrado pelo id: " + id);
+            return ResponseEntity.badRequest().body("Endereço Cliente não encontrado pelo id: " + id);
         }
     }
 
     // update JPA
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateEnderecoCliente(@PathVariable Long id, @RequestBody @Valid EnderecoClienteRequest request) {
-
         try {
             EnderecoCliente enderecoCliente = enderecoClienteRepository.getReferenceById(id);
 
             if (request.getEndereco() != null && enderecoRepository.findById(request.getEndereco().getCep()).isEmpty()) {
                 EnderecoResponse enderecoResponse = enderecoService.buscarCep(request.getEndereco().getCep());
+                Endereco endereco = new Endereco(enderecoResponse, "Brasil");
 
-                String pais = "Brasil";
-                Endereco endereco = new Endereco(enderecoResponse, pais);
                 enderecoRepository.save(endereco);
             }
 
@@ -118,15 +114,14 @@ public class EnderecoClienteController {
 
     // delete JPA
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteCliente(@PathVariable Long id) {
-        Optional<EnderecoCliente> enderecoCliente = enderecoClienteRepository.findById(id);
+    public ResponseEntity<String> deleteEnderecoCliente(@PathVariable Long id) {
+        try {
+            enderecoClienteRepository.deleteById(id);
 
-        if (enderecoCliente.isPresent()) {
-            enderecoClienteRepository.delete(enderecoCliente.get());
-            return ResponseEntity.ok().body("EnderecoCliente deletado com sucesso, id: " + id);
+            return ResponseEntity.ok().body("Endereço Cliente deletado com sucesso, id: " + id);
         }
-        else {
-            return ResponseEntity.badRequest().body("EnderecoCliente não encontrado pelo id: " + id);
+        catch (EmptyResultDataAccessException ex) {
+            return ResponseEntity.badRequest().body("Endereço Cliente não encontrado pelo id: " + id);
         }
     }
 
@@ -148,13 +143,6 @@ public class EnderecoClienteController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public String handleCustomValidationsExceptions (){
-        return "Tipo inválido(Ex: 0-ENTREGA, 1-COBRANCA, 2-AMBOS).";
+        return "Tipo inválido(Ex:\n0- ENTREGA,\n1- COBRANCA,\n2- AMBOS).";
     }
-
-    @GetMapping("/form/add")
-    public ModelAndView getFormadd() {
-        ModelAndView mv = new ModelAndView("cadastroCliente");
-        return mv;
-    }
-
 }

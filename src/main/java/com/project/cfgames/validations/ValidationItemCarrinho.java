@@ -10,14 +10,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ValidationItemCarrinho {
-
     @Autowired
     ProdutoRepository produtoRepository;
 
     //valida produto
     @SneakyThrows
     public void produtoValidate(ItemCarrinho itemCarrinho){
-        if (itemCarrinho.getProduto() == null || itemCarrinho.getProduto().getId() == null) {
+        if (itemCarrinho.getProduto().getId() == null) {
             throw new CustomValidationException("Produto id null.");
         }
         else if (produtoRepository.findById(itemCarrinho.getProduto().getId()).isEmpty()) {
@@ -30,11 +29,8 @@ public class ValidationItemCarrinho {
     public void quantidadeValidate(ItemCarrinho itemCarrinho){
         Produto produto = produtoRepository.getReferenceById(itemCarrinho.getProduto().getId());
 
-        if (itemCarrinho.getQuantidade() == null) {
-            throw new CustomValidationException("Quantidade item null.");
-        }
         // quantidade estoque < quantidade item carrinho
-        else if (produto.getQuantidade() < itemCarrinho.getQuantidade()){
+        if (produto.getQuantidade() < itemCarrinho.getQuantidade()){
             throw new CustomValidationException("Quantidade do produto id: " + itemCarrinho.getProduto().getId() + " indisponível em estoque");
         }
     }

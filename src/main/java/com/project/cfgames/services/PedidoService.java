@@ -4,9 +4,13 @@ import com.project.cfgames.clients.FreteClient;
 import com.project.cfgames.clients.responses.FreteResponse;
 import com.project.cfgames.entities.Pedido;
 import com.project.cfgames.entities.relations.CartaoPedido;
+import gherkin.lexer.De;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
@@ -31,39 +35,35 @@ public class PedidoService {
     }
 
     // setter de ValorParcial no cartão pedido
-    public void valorParcial(Float valorTotal, Set<CartaoPedido> cartoesPedido){
+    public void valorParcial(Float valorTotal, Set<CartaoPedido> cartoesPedido) {
         if (cartoesPedido.size() == 1) {
-            for (CartaoPedido cartao : cartoesPedido){
+            for (CartaoPedido cartao : cartoesPedido) {
                 cartao.setValorParcial(valorTotal);
             }
         }
         else if (cartoesPedido.size() > 1) {
-            int size = cartoesPedido.size();
-
-            for (CartaoPedido cartao : cartoesPedido){
-                cartao.setValorParcial(valorTotal / size);
+            for (CartaoPedido cartao : cartoesPedido) {
+                cartao.setValorParcial(valorTotal / cartoesPedido.size());
             }
         }
     }
 
     // calcula o valor das parcelas de cada cartão e atribui
-    public void valorParcelas(Set<CartaoPedido> cartoesPedido){
-        for (CartaoPedido cartao : cartoesPedido){
-            cartao.setValorParcelas(cartao.getValorParcial()/cartao.getParcelas());
+    public void valorParcelas(Set<CartaoPedido> cartoesPedido) {
+        for (CartaoPedido cartao : cartoesPedido) {
+            cartao.setValorParcelas(cartao.getValorParcial() / cartao.getParcelas());
         }
     }
 
     // setter de Id Pedido em cada cartão do pedido
-    public void idPedido(Pedido pedido, Set<CartaoPedido> cartoesPedido){
-        for (CartaoPedido cartao : cartoesPedido){
+    public void idPedido(Pedido pedido, Set<CartaoPedido> cartoesPedido) {
+        for (CartaoPedido cartao : cartoesPedido) {
             cartao.setPedido(pedido);
         }
     }
 
     // calcula frete através da feign client api (FreteClient) e gera uma responseDTO (FreteResponse)
-    public FreteResponse calcularFrete(String cepDestino, Integer peso){
+    public FreteResponse calcularFrete(String cepDestino, Integer peso) {
         return freteClient.getFrete(cepDestino, peso);
     }
-
-
 }
