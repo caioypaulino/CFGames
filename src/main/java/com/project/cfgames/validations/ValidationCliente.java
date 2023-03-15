@@ -3,7 +3,9 @@ package com.project.cfgames.validations;
 import com.project.cfgames.dtos.requests.ClienteRequest;
 import com.project.cfgames.entities.Cliente;
 import com.project.cfgames.exceptions.CustomValidationException;
+import com.project.cfgames.repositories.ClienteRepository;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -11,6 +13,9 @@ import java.time.Period;
 
 @Service
 public class ValidationCliente {
+
+    @Autowired
+    ClienteRepository clienteRepository;
 
     // valida idade (18+)
     @SneakyThrows
@@ -24,6 +29,21 @@ public class ValidationCliente {
     private void idadeValidate(ClienteRequest request) {
         if ((Period.between(request.getDataNascimento(), LocalDate.now()).getYears()) < 18) {
             throw new CustomValidationException("Data de nascimento deve conter idade maior ou igual a 18 anos.");
+        }
+    }
+
+    // valida email
+    @SneakyThrows
+    public void emailValidate(Cliente cliente) {
+        if (clienteRepository.findByEmail(cliente.getEmail()) != null) {
+            throw new CustomValidationException("Email já existente.");
+        }
+    }
+
+    @SneakyThrows
+    public void emailValidate(ClienteRequest request) {
+        if (clienteRepository.findByEmail(request.getEmail()) != null) {
+            throw new CustomValidationException("Email já existente.");
         }
     }
 
@@ -47,12 +67,16 @@ public class ValidationCliente {
 
     public void allValidates(Cliente cliente) {
         idadeValidate(cliente);
+        emailValidate(cliente);
         confirmaSenhaValidate(cliente);
     }
 
     public void updateAllValidates(ClienteRequest request) {
         if (request.getDataNascimento() != null) {
             idadeValidate(request);
+        }
+        if (request.getEmail() != null) {
+            emailValidate(request);
         }
         if (request.getSenha() != null) {
             confirmaSenhaValidate(request);
