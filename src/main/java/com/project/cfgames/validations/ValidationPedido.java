@@ -9,7 +9,7 @@ import com.project.cfgames.repositories.CarrinhoCompraRepository;
 import com.project.cfgames.repositories.CartaoRepository;
 import com.project.cfgames.repositories.EnderecoClienteRepository;
 import com.project.cfgames.repositories.PedidoRepository;
-import com.project.cfgames.validations.exceptions.CustomValidationException;
+import com.project.cfgames.exceptions.CustomValidationException;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

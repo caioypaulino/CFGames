@@ -10,22 +10,15 @@ import com.project.cfgames.repositories.PedidoRepository;
 import com.project.cfgames.services.CarrinhoCompraService;
 import com.project.cfgames.validations.ValidationCarrinhoCompra;
 import com.project.cfgames.validations.ValidationItemCarrinho;
-import com.project.cfgames.validations.exceptions.CustomValidationException;
-import com.project.cfgames.validations.handlers.HandlerCustomValidationsExceptions;
-import com.project.cfgames.validations.handlers.HandlerValidationsExceptions;
 import org.modelmapper.MappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -167,27 +160,6 @@ public class CarrinhoCompraController {
         catch (EmptyResultDataAccessException ex) {
             return ResponseEntity.badRequest().body("Carrinho de Compra não encontrado pelo id: " + id);
         }
-    }
-
-    // handler @validation exception
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationsExceptions(MethodArgumentNotValidException exception) {
-        return HandlerValidationsExceptions.handler(exception);
-    }
-
-    // handler @validation exception Item Carrinho
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(ConstraintViolationException.class)
-    public Map<String, String> handleValidationsExceptions(ConstraintViolationException exception) {
-        return HandlerValidationsExceptions.handler(exception);
-    }
-
-    // handler custom validation exception
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(CustomValidationException.class)
-    public String handleCustomValidationsExceptions (CustomValidationException exception){
-        return HandlerCustomValidationsExceptions.handler(exception);
     }
 }
 

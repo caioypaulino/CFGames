@@ -1,7 +1,7 @@
 package com.project.cfgames.validations;
 
 import com.project.cfgames.entities.relations.EnderecoCliente;
-import com.project.cfgames.validations.exceptions.CustomValidationException;
+import com.project.cfgames.exceptions.CustomValidationException;
 import com.project.cfgames.repositories.ClienteRepository;
 import com.project.cfgames.repositories.EnderecoClienteRepository;
 import lombok.SneakyThrows;

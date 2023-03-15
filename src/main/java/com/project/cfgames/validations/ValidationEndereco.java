@@ -1,6 +1,6 @@
 package com.project.cfgames.validations;
 
-import com.project.cfgames.validations.exceptions.CustomValidationException;
+import com.project.cfgames.exceptions.CustomValidationException;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 

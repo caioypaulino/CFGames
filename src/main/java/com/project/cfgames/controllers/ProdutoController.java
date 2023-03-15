@@ -8,9 +8,6 @@ import com.project.cfgames.repositories.CategoriaRepository;
 import com.project.cfgames.repositories.ProdutoRepository;
 import com.project.cfgames.validations.ValidationCategoria;
 import com.project.cfgames.validations.ValidationProduto;
-import com.project.cfgames.validations.exceptions.CustomValidationException;
-import com.project.cfgames.validations.handlers.HandlerCustomValidationsExceptions;
-import com.project.cfgames.validations.handlers.HandlerValidationsExceptions;
 import org.modelmapper.MappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,14 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -148,20 +142,6 @@ public class ProdutoController {
         catch (EmptyResultDataAccessException ex) {
             return ResponseEntity.badRequest().body("Produto não encontrado pelo Produto Id: " + id);
         }
-    }
-
-    // handler @validation exception
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationsExceptions(MethodArgumentNotValidException exception) {
-        return HandlerValidationsExceptions.handler(exception);
-    }
-
-    // handler custom validation exception
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(CustomValidationException.class)
-    public String handleCustomValidationsExceptions (CustomValidationException exception){
-        return HandlerCustomValidationsExceptions.handler(exception);
     }
 
     // handler Enum type Json exception

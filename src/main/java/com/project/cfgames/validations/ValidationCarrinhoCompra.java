@@ -3,14 +3,12 @@ package com.project.cfgames.validations;
 import com.project.cfgames.dtos.requests.CarrinhoCompraRequest;
 import com.project.cfgames.entities.CarrinhoCompra;
 import com.project.cfgames.entities.ItemCarrinho;
-import com.project.cfgames.entities.Produto;
 import com.project.cfgames.repositories.ClienteRepository;
 import com.project.cfgames.repositories.ItemCarrinhoRepository;
 import com.project.cfgames.repositories.ProdutoRepository;
-import com.project.cfgames.validations.exceptions.CustomValidationException;
+import com.project.cfgames.exceptions.CustomValidationException;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;

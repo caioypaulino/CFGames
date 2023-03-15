@@ -8,22 +8,15 @@ import com.project.cfgames.repositories.EnderecoClienteRepository;
 import com.project.cfgames.repositories.EnderecoRepository;
 import com.project.cfgames.services.EnderecoService;
 import com.project.cfgames.validations.ValidationEndereco;
-import com.project.cfgames.validations.exceptions.CustomValidationException;
-import com.project.cfgames.validations.handlers.HandlerCustomValidationsExceptions;
-import com.project.cfgames.validations.handlers.HandlerValidationsExceptions;
-import org.checkerframework.checker.units.qual.A;
 import org.modelmapper.MappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -120,19 +113,5 @@ public class EnderecoController {
         catch (EmptyResultDataAccessException ex) {
             return ResponseEntity.badRequest().body("Endereço não encontrado pelo CEP: " + cep);
         }
-    }
-
-    // handler @validation exception
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationsExceptions(MethodArgumentNotValidException exception) {
-        return HandlerValidationsExceptions.handler(exception);
-    }
-
-    // handler custom validation exception
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(CustomValidationException.class)
-    public String handleCustomValidationsExceptions (CustomValidationException exception){
-        return HandlerCustomValidationsExceptions.handler(exception);
     }
 }

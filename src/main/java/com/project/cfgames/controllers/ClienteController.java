@@ -9,21 +9,15 @@ import com.project.cfgames.repositories.ClienteRepository;
 import com.project.cfgames.services.CartaoService;
 import com.project.cfgames.validations.ValidationCartao;
 import com.project.cfgames.validations.ValidationCliente;
-import com.project.cfgames.validations.exceptions.CustomValidationException;
-import com.project.cfgames.validations.handlers.HandlerCustomValidationsExceptions;
-import com.project.cfgames.validations.handlers.HandlerValidationsExceptions;
 import org.modelmapper.MappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -136,19 +130,5 @@ public class ClienteController {
         catch (EmptyResultDataAccessException ex) {
             return ResponseEntity.badRequest().body("Cliente não encontrado pelo Cliente Id: " + id);
         }
-    }
-
-    // handler @validation exception
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationsExceptions(MethodArgumentNotValidException exception) {
-        return HandlerValidationsExceptions.handler(exception);
-    }
-
-    // handler custom validation exception
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(CustomValidationException.class)
-    public String handleCustomValidationsExceptions (CustomValidationException exception){
-        return HandlerCustomValidationsExceptions.handler(exception);
     }
 }

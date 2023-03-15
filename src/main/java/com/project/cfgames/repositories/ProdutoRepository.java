@@ -7,17 +7,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     @Transactional
     @Query(value = "SELECT * FROM public.produtos WHERE codigo_barras = ?", nativeQuery = true)
-    Produto findByCodigoBarras(String codigoBarras);
+    Produto selectByCodigoBarras(String codigoBarras);
     @Transactional
     @Query(value = "SELECT * FROM public.produtos WHERE produto_id != ? AND codigo_barras = ? ", nativeQuery = true)
-    Produto findByIdAndCodigoBarras(Long id, String codigoBarras);
+    Produto selectByIdAndCodigoBarras(Long id, String codigoBarras);
 
     @Modifying
     @Transactional

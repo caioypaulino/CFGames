@@ -4,7 +4,7 @@ import com.project.cfgames.entities.Categoria;
 import com.project.cfgames.entities.Produto;
 import com.project.cfgames.repositories.CategoriaRepository;
 import com.project.cfgames.repositories.ProdutoRepository;
-import com.project.cfgames.validations.exceptions.CustomValidationException;
+import com.project.cfgames.exceptions.CustomValidationException;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ public class ValidationProduto {
     // valida codigo de barras
     @SneakyThrows
     public void codigoBarrasValidate (Produto produto) {
-        if (produtoRepository.findByCodigoBarras(produto.getCodigoBarras()) != null){
+        if (produtoRepository.selectByCodigoBarras(produto.getCodigoBarras()) != null){
             throw new CustomValidationException("Código de barras já cadastrado.");
         }
     }
@@ -44,7 +44,7 @@ public class ValidationProduto {
     // valida codigo de barras UPDATE
     @SneakyThrows
     public void updateCodigoBarrasValidate(Produto produto) {
-        if (produtoRepository.findByIdAndCodigoBarras(produto.getId(), produto.getCodigoBarras()) != null){
+        if (produtoRepository.selectByIdAndCodigoBarras(produto.getId(), produto.getCodigoBarras()) != null){
             throw new CustomValidationException("Código de barras já cadastrado.");
         }
     }

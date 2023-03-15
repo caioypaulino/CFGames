@@ -2,7 +2,7 @@ package com.project.cfgames.validations;
 
 import com.project.cfgames.entities.Categoria;
 import com.project.cfgames.repositories.CategoriaRepository;
-import com.project.cfgames.validations.exceptions.CustomValidationException;
+import com.project.cfgames.exceptions.CustomValidationException;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
