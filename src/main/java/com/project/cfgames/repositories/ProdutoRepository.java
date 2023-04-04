@@ -16,7 +16,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
     Produto selectByCodigoBarras(String codigoBarras);
     @Transactional
     @Query(value = "SELECT * FROM public.produtos WHERE produto_id != ? AND codigo_barras = ? ", nativeQuery = true)
-    Produto selectByIdAndCodigoBarras(Long id, String codigoBarras);
+    Produto selectByCodigoBarrasUpdate(Long id, String codigoBarras);
 
     @Modifying
     @Transactional

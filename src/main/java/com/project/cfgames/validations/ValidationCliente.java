@@ -26,7 +26,7 @@ public class ValidationCliente {
     }
 
     @SneakyThrows
-    private void idadeValidate(ClienteRequest request) {
+    private void updateIdadeValidate(ClienteRequest request) {
         if ((Period.between(request.getDataNascimento(), LocalDate.now()).getYears()) < 18) {
             throw new CustomValidationException("Data de nascimento deve conter idade maior ou igual a 18 anos.");
         }
@@ -41,8 +41,8 @@ public class ValidationCliente {
     }
 
     @SneakyThrows
-    public void emailValidate(ClienteRequest request) {
-        if (clienteRepository.findByEmail(request.getEmail()) != null) {
+    public void updateEmailValidate(ClienteRequest request, Cliente cliente) {
+        if (clienteRepository.findByEmailUpdate(cliente.getId(), request.getEmail()) != null) {
             throw new CustomValidationException("Email já existente.");
         }
     }
@@ -56,7 +56,7 @@ public class ValidationCliente {
     }
 
     @SneakyThrows
-    public void confirmaSenhaValidate(ClienteRequest request) {
+    public void updateConfirmaSenhaValidate(ClienteRequest request) {
         if (request.getConfirmaSenha() == null) {
             throw new CustomValidationException("Confirmação Senha null.");
         }
@@ -71,17 +71,15 @@ public class ValidationCliente {
         confirmaSenhaValidate(cliente);
     }
 
-    public void updateAllValidates(ClienteRequest request) {
+    public void updateAllValidates(ClienteRequest request, Cliente cliente) {
         if (request.getDataNascimento() != null) {
-            idadeValidate(request);
+            updateIdadeValidate(request);
         }
         if (request.getEmail() != null) {
-            emailValidate(request);
+            updateEmailValidate(request, cliente);
         }
         if (request.getSenha() != null) {
-            confirmaSenhaValidate(request);
+            updateConfirmaSenhaValidate(request);
         }
     }
-
-
 }

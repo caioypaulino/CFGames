@@ -17,6 +17,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
@@ -35,7 +36,7 @@ public class ProdutoController {
     CategoriaRepository categoriaRepository;
 
     // create JPA
-    @PostMapping("/save")
+    @PostMapping("/save") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> saveProduto(@RequestBody @Valid Produto produto) {
         validationProduto.allValidates(produto);
 
@@ -64,17 +65,14 @@ public class ProdutoController {
     }
 
     // update JPA
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/{id}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> updateProduto(@PathVariable Long id, @RequestBody @Valid ProdutoRequest request) {
         try {
             Produto produto = produtoRepository.getReferenceById(id);
 
-            CustomMapper.update(request, produto);
+            validationProduto.updateAllValidates(request, produto);
 
-            if (request.getCodigoBarras() != null || request.getCategorias() != null ) {
-                validationProduto.updateCodigoBarrasValidate(produto);
-                validationProduto.categoriasValidate(produto);
-            }
+            CustomMapper.update(request, produto);
 
             produtoRepository.save(produto);
 
@@ -86,7 +84,7 @@ public class ProdutoController {
     }
 
     // add categoria
-    @PutMapping("/{id}/categoria")
+    @PutMapping("/{id}/categoria") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> addCategoria(@PathVariable Long id, @RequestBody Categoria categoria) {
         try {
             Produto produto = produtoRepository.getReferenceById(id);
@@ -118,7 +116,7 @@ public class ProdutoController {
     }
 
     // remove categoria
-    @DeleteMapping("/{id}/categoria")
+    @DeleteMapping("/{id}/categoria") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> removeCategoria(@PathVariable Long id, @RequestBody Categoria categoria) {
         if (categoriaRepository.selectCategoriaProduto(id, categoria.getId()) != null) {
             produtoRepository.removeCategoria(id, categoria.getId());
@@ -131,7 +129,7 @@ public class ProdutoController {
     }
 
     // delete JPA
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> deleteProduto(@PathVariable Long id) {
         try {
             produtoRepository.removeAllCategorias(id);

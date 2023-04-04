@@ -37,7 +37,7 @@ public class EnderecoClienteController {
     EnderecoRepository enderecoRepository;
 
     // create JPA
-    @PostMapping("/form/save")
+    @PostMapping("/save")
     public ResponseEntity<?> saveEnderecoCliente(@RequestBody @Valid EnderecoCliente enderecoCliente) {
         try {
             validationEnderecoCliente.allValidates(enderecoCliente);

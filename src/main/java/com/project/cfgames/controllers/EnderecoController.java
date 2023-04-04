@@ -14,6 +14,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
@@ -32,7 +33,7 @@ public class EnderecoController {
     EnderecoClienteRepository enderecoClienteRepository;
 
     // create JPA API REST (CEP)
-    @GetMapping("/cep/{cep}")
+    @GetMapping("/cep/{cep}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> saveEndereco(@PathVariable String cep){
         validationEndereco.cepValidate(cep);
 
@@ -45,7 +46,7 @@ public class EnderecoController {
     }
 
     // create JPA
-    @PostMapping("/save")
+    @PostMapping("/save") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> saveEndereco(@RequestBody @Valid Endereco endereco) {
         EnderecoResponse enderecoResponse = enderecoService.buscarCep(endereco.getCep());
         endereco = new Endereco(enderecoResponse, "Brasil");
@@ -56,13 +57,13 @@ public class EnderecoController {
     }
 
     // readAll JPA
-    @GetMapping("/read")
+    @GetMapping("/read") @RolesAllowed("ROLE_ADMIN")
     public List<Endereco> readAllEndereco() {
         return enderecoRepository.findAll();
     }
 
     // readById JPA
-    @GetMapping("/read/{cep}")
+    @GetMapping("/read/{cep}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<?> readByIdEndereco(@PathVariable String cep) {
         validationEndereco.cepValidate(cep);
 
@@ -77,7 +78,7 @@ public class EnderecoController {
     }
 
     // update JPA
-    @PutMapping("/update/{cep}")
+    @PutMapping("/update/{cep}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> updateEndereco(@PathVariable String cep, @RequestBody EnderecoRequest request) {
         try {
             validationEndereco.cepValidate(cep);
@@ -96,7 +97,7 @@ public class EnderecoController {
     }
 
     // delete JPA
-    @DeleteMapping("/delete/{cep}")
+    @DeleteMapping("/delete/{cep}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> deleteEndereco(@PathVariable String cep) {
         try {
             validationEndereco.cepValidate(cep);

@@ -7,6 +7,7 @@ import com.project.cfgames.entities.Cliente;
 import com.project.cfgames.repositories.CartaoRepository;
 import com.project.cfgames.repositories.ClienteRepository;
 import com.project.cfgames.services.CartaoService;
+import com.project.cfgames.services.ClienteService;
 import com.project.cfgames.validations.ValidationCartao;
 import com.project.cfgames.validations.ValidationCliente;
 import org.modelmapper.MappingException;
@@ -26,6 +27,8 @@ public class ClienteController {
     @Autowired
     ValidationCliente validationCliente;
     @Autowired
+    ClienteService clienteService;
+    @Autowired
     ClienteRepository clienteRepository;
     @Autowired
     ValidationCartao validationCartao;
@@ -38,6 +41,8 @@ public class ClienteController {
     @PostMapping("/save")
     public ResponseEntity<String> saveCliente(@RequestBody @Valid Cliente cliente) {
         validationCliente.allValidates(cliente);
+
+        cliente.setSenha(clienteService.bCryptSenha(cliente));
 
         clienteRepository.save(cliente);
 
@@ -67,11 +72,13 @@ public class ClienteController {
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateCliente(@PathVariable Long id, @RequestBody @Valid ClienteRequest request) {
         try {
-            validationCliente.updateAllValidates(request);
-
             Cliente cliente = clienteRepository.getReferenceById(id);
 
+            validationCliente.updateAllValidates(request, cliente);
+
             CustomMapper.update(request, cliente);
+
+            cliente.setSenha(clienteService.bCryptSenha(cliente));
 
             clienteRepository.save(cliente);
 

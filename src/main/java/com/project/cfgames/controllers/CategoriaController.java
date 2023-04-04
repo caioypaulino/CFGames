@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
@@ -24,7 +25,7 @@ public class CategoriaController {
     CategoriaRepository categoriaRepository;
 
     // create JPA
-    @PostMapping("/save")
+    @PostMapping("/save") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> saveCategoria(@RequestBody @Valid Categoria categoria) {
         validationCategoria.allValidates(categoria);
 
@@ -53,7 +54,7 @@ public class CategoriaController {
     }
 
     // update JPA
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/{id}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> updateCategoria(@PathVariable Long id, @RequestBody @Valid Categoria request) {
         try {
             validationCategoria.nomeValidate(request.getNome(), id);
@@ -72,7 +73,7 @@ public class CategoriaController {
     }
 
     // delete JPA
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> deleteCategoria(@PathVariable Long id) {
         try {
             categoriaRepository.deleteById(id);

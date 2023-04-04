@@ -12,6 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
@@ -40,7 +41,7 @@ public class CartaoController {
     }
 
     // readAll JPA
-    @GetMapping("/read")
+    @GetMapping("/read") @RolesAllowed("ROLE_ADMIN")
     public List<Cartao> readAllCartao() {
         return cartaoRepository.findAll();
     }
@@ -78,7 +79,7 @@ public class CartaoController {
     }
 
     //delete JPA
-    @DeleteMapping("/delete/{numeroCartao}")
+    @DeleteMapping("/delete/{numeroCartao}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> deleteCartao(@PathVariable String numeroCartao){
         try {
             if (cartaoRepository.selectClientesCartao(numeroCartao) == null || cartaoRepository.selectPedidosCartao(numeroCartao) == null) {

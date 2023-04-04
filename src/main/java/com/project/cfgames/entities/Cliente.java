@@ -7,11 +7,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Table(name = "CLIENTES")
 @Entity(name = "Cliente")
@@ -24,8 +29,8 @@ import java.util.Set;
         scope = Cliente.class,
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Cliente {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "accountNonLocked", "authorities", "password", "username"})
+public class Cliente implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cliente_id")
@@ -62,6 +67,10 @@ public class Cliente {
     @JoinTable(name = "cartoes_clientes", joinColumns = @JoinColumn(name = "cliente_id"), inverseJoinColumns = @JoinColumn(name = "numero_cartao"))
     private Set<Cartao> cartoes;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "perfis_clientes", joinColumns = @JoinColumn(name = "cliente_id"), inverseJoinColumns = @JoinColumn(name = "perfil_id"))
+    private Set<Perfil> perfis;
+
     public Cliente(String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String senha, Set<EnderecoCliente> enderecos, Set<Cartao> cartoes) {
         this.nome = nome;
         this.cpf = cpf;
@@ -79,5 +88,40 @@ public class Cliente {
 
     public void addCartoesCliente(Cartao cartao) {
         cartoes.add(cartao);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return perfis.stream().map(perfil -> new SimpleGrantedAuthority(perfil.getAuthority())).collect(Collectors.toList());
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

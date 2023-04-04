@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
@@ -83,7 +84,7 @@ public class PedidoController {
     }
 
     // readAll JPA
-    @GetMapping("/read")
+    @GetMapping("/read") @RolesAllowed("ROLE_ADMIN")
     public List<Pedido> readAllPedido() {
         return pedidoRepository.findAll();
     }
@@ -102,7 +103,7 @@ public class PedidoController {
     }
 
     // update JPA
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/{id}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> updatePedido(@PathVariable Long id, @RequestBody PedidoRequest request) {
         try {
             Pedido pedido = pedidoRepository.getReferenceById(id);
@@ -125,7 +126,7 @@ public class PedidoController {
     }
 
     // delete JPA
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> deletePedido(@PathVariable Long id) {
         try {
             cartaoPedidoRepository.deleteCartoes(id);
