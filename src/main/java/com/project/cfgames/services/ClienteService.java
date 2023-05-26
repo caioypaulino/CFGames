@@ -13,13 +13,21 @@ import org.springframework.stereotype.Service;
 public class ClienteService implements UserDetailsService {
     @Autowired
     ClienteRepository clienteRepository;
-
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    TokenService tokenService;
 
     // retorna senha criptografada com BCryptPasswordEncoder setado em @Configuration
     public String bCryptSenha(Cliente cliente) {
         return passwordEncoder.encode(cliente.getSenha());
+    }
+
+    public Cliente getClienteByToken(String authToken) {
+        String token = authToken.replace("Bearer ", "");
+        String subject = tokenService.getSubject(token);
+
+        return clienteRepository.findByEmail(subject);
     }
 
     // userdetailsservice method

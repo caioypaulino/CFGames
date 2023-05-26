@@ -31,7 +31,7 @@ public class WebSecurityConfig {
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/clientes/save").permitAll()
                 .antMatchers(HttpMethod.POST, "/enderecosclientes/save").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and().addFilterBefore(filterToken, UsernamePasswordAuthenticationFilter.class).build();
     }
 

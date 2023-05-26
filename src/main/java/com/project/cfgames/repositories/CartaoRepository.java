@@ -11,10 +11,6 @@ import javax.transaction.Transactional;
 @Repository
 public interface CartaoRepository extends JpaRepository<Cartao, String> {
     @Transactional
-    @Query(value = "SELECT numero_cartao FROM public.cartoes WHERE numero_cartao = ?", nativeQuery = true)
-    String selectCartao(String numeroCartao);
-
-    @Transactional
     @Query(value = "SELECT numero_cartao FROM public.cartoes_clientes WHERE cliente_id = ? AND numero_cartao = ?", nativeQuery = true)
     String selectCartaoCliente(Long clienteId, String numeroCartao);
 

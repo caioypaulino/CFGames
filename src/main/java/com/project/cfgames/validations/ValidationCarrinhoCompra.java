@@ -5,6 +5,7 @@ import com.project.cfgames.entities.CarrinhoCompra;
 import com.project.cfgames.entities.ItemCarrinho;
 import com.project.cfgames.repositories.ClienteRepository;
 import com.project.cfgames.repositories.ItemCarrinhoRepository;
+import com.project.cfgames.repositories.PedidoRepository;
 import com.project.cfgames.repositories.ProdutoRepository;
 import com.project.cfgames.exceptions.CustomValidationException;
 import lombok.SneakyThrows;
@@ -15,7 +16,6 @@ import java.util.Set;
 
 @Service
 public class ValidationCarrinhoCompra {
-
     @Autowired
     ProdutoRepository produtoRepository;
     @Autowired
@@ -33,6 +33,14 @@ public class ValidationCarrinhoCompra {
         }
         else if (clienteRepository.findById(carrinhoCompra.getCliente().getId()).isEmpty()){
             throw new CustomValidationException("Cliente não encontrado pelo id: " + carrinhoCompra.getCliente().getId());
+        }
+    }
+
+    // valida carrinho em aberto
+    @SneakyThrows
+    public void carrinhoClienteValidate(CarrinhoCompra carrinhoCompra) {
+        if (clienteRepository.findCarrinhoAberto(carrinhoCompra.getCliente().getId()) != null){
+            throw new CustomValidationException("Carrinho em aberto já existente.");
         }
     }
 
@@ -94,6 +102,7 @@ public class ValidationCarrinhoCompra {
 
     public void allValidates(CarrinhoCompra carrinhoCompra) {
         clienteValidate(carrinhoCompra);
+        carrinhoClienteValidate(carrinhoCompra);
         produtosValidate(carrinhoCompra);
         quantidadeValidate(carrinhoCompra);
     }

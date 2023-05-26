@@ -1,11 +1,13 @@
-package com.project.cfgames.controllers;
+package com.project.cfgames.controllers.admin;
 
 import com.project.cfgames.dtos.mappers.CustomMapper;
 import com.project.cfgames.dtos.requests.ProdutoRequest;
+import com.project.cfgames.dtos.requests.QuantidadeRequest;
 import com.project.cfgames.entities.Categoria;
 import com.project.cfgames.entities.Produto;
 import com.project.cfgames.repositories.CategoriaRepository;
 import com.project.cfgames.repositories.ProdutoRepository;
+import com.project.cfgames.services.ProdutoService;
 import com.project.cfgames.validations.ValidationCategoria;
 import com.project.cfgames.validations.ValidationProduto;
 import org.modelmapper.MappingException;
@@ -24,20 +26,22 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/produtos")
-public class ProdutoController {
+@RequestMapping("/admin")
+public class AdminProdutoController {
     @Autowired
     ValidationProduto validationProduto;
     @Autowired
     ProdutoRepository produtoRepository;
     @Autowired
-    ValidationCategoria validationCategoria;
+    ProdutoService produtoService;
     @Autowired
     CategoriaRepository categoriaRepository;
+    @Autowired
+    ValidationCategoria validationCategoria;
 
-    // create JPA
-    @PostMapping("/save") @RolesAllowed("ROLE_ADMIN")
-    public ResponseEntity<String> saveProduto(@RequestBody @Valid Produto produto) {
+    // produtos - create
+    @PostMapping("/produtos/add") @RolesAllowed("ROLE_ADMIN")
+    public ResponseEntity<String> addProduto(@RequestBody @Valid Produto produto) {
         validationProduto.allValidates(produto);
 
         produtoRepository.save(produto);
@@ -45,14 +49,14 @@ public class ProdutoController {
         return ResponseEntity.ok().body("Produto adicionado com sucesso!");
     }
 
-    // readAll JPA
-    @GetMapping("/read")
+    // produtos - readAll
+    @GetMapping("/produtos") @RolesAllowed("ROLE_ADMIN")
     public List<Produto> readAllProduto() {
         return produtoRepository.findAll();
     }
 
-    // readById JPA
-    @GetMapping("/read/{id}")
+    // produtos - readById
+    @GetMapping("/produtos/buscar/{id}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<?> readByIdProduto(@PathVariable Long id) {
         Optional<Produto> produto = produtoRepository.findById(id);
 
@@ -64,8 +68,8 @@ public class ProdutoController {
         }
     }
 
-    // update JPA
-    @PutMapping("/update/{id}") @RolesAllowed("ROLE_ADMIN")
+    // produtos - update
+    @PutMapping("/produtos/update/{id}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> updateProduto(@PathVariable Long id, @RequestBody @Valid ProdutoRequest request) {
         try {
             Produto produto = produtoRepository.getReferenceById(id);
@@ -83,9 +87,26 @@ public class ProdutoController {
         }
     }
 
-    // add categoria
-    @PutMapping("/{id}/categoria") @RolesAllowed("ROLE_ADMIN")
-    public ResponseEntity<String> addCategoria(@PathVariable Long id, @RequestBody Categoria categoria) {
+    // produtos - add quantidade estoque
+    @PutMapping("produtos/add/quantidade/produto/{id}") @RolesAllowed("ROLE_ADMIN")
+    public ResponseEntity<String> addQuantidadeProduto(@PathVariable Long id, @RequestBody @Valid QuantidadeRequest request) {
+        try {
+            Produto produto = produtoRepository.getReferenceById(id);
+
+            produto.setQuantidade(produtoService.adicionarEstoque(produto.getQuantidade(), request.getQuantidade()));
+
+            produtoRepository.save(produto);
+
+            return ResponseEntity.ok().body("Quantidade Produto adicionada com sucesso ao estoque!");
+        }
+        catch (EntityNotFoundException | MappingException ex) {
+            return ResponseEntity.badRequest().body("Produto não encontrado pelo id: " + id);
+        }
+    }
+
+    // produtos - adiocionar categoria
+    @PutMapping("/produtos/add/categoria/produto/{id}") @RolesAllowed("ROLE_ADMIN")
+    public ResponseEntity<String> addCategoriaProduto(@PathVariable Long id, @RequestBody Categoria categoria) {
         try {
             Produto produto = produtoRepository.getReferenceById(id);
 
@@ -115,9 +136,9 @@ public class ProdutoController {
         }
     }
 
-    // remove categoria
-    @DeleteMapping("/{id}/categoria") @RolesAllowed("ROLE_ADMIN")
-    public ResponseEntity<String> removeCategoria(@PathVariable Long id, @RequestBody Categoria categoria) {
+    // produtos - remover categoria
+    @DeleteMapping("/produtos/remove/categoria/produto/{id}") @RolesAllowed("ROLE_ADMIN")
+    public ResponseEntity<String> removeCategoriaProduto(@PathVariable Long id, @RequestBody Categoria categoria) {
         if (categoriaRepository.selectCategoriaProduto(id, categoria.getId()) != null) {
             produtoRepository.removeCategoria(id, categoria.getId());
 
@@ -128,8 +149,8 @@ public class ProdutoController {
         }
     }
 
-    // delete JPA
-    @DeleteMapping("/delete/{id}") @RolesAllowed("ROLE_ADMIN")
+    // produtos - delete
+    @DeleteMapping("/produtos/delete/{id}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> deleteProduto(@PathVariable Long id) {
         try {
             produtoRepository.removeAllCategorias(id);
@@ -142,7 +163,7 @@ public class ProdutoController {
         }
     }
 
-    // handler Enum type Json exception
+    // handler Plataforma Enum type Json exception
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public String handleCustomValidationsExceptions (){

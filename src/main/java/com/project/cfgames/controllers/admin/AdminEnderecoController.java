@@ -1,4 +1,4 @@
-package com.project.cfgames.controllers;
+package com.project.cfgames.controllers.admin;
 
 import com.project.cfgames.clients.responses.EnderecoResponse;
 import com.project.cfgames.dtos.mappers.CustomMapper;
@@ -21,33 +21,20 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/enderecos")
-public class EnderecoController {
-    @Autowired
-    ValidationEndereco validationEndereco;
+@RequestMapping("/admin")
+public class AdminEnderecoController {
     @Autowired
     EnderecoService enderecoService;
+    @Autowired
+    ValidationEndereco validationEndereco;
     @Autowired
     EnderecoRepository enderecoRepository;
     @Autowired
     EnderecoClienteRepository enderecoClienteRepository;
 
-    // create JPA API REST (CEP)
-    @GetMapping("/cep/{cep}") @RolesAllowed("ROLE_ADMIN")
-    public ResponseEntity<String> saveEndereco(@PathVariable String cep){
-        validationEndereco.cepValidate(cep);
-
-        EnderecoResponse enderecoResponse = enderecoService.buscarCep(cep);
-        Endereco endereco = new Endereco(enderecoResponse, "Brasil");
-
-        enderecoRepository.save(endereco);
-
-        return ResponseEntity.ok().body("Endereço adicionado com sucesso!");
-    }
-
-    // create JPA
-    @PostMapping("/save") @RolesAllowed("ROLE_ADMIN")
-    public ResponseEntity<String> saveEndereco(@RequestBody @Valid Endereco endereco) {
+    // enderecos - create
+    @PostMapping("/enderecos/add") @RolesAllowed("ROLE_ADMIN")
+    public ResponseEntity<String> addEndereco(@RequestBody @Valid Endereco endereco) {
         EnderecoResponse enderecoResponse = enderecoService.buscarCep(endereco.getCep());
         endereco = new Endereco(enderecoResponse, "Brasil");
 
@@ -56,15 +43,15 @@ public class EnderecoController {
         return ResponseEntity.ok().body("Endereço adicionado com sucesso!");
     }
 
-    // readAll JPA
-    @GetMapping("/read") @RolesAllowed("ROLE_ADMIN")
-    public List<Endereco> readAllEndereco() {
-        return enderecoRepository.findAll();
+    // enderecos - readAll
+    @GetMapping("/enderecos") @RolesAllowed("ROLE_ADMIN")
+    public ResponseEntity<?> readAllEnderecos() {
+        return ResponseEntity.ok(enderecoRepository.findAll());
     }
 
-    // readById JPA
-    @GetMapping("/read/{cep}") @RolesAllowed("ROLE_ADMIN")
-    public ResponseEntity<?> readByIdEndereco(@PathVariable String cep) {
+    // enderecos - readByCep
+    @GetMapping("/enderecos/buscar/{cep}") @RolesAllowed("ROLE_ADMIN")
+    public ResponseEntity<?> readByCepEndereco(@PathVariable String cep) {
         validationEndereco.cepValidate(cep);
 
         Optional<Endereco> endereco = enderecoRepository.findById(cep);
@@ -77,8 +64,8 @@ public class EnderecoController {
         }
     }
 
-    // update JPA
-    @PutMapping("/update/{cep}") @RolesAllowed("ROLE_ADMIN")
+    // enderecos - update
+    @PutMapping("/enderecos/update/{cep}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> updateEndereco(@PathVariable String cep, @RequestBody EnderecoRequest request) {
         try {
             validationEndereco.cepValidate(cep);
@@ -96,8 +83,8 @@ public class EnderecoController {
         }
     }
 
-    // delete JPA
-    @DeleteMapping("/delete/{cep}") @RolesAllowed("ROLE_ADMIN")
+    // enderecos - delete
+    @DeleteMapping("/enderecos/delete/{cep}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> deleteEndereco(@PathVariable String cep) {
         try {
             validationEndereco.cepValidate(cep);

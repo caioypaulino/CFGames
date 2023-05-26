@@ -39,8 +39,6 @@ public class ProdutoRequest {
     private Float largura;
     @Pattern(regexp = "^[0-9]{13}$", message = "Código de barras inválido (necessário 13 dígitos e apenas números).")
     private String codigoBarras;
-    @Min(value = 0, message = "Quantidade inválida.")
-    private Integer quantidade;
     @DecimalMin(value = "10.0", message = "Preço inválido (mínimo R$10,00).")
     private Float preco;
     // enum

@@ -1,15 +1,14 @@
 package com.project.cfgames.validations;
 
 import com.project.cfgames.entities.CarrinhoCompra;
+import com.project.cfgames.entities.Cupom;
 import com.project.cfgames.entities.Pedido;
 import com.project.cfgames.entities.enums.TipoEndereco;
 import com.project.cfgames.entities.relations.CartaoPedido;
 import com.project.cfgames.entities.relations.EnderecoCliente;
-import com.project.cfgames.repositories.CarrinhoCompraRepository;
-import com.project.cfgames.repositories.CartaoRepository;
-import com.project.cfgames.repositories.EnderecoClienteRepository;
-import com.project.cfgames.repositories.PedidoRepository;
 import com.project.cfgames.exceptions.CustomValidationException;
+import com.project.cfgames.repositories.*;
+import com.project.cfgames.services.DataService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,26 +23,76 @@ public class ValidationPedido {
     @Autowired
     EnderecoClienteRepository enderecoClienteRepository;
     @Autowired
+    ValidationCarrinhoCompra validationCarrinhoCompra;
+    @Autowired
     CarrinhoCompraRepository carrinhoCompraRepository;
     @Autowired
     CartaoRepository cartaoRepository;
+    @Autowired
+    CupomRepository cupomRepository;
+    @Autowired
+    DataService dataService;
+    @Autowired
+    ValidationCartao validationCartao;
+
+    // valida pagamento
+    @SneakyThrows
+    public void pagamentoValidate(Pedido pedido) {
+        if ((pedido.getCupons() == null || pedido.getCupons().isEmpty()) && (pedido.getCartoes() == null || pedido.getCartoes().isEmpty())) {
+            throw new CustomValidationException("Pagamento Inválido. (Nenhum Cupom ou Cartão informado)");
+        }
+        else {
+            if (pedido.getCupons() != null && !pedido.getCupons().isEmpty()) {
+                cuponsValidate(pedido);
+            }
+            if (pedido.getCartoes() != null && !pedido.getCartoes().isEmpty()) {
+                cartoesValidate(pedido);
+            }
+        }
+    }
+
+    // valida cupom
+    @SneakyThrows
+    public void cuponsValidate(Pedido pedido) {
+        Set<Cupom> cuponsPedido = pedido.getCupons();
+
+        for (Cupom cupom : cuponsPedido) {
+            if (cupom.getCodigoCupom() == null || cupom.getCodigoCupom().isBlank()) {
+                throw new CustomValidationException("Código Cupom null.");
+            }
+            else if (cupomRepository.findById(cupom.getCodigoCupom()).isEmpty()) {
+                throw new CustomValidationException("Código Cupom não encontrado. Código: " + cupom.getCodigoCupom());
+            }
+            else {
+                cupom = cupomRepository.getReferenceById(cupom.getCodigoCupom());
+
+                if (!pedido.getCliente().equals(cupom.getCliente())) {
+                    throw new CustomValidationException("Cupom não pertence ao cliente.");
+                }
+                else if (cupom.getValidade().isBefore(dataService.getDateTimeNow())) {
+                    throw new CustomValidationException("Validade do Cupom Inválida.");
+                }
+                else if (!cupom.getDisponivel()) {
+                    throw new CustomValidationException("Cupom Indisponível.");
+                }
+            }
+        }
+    }
 
     // valida cartoes
     @SneakyThrows
     public void cartoesValidate(Pedido pedido) {
         Set<CartaoPedido> cartoesPedido = pedido.getCartoes();
 
-        if (cartoesPedido.size() > 2) {
-            throw new CustomValidationException("Quantidade de Cartões Inválido.(Max = 2)");
-        }
-        else {
-            for(CartaoPedido cartao : cartoesPedido) {
-                if (cartao.getCartao().getNumeroCartao() == null) {
-                    throw new CustomValidationException("Número Cartão null.");
-                }
-                else if (cartaoRepository.findById(cartao.getCartao().getNumeroCartao()).isEmpty()) {
-                    throw new CustomValidationException("Número Cartão não encontrado. Número Cartão: " + cartao.getCartao().getNumeroCartao());
-                }
+        for (CartaoPedido cartao : cartoesPedido) {
+            if (cartao.getCartao().getNumeroCartao().isBlank()) {
+                throw new CustomValidationException("Número Cartão vazio.");
+            }
+            else if (cartaoRepository.findById(cartao.getCartao().getNumeroCartao()).isEmpty()) {
+                throw new CustomValidationException("Número Cartão não encontrado. Número Cartão: " + cartao.getCartao().getNumeroCartao());
+            }
+            else {
+                validationCartao.vencimentoValidate(cartaoRepository.getReferenceById(cartao.getCartao().getNumeroCartao()));
             }
         }
     }
@@ -98,21 +147,62 @@ public class ValidationPedido {
     // valida soma valor parcial
     @SneakyThrows
     public void valorParcialValidate(Pedido pedido) {
-        Set<CartaoPedido> cartoesPedido = pedido.getCartoes();
-        float totalParcial = 0f;
+        float valorPagamento = 0f;
 
-        for (CartaoPedido cartao : cartoesPedido) {
-            totalParcial += cartao.getValorParcial();
+        Set<Cupom> cupons = pedido.getCupons();
+
+        for (Cupom cupom : cupons) {
+            cupom = cupomRepository.getReferenceById(cupom.getCodigoCupom());
+
+            valorPagamento += cupom.getValorDesconto();
         }
 
-        if (!Objects.equals(pedido.getValorTotal(), totalParcial)) {
-            throw new CustomValidationException("Valores Parciais dos Cartões inválido.(Soma Total = R$ " + totalParcial + " diferente de Total Pedido = R$" + pedido.getValorTotal() + ")");
+        Set<CartaoPedido> cartoesPedido = pedido.getCartoes();
+
+        for (CartaoPedido cartao : cartoesPedido) {
+            valorPagamento += cartao.getValorParcial();
+        }
+
+        if (!Objects.equals(pedido.getValorTotal(), valorPagamento)) {
+            String message = "Valor(es) Parcial(is) do(s) Cartão(ões) inválido(s).";
+
+            if (!cupons.isEmpty()) {
+                message += "(Soma Total com desconto(s) de Cupom(ns) = R$ " + valorPagamento + " diferente de Total Pedido = R$" + pedido.getValorTotal() + ")";
+            }
+            else {
+                message += "(Soma Total = R$ " + valorPagamento + " diferente de Total Pedido = R$" + pedido.getValorTotal() + ")";
+            }
+            throw new CustomValidationException(message);
         }
     }
 
+    // valida valor soma cupons e retorna true caso haja diferença positiva
+    @SneakyThrows
+    public Float valorCuponsValidate(Pedido pedido) {
+        Float valorCupons = 0f;
+
+        Set<Cupom> cupons = pedido.getCupons();
+
+        for (Cupom cupom : cupons) {
+            cupom = cupomRepository.getReferenceById(cupom.getCodigoCupom());
+
+            valorCupons += cupom.getValorDesconto();
+        }
+
+        if (valorCupons < pedido.getValorTotal()){
+            throw new CustomValidationException("Valor de desconto do(s) cupom(ns) insuficiente. (Soma de Cupom(ns) = R$ " + valorCupons + " é inferior ao Total Pedido = R$" + pedido.getValorTotal() + ")");
+        }
+        else if (valorCupons > pedido.getValorTotal()) {
+            return valorCupons - pedido.getValorTotal();
+        }
+
+        return valorCupons;
+    }
+
     public void allValidates(Pedido pedido) {
-        cartoesValidate(pedido);
+        pagamentoValidate(pedido);
         enderecoClienteValidate(pedido);
         carrinhoClienteValidate(pedido);
+        validationCarrinhoCompra.quantidadeValidate(pedido.getCarrinhoCompra());
     }
 }

@@ -1,8 +1,6 @@
 package com.project.cfgames.entities.relations;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.project.cfgames.entities.enums.TipoEndereco;
 import com.project.cfgames.entities.Cliente;
 import com.project.cfgames.entities.Endereco;
@@ -44,7 +42,7 @@ public class EnderecoCliente {
     @NotNull(message = "Campo não informado!")
     private TipoEndereco tipo;
 
-    @NotNull(message = "Campo não informado!")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(fetch = FetchType.LAZY)
     private Cliente cliente;
 
@@ -69,5 +67,4 @@ public class EnderecoCliente {
         this.cliente = cliente;
         this.endereco = enderecoClienteRequest.getEndereco();
     }
-
 }

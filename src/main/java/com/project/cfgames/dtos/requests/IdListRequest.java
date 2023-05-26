@@ -1,14 +1,14 @@
 package com.project.cfgames.dtos.requests;
 
-import com.project.cfgames.entities.enums.StatusPedido;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PedidoRequest {
-    private String cupom;
-    private StatusPedido statusPedido;
+public class IdListRequest {
+    List<Long> idList;
 }

@@ -11,7 +11,7 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
-    // retorn JWT Token (Json Web Token) gerado a partir de um login Cliente
+    // retorna JWT Token (Json Web Token) gerado a partir de um login Cliente
     public String gerarToken(Cliente cliente) {
         return JWT.create()
                 .withIssuer("Produtos")

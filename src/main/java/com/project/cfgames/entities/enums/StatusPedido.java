@@ -1,13 +1,16 @@
 package com.project.cfgames.entities.enums;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public enum StatusPedido {
     EM_PROCESSAMENTO,
-    APROVADO,
+    PAGAMENTO_APROVADO,
+    PAGAMENTO_REPROVADO,
     EM_TRANSITO,
     ENTREGUE,
-    EM_TROCA,
-    TROCA_AUTORIZADA,
-    REPROVADO;
+    TROCA_SOLICITADA,
+    TROCA_APROVADA,
+    TROCA_REPROVADA,
+    PRODUTOS_TROCA_RECEBIDOS,
+    TROCA_FINALIZADA,
+    TROCA_CANCELADA,
+    CANCELADO;
 }

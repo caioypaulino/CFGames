@@ -1,38 +1,25 @@
 package com.project.cfgames.dtos.responses;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.cfgames.entities.Perfil;
+import com.project.cfgames.entities.relations.EnderecoCliente;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Set;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ClienteResponse {
-
-    @JsonProperty
     private Long id;
-
-    @JsonProperty
     private String nome;
-
-    @JsonProperty
     private String cpf;
-
-    @JsonProperty
     private LocalDate dataNascimento;
-
-    @JsonProperty
     private String telefone;
-
-    @JsonProperty
     private String email;
-
-    public ClienteResponse() {}
-
-    public ClienteResponse(Long id, String nome, String cpf, LocalDate dataNascimento, String telefone, String email) {
-        this.id = id;
-        this.nome = nome;
-        this.cpf = cpf;
-        this.dataNascimento = dataNascimento;
-        this.telefone = telefone;
-        this.email = email;
-    }
-
+    private String senha;
+    private Set<EnderecoCliente> enderecos;
+    private Set<Perfil> perfis;
 }

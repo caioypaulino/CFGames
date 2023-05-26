@@ -31,7 +31,7 @@ public class ValidationItemCarrinho {
 
         // quantidade estoque < quantidade item carrinho
         if (produto.getQuantidade() < itemCarrinho.getQuantidade()){
-            throw new CustomValidationException("Quantidade do produto id: " + itemCarrinho.getProduto().getId() + " indisponível em estoque");
+            throw new CustomValidationException("Quantidade do produto id: " + itemCarrinho.getProduto().getId() + " , indisponível em estoque");
         }
     }
 

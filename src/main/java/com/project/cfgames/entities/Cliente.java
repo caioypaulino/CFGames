@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
         scope = Cliente.class,
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "accountNonLocked", "authorities", "password", "username"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "accountNonLocked", "authorities", "password", "username", "credentialsNonExpired", "accountNonExpired"})
 public class Cliente implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,8 +56,8 @@ public class Cliente implements UserDetails {
     @Length(min = 8, message = "Senha muito curta (Mínimo de 8 caracteres).")
     @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]+$", message = "Senha fraca ou inválida (Deve conter pelo menos: 1 Letra maiúscula e minúscula, 1 Número, 1 Caracter especial(Exemplos: $*&@#)")
     private String senha;
-    @NotBlank(message = "Campo não informado!")
     @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String confirmaSenha;
 
     @OneToMany(mappedBy = "cliente")
@@ -80,10 +80,6 @@ public class Cliente implements UserDetails {
         this.senha = senha;
         this.enderecos = enderecos;
         this.cartoes = cartoes;
-    }
-
-    public Set<Cartao> getCartoes() {
-        return cartoes;
     }
 
     public void addCartoesCliente(Cartao cartao) {

@@ -1,4 +1,4 @@
-package com.project.cfgames.controllers;
+package com.project.cfgames.controllers.admin;
 
 import com.project.cfgames.dtos.mappers.CustomMapper;
 import com.project.cfgames.entities.Categoria;
@@ -7,7 +7,9 @@ import com.project.cfgames.validations.ValidationCategoria;
 import org.modelmapper.MappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -17,15 +19,15 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/categorias")
-public class CategoriaController {
-    @Autowired
-    ValidationCategoria validationCategoria;
+@RequestMapping("/admin")
+public class AdminCategoriaController {
     @Autowired
     CategoriaRepository categoriaRepository;
+    @Autowired
+    ValidationCategoria validationCategoria;
 
-    // create JPA
-    @PostMapping("/save") @RolesAllowed("ROLE_ADMIN")
+    // categorias - create
+    @PostMapping("/categorias/add") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> saveCategoria(@RequestBody @Valid Categoria categoria) {
         validationCategoria.allValidates(categoria);
 
@@ -34,14 +36,14 @@ public class CategoriaController {
         return ResponseEntity.ok().body("Categoria adicionada com sucesso!");
     }
 
-    // readAll JPA
-    @GetMapping("/read")
+    // categorias - readAll
+    @GetMapping("/categorias") @RolesAllowed("ROLE_ADMIN")
     public List<Categoria> readAllCategoria() {
         return categoriaRepository.findAll();
     }
 
-    // readById JPA
-    @GetMapping("/read/{id}")
+    // categorias - readById
+    @GetMapping("/categorias/buscar/{id}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<?> readByIdCategoria(@PathVariable Long id) {
         Optional<Categoria> categoria = categoriaRepository.findById(id);
 
@@ -53,8 +55,8 @@ public class CategoriaController {
         }
     }
 
-    // update JPA
-    @PutMapping("/update/{id}") @RolesAllowed("ROLE_ADMIN")
+    // categorias - update
+    @PutMapping("/categorias/update/{id}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> updateCategoria(@PathVariable Long id, @RequestBody @Valid Categoria request) {
         try {
             validationCategoria.nomeValidate(request.getNome(), id);
@@ -72,8 +74,8 @@ public class CategoriaController {
         }
     }
 
-    // delete JPA
-    @DeleteMapping("/delete/{id}") @RolesAllowed("ROLE_ADMIN")
+    // categorias - delete
+    @DeleteMapping("/categorias/delete/{id}") @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<String> deleteCategoria(@PathVariable Long id) {
         try {
             categoriaRepository.deleteById(id);

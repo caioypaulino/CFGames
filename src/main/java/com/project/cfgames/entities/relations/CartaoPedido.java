@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -43,13 +44,13 @@ public class CartaoPedido {
 
     private Float valorParcelas;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Pedido pedido;
-
     @NotNull(message = "Campo não informado!")
     @ManyToOne(fetch = FetchType.LAZY)
     private Cartao cartao;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Pedido pedido;
 
     public CartaoPedido( Integer parcelas, Cartao cartao) {
         valorParcelas = pedido.getValorTotal();

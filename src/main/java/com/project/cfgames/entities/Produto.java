@@ -9,7 +9,6 @@ import com.project.cfgames.entities.enums.StatusProduto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.checkerframework.checker.formatter.qual.Format;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -105,4 +104,9 @@ public class Produto {
         categorias.add(categoria);
     }
 
+    public void baixarEstoque(Integer quantidadePedido) {
+        this.quantidade -= quantidadePedido;
+    }
+
+    public void reporEstoque(Integer quantidadeReposicao) {this.quantidade += quantidadeReposicao;}
 }

@@ -2,9 +2,12 @@ package com.project.cfgames.validations;
 
 import com.project.cfgames.dtos.requests.CartaoRequest;
 import com.project.cfgames.entities.Cartao;
+import com.project.cfgames.entities.Cliente;
 import com.project.cfgames.entities.enums.BandeiraCartao;
 import com.project.cfgames.exceptions.CustomValidationException;
+import com.project.cfgames.repositories.CartaoRepository;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.YearMonth;
@@ -12,6 +15,8 @@ import java.util.Map;
 
 @Service
 public class ValidationCartao {
+    @Autowired
+    CartaoRepository cartaoRepository;
 
     // valida numero cartao
     @SneakyThrows
@@ -38,7 +43,7 @@ public class ValidationCartao {
     public void vencimentoValidate(Cartao cartao) {
         YearMonth vencimento = YearMonth.of(cartao.getAnoVencimento(), cartao.getMesVencimento());
 
-        if (!(vencimento.isAfter(YearMonth.now()))) {
+        if (vencimento.isBefore(YearMonth.now())) {
             throw new CustomValidationException("Vencimento do Cartão Inválido");
         }
     }
@@ -52,7 +57,13 @@ public class ValidationCartao {
         }
     }
 
-    // valida cliente update
+    // valida cartao cliente
+    @SneakyThrows
+    public void cartaoClienteValidate(Cliente cliente, Cartao cartao) {
+        if (cartaoRepository.selectCartaoCliente(cliente.getId(), cartao.getNumeroCartao()) != null) {
+            throw new CustomValidationException("Cartão já adicionado");
+        }
+    }
 
     // todas as validações
     public void allValidates(Cartao cartao) {

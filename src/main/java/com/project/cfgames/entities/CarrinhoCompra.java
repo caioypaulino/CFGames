@@ -1,8 +1,6 @@
 package com.project.cfgames.entities;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,14 +23,15 @@ import java.util.Set;
         scope = CarrinhoCompra.class,
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "itens"})
+@JsonPropertyOrder({"id", "cliente", "pesoTotal", "valorCarrinho", "itensCarrinho"})
 public class CarrinhoCompra {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "carrinho_compra_id")
     private Long id;
 
-    @NotNull(message = "Campo não informado!")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne
     private Cliente cliente;
 
