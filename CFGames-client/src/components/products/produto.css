@@ -1,0 +1,22 @@
+.productGame {
+  position: relative;
+  background-color: #e2e6ef;
+  padding: 20px;
+  text-align: center;
+  /* Limitar o tamanho dos produtos para evitar vazamentos */
+  max-width: 250px;
+  /* Adicionar quebras de texto para o conteúdo interno se ajustar */
+  word-wrap: break-word;
+  border-radius: 5px;
+}
+
+.btnComprar {
+  height: 30px;
+  width: 70%;
+  background: #6085ff;
+  color: #e2e6ef;
+  border-radius: 7.5px;
+  border-color: transparent;
+  cursor: pointer;
+}
+

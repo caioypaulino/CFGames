@@ -1,0 +1,76 @@
+.qtd_product {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  background-color: #e2e6ef;
+  margin: 20px;
+  width: 70%;
+  max-height: 260px;
+  border-radius: 7.5px;
+}
+
+.productInfo {
+  display: inline;
+  margin-left: 10px;
+}
+
+.qtdChange {
+  display: flex;
+}
+
+.polygon {
+  width: 45%;
+}
+
+.btnPlus,
+.btnMinus {
+  height: 30px;
+  width: 40px;
+  background: #6085ff;
+  color: #e2e6ef;
+  border-radius: 5px;
+  border-color: transparent;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.btnPlus:hover,
+.btnMinus:hover,
+.removeFromCart:hover {
+  background-color: #2349c5;
+}
+
+.btnMinus {
+  transform: scaleX(-1);
+}
+
+.productImageCart {
+  border-radius: 7.5px;
+  margin: 10px;
+}
+
+p {
+  margin-top: 10px;
+}
+
+.removeFromCart {
+  position: relative;
+  margin: 10px;
+  width: 150px;
+  bottom: 70px;
+  left: 250%;
+  height: 30px;
+  background: #6085ff;
+  color: #e2e6ef;
+  border-radius: 5px;
+  border-color: transparent;
+  cursor: pointer;
+}
+
+.nameGame {
+  font-weight: bolder;
+}
+
+.price {
+  color: #6085ff;
+}

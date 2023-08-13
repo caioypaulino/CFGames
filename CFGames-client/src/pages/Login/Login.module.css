@@ -1,0 +1,62 @@
+p {
+  font-family: "Roboto";
+  font-style: normal;
+  color: #011640;
+  margin: 0;
+}
+
+h1 {
+  font-size: 200%;
+  display: flex;
+}
+
+.container {
+  display: flex;
+}
+
+.images,.form {
+  flex: 0 50% 50%;
+  max-width: 50%;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.images{
+  max-height: 90%;
+}
+
+.form {
+  width: 50%;
+  margin: 0 auto;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+input[type="text"],
+input[type="password"] {
+  font-size: 20px;
+  font-family: "Roboto";
+  height: 30px;
+  width: 70%;
+  background: #e2e6ef;
+  border-radius: 7.5px;
+  border-color: transparent;
+  margin-bottom: 20px;
+  padding-left: 10px;
+}
+
+.enviar {
+  font-family: "Roboto";
+  height: 30px;
+  width: 70%;
+  background: #6085ff;
+  color: #e2e6ef;
+  border-radius: 7.5px;
+  border-color: transparent;
+  cursor: pointer;
+}
+
+.enviar:hover {
+  background-color: #2349c5;
+}

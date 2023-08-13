@@ -1,0 +1,25 @@
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  size: 100%;
+}
+
+.navbar ul {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar ul li {
+  margin: 0 10px;
+  list-style: none;
+}
+
+.inputText {
+  width: 682px;
+  border-radius: 20px;
+  border: 2px solid #011640;
+}

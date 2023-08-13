@@ -1,0 +1,63 @@
+.container {
+  display: flex;
+}
+
+.logoCF {
+  max-width: 200px;
+}
+
+h1 {
+  font-family: "Roboto";
+  font-style: normal;
+  color: #011640;
+  margin: 0;
+}
+
+.img-banner {
+  max-width: 100%;
+  margin-right: 100px;
+  width: 70%;
+}
+
+.form {
+  flex: 0 0 50%;
+  max-width: 49vw;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+
+input[type="date"] {
+  font-size: 20px;
+  font-family: "Roboto";
+  height: 30px;
+  width: 70%;
+  background: #e2e6ef;
+  border-radius: 7.5px;
+  border-color: transparent;
+  margin-bottom: 20px;
+  padding-left: 10px;
+}
+
+.form {
+  width: 50%;
+  margin: 0 auto;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.enviar {
+  font-family: "Roboto";
+  height: 30px;
+  width: 70%;
+  background: #6085ff;
+  color: #e2e6ef;
+  border-radius: 7.5px;
+  border-color: transparent;
+  cursor: pointer;
+}
+
+.enviar:hover {
+  background-color: #2349c5;
+}
