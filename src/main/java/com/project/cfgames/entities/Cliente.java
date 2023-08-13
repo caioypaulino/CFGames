@@ -1,6 +1,7 @@
 package com.project.cfgames.entities;
 
 import com.fasterxml.jackson.annotation.*;
+import com.project.cfgames.entities.enums.Genero;
 import com.project.cfgames.entities.relations.EnderecoCliente;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,6 +47,8 @@ public class Cliente implements UserDetails {
     @PastOrPresent(message = "Data de nascimento inválida.")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dataNascimento;
+    @NotNull(message = "Campo não informado!")
+    private Genero genero;
     @NotBlank(message = "Campo não informado!")
     @Pattern(regexp = "^\\(?[1-9]{2}\\)? ?(?:[2-8]|9[1-9])[0-9]{3}\\-?[0-9]{4}$", message = "Telefone inválido.")
     private String telefone;
@@ -71,10 +74,11 @@ public class Cliente implements UserDetails {
     @JoinTable(name = "perfis_clientes", joinColumns = @JoinColumn(name = "cliente_id"), inverseJoinColumns = @JoinColumn(name = "perfil_id"))
     private Set<Perfil> perfis;
 
-    public Cliente(String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String senha, Set<EnderecoCliente> enderecos, Set<Cartao> cartoes) {
+    public Cliente(String nome, String cpf, LocalDate dataNascimento, Genero genero, String telefone, String email, String senha, Set<EnderecoCliente> enderecos, Set<Cartao> cartoes) {
         this.nome = nome;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
+        this.genero = genero;
         this.telefone = telefone;
         this.email = email;
         this.senha = senha;

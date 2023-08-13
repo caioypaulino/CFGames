@@ -51,6 +51,8 @@ public class EnderecoCliente {
     @ManyToOne(fetch = FetchType.LAZY)
     private Endereco endereco;
 
+    private String observacao;
+
     public EnderecoCliente(String numero, String complemento, TipoEndereco tipo, Cliente cliente, Endereco endereco) {
         this.numero = numero;
         this.complemento = complemento;
