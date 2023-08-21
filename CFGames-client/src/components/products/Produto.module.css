@@ -10,6 +10,16 @@
   border-radius: 5px;
 }
 
+.paragraph {
+  font-family: "Roboto", sans-serif;
+  color: #011640;
+}
+
+.price {
+  font-family: "Roboto", sans-serif;
+  color: #6085FF;
+}
+
 .btnComprar {
   height: 30px;
   width: 70%;
@@ -18,5 +28,9 @@
   border-radius: 7.5px;
   border-color: transparent;
   cursor: pointer;
+}
+
+.btnComprar:hover {
+  background-color: #2349c5;
 }
 

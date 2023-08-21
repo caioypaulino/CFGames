@@ -1,0 +1,10 @@
+{
+    "id": 2,
+    "nome": "Lucia Mendes",
+    "cpf": "999999999",
+    "dataNascimento": "15-07-1990",
+    "genero": 1,
+    "telefone": "999999999",
+    "email": "lucia@example.com",
+    "senha": "abc123XYZ@"
+}

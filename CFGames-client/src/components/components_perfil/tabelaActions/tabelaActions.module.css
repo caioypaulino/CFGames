@@ -1,0 +1,48 @@
+.container {
+  display: block;
+  margin-left: 50px;
+}
+
+.header {
+  background-color: #011640;
+  width: 25rem;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  align-items: center;
+}
+
+.titleContainer {
+  color: #e2e6ef;
+  margin-left: 15%;
+  margin-bottom: 0;
+}
+
+.containerButtons {
+  background-color: #e2e6ef;
+  display: flex;
+  width: 25rem;
+  flex-direction: column;
+  align-items: center; /* Alinha os botões à esquerda */
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.containerButtons button {
+  display: block;
+  margin: 5px 0; /* Adicione espaçamento vertical entre os botões */
+  align-items: center;
+  font-family: "Roboto";
+  height: 30px;
+  width: 20rem;
+  background: #6085ff;
+  color: #e2e6ef;
+  border-radius: 7.5px;
+  border-color: transparent;
+  cursor: pointer;
+
+}
+
+.containerButtons button:hover {
+  background-color: #2349c5;
+}

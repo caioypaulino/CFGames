@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "code": "cupom10",
+    "discount": 10
+  },
+  {
+    "id": 2,
+    "code": "cupom20",
+    "discount": 20
+  },
+  {
+    "id": 3,
+    "code": "cupom30",
+    "discount": 30
+  }
+]

@@ -21,8 +21,9 @@ h1 {
   padding: 20px;
 }
 
-.images{
-  max-height: 90%;
+.img_banner {
+  margin-right: 100px;
+  width: 100%;
 }
 
 .form {
@@ -33,7 +34,7 @@ h1 {
   flex-direction: column;
 }
 
-input[type="text"],
+.input,
 input[type="password"] {
   font-size: 20px;
   font-family: "Roboto";
@@ -59,4 +60,8 @@ input[type="password"] {
 
 .enviar:hover {
   background-color: #2349c5;
+}
+
+.link {
+  color: #2349c5;
 }

@@ -38,7 +38,7 @@ export default function login() {
       <div className={styles.container}>
         <div className={styles.images}>
           <a href="/"><img className="logoCF" src={logoCF} /></a>
-          <img src={bannerLogin} />
+          <img className={styles.img_banner} src={bannerLogin} />
         </div>
         <div className={styles.form}>
           <form onSubmit={handleSubmit}>
@@ -48,7 +48,7 @@ export default function login() {
               <input
                 type="text"
                 value={email}
-                className="email"
+                className={styles.input}
                 onChange={(e) => setEmail(e.target.value)}
               /><br/>
             </label>
@@ -63,7 +63,7 @@ export default function login() {
             </label><br/>
             <input className={styles.enviar} type="submit" />
           </form><br/>
-          <p>Não possui uma conta? <Link to="/Cadastro">  registrar-se</Link></p> 
+          <p>Não possui uma conta? <Link className={styles.link} to="/Cadastro">  registrar-se</Link></p> 
         </div>
       </div>
     </div>

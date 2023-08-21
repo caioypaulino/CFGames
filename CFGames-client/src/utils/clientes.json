@@ -1,0 +1,113 @@
+[
+    {
+      "id": 1,
+      "nome": "Flavio Barbosa",
+      "cpf": "999999999",
+      "dataNascimento": "01-02-2005",
+      "genero": 0,
+      "telefone": "999999999",
+      "email": "caio1@gmail.com",
+      "senha": "123456aC@",
+      "confirmaSenha": "123456aC@"
+    },
+    {
+      "id": 2,
+      "nome": "Lucia Mendes",
+      "cpf": "999999999",
+      "dataNascimento": "15-07-1990",
+      "genero": 1,
+      "telefone": "999999999",
+      "email": "lucia@example.com",
+      "senha": "abc123XYZ@",
+      "confirmaSenha": "abc123XYZ@"
+    },
+    {
+      "id": 3,
+      "nome": "João Silva",
+      "cpf": "999999999",
+      "dataNascimento": "20-11-1985",
+      "genero": 0,
+      "telefone": "999999999",
+      "email": "joao@teste.com",
+      "senha": "senha123!@#",
+      "confirmaSenha": "senha123!@#"
+    },
+    {
+      "id": 4,
+      "nome": "Ana Souza",
+      "cpf": "999999999",
+      "dataNascimento": "05-04-2000",
+      "genero": 1,
+      "telefone": "999999999",
+      "email": "ana@example.org",
+      "senha": "qwerty456$%",
+      "confirmaSenha": "qwerty456$%"
+    },
+    {
+      "id": 5,
+      "nome": "Rafael Oliveira",
+      "cpf": "999999999",
+      "dataNascimento": "10-08-1993",
+      "genero": 0,
+      "telefone": "999999999",
+      "email": "rafael@test.com",
+      "senha": "rafael789^*",
+      "confirmaSenha": "rafael789^*"
+    },
+    {
+      "id": 6,
+      "nome": "Camila Santos",
+      "cpf": "999999999",
+      "dataNascimento": "25-06-1988",
+      "genero": 1,
+      "telefone": "999999999",
+      "email": "camila@example.net",
+      "senha": "senha987&(",
+      "confirmaSenha": "senha987&("
+    },
+    {
+      "id": 7,
+      "nome": "Gustavo Lima",
+      "cpf": "999999999",
+      "dataNascimento": "12-12-1998",
+      "genero": 0,
+      "telefone": "999999999",
+      "email": "gustavo@example.com",
+      "senha": "gustavo654)!",
+      "confirmaSenha": "gustavo654)!"
+    },
+    {
+      "id": 8,
+      "nome": "Laura Ferreira",
+      "cpf": "999999999",
+      "dataNascimento": "08-09-2002",
+      "genero": 1,
+      "telefone": "999999999",
+      "email": "laura@teste.org",
+      "senha": "laura321%$",
+      "confirmaSenha": "laura321%$"
+    },
+    {
+      "id": 9,
+      "nome": "Marcos Lima",
+      "cpf": "999999999",
+      "dataNascimento": "18-03-1991",
+      "genero": 0,
+      "telefone": "999999999",
+      "email": "marcos@example.net",
+      "senha": "marcos777&(",
+      "confirmaSenha": "marcos777&("
+    },
+    {
+      "id": 10,
+      "nome": "Carla Santos",
+      "cpf": "999999999",
+      "dataNascimento": "29-05-1985",
+      "genero": 1,
+      "telefone": "999999999",
+      "email": "carla@example.com",
+      "senha": "carla999)!",
+      "confirmaSenha": "carla999)!"
+    }
+  ]
+  

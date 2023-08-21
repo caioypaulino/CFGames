@@ -1,0 +1,30 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #E2E6EF;
+    width: 35rem;
+    height: 2.5rem;
+    border-radius: 5px;
+    margin: 15px;
+}
+
+.iconEdite {
+    flex: 3;
+}
+
+.btnIcon {
+    justify-content: flex-end;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -43,6 +43,7 @@ export default function cadastro() {
             <label>
               <p>Nome completo</p>
               <input
+                className={styles.input}
                 type="text"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -57,6 +58,7 @@ export default function cadastro() {
               />
               <p>Data de nascimento</p>
               <input
+                className={styles.date}
                 type="date"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -65,6 +67,7 @@ export default function cadastro() {
             <label>
               <p>Email</p>
               <input
+                className={styles.input}
                 type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -80,10 +83,10 @@ export default function cadastro() {
             </label><br/>
             <input className={styles.enviar} type="submit" />
           </form><br/>
-          <p>Já possui uma conta? <Link to="/Login">Logar</Link></p>
+          <p>Já possui uma conta? <Link className={styles.link} to="/Login">Logar</Link></p>
         </div>
         <div className="image-banner">
-          <img className="img-banner" src={bannerCadastro} />
+          <img className={styles.img_banner} src={bannerCadastro} />
         </div>
       </div>
     </div>

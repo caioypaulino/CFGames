@@ -7,7 +7,6 @@
 }
 
 .titleNewProducts {
-  position: relative;
   left: 50%;
   top: 80%;
   transform: translate(-50%, -50%);
@@ -19,7 +18,7 @@
   line-height: 59px;
   color: #011640;
   margin-top: 50px;
-  margin-left: 25%;
+  margin-left: 55%;
 }
 
 .listProducts {

@@ -6,14 +6,14 @@
   max-width: 200px;
 }
 
-h1 {
+.titulo {
   font-family: "Roboto";
   font-style: normal;
   color: #011640;
   margin: 0;
 }
 
-.img-banner {
+.img_banner {
   max-width: 100%;
   margin-right: 100px;
   width: 70%;
@@ -27,7 +27,7 @@ h1 {
 }
 
 
-input[type="date"] {
+.date, .input {
   font-size: 20px;
   font-family: "Roboto";
   height: 30px;
@@ -60,4 +60,8 @@ input[type="date"] {
 
 .enviar:hover {
   background-color: #2349c5;
+}
+
+.link {
+  color: #2349c5;
 }

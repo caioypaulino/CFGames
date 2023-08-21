@@ -1,11 +1,17 @@
 import React, { useState } from "react";
-import "./enderecos.css";
+import style from "./Enderecos.module.css";
 import { useNavigate } from 'react-router-dom';
 
 const enderecos = () => {
   const enderecosCliente = [
-    "11111-111, Rua A, Cidade A, AA",
-    "22222-222, Rua B, Cidade B, BB",
+    {
+      "endereco": "11111-111, Rua A, Cidade A, AA",
+      "frete": 22
+    }, 
+    {
+      "endereco": "22222-222, Rua B, Cidade B, BB",
+      "frete": 40
+    }  
   ];
   const [enderecoSelecionado, setEnderecoSelecionado] = useState("");
   const handleChangeEndereco = (event) => {
@@ -20,28 +26,28 @@ const enderecos = () => {
   };
   
   return (
-    <div className="selectAdress">
+    <div className={style.selectAdress}>
       <h1>Selecione o endereço de entrega</h1>
-      <form className="enderecoList">
+      <form className={style.enderecoList}>
         {enderecosCliente.map((enderecosCliente) => (
-          <li key={enderecosCliente}>
+          <li key={enderecosCliente.endereco}>
             <input
               type="radio"
-              value={enderecosCliente}
-              checked={enderecoSelecionado === enderecosCliente}
+              value={enderecosCliente.endereco}
+              checked={enderecoSelecionado === enderecosCliente.endereco}
               onChange={handleChangeEndereco}
             />
-            {enderecosCliente}
+            {enderecosCliente.endereco}
           </li>
         ))}
       </form>
       <p>Endereço selecionado: {enderecoSelecionado}</p>
-      <div className="functionsEndereco">
+      <div className={style.functionsEndereco}>
         <form onSubmit={handleSubmit}>
-          <input type="submit" value={"Novo endereço"} className="btnNewAddress"/>
+          <input type="submit" value={"Novo endereço"} className={style.btnNewAddress}/>
         </form>
         <form>
-          <input type="submit" value={"Calcular frete"} className="btnCalcFrete"/>
+          <input type="submit" value={"Calcular frete"} className={style.btnCalcFrete}/>
         </form>
       </div>
     </div>

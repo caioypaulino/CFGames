@@ -1,1 +1,55 @@
+.resumo {
+    width: 200px;
+    height: 270px;
+    background-color: #e2e6ef;
+    position: fixed;
+    top: 100px; /* Ajuste essa propriedade para definir a distância do topo */
+    right: 20px; /* Ajuste essa propriedade para definir a distância da direita */
+    padding: 10px;
+    border-radius: 5px;
+}
 
+.btn {
+  height: 30px;
+  width: 150px;
+  background: #6085ff;
+  color: #e2e6ef;
+  border-radius: 5px;
+  border-color: transparent;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.link {
+    color: #e2e6ef;
+    text-decoration: none;
+}
+
+.btn:hover {
+  background-color: #2349c5;
+}
+
+.cupom {
+    width: 200px;
+    position: fixed;
+    top: 400px;
+    right: 20px;
+    background-color: #e2e6ef;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 100;
+  }
+  
+  .inputTextCupom {
+      font-size: 20px;
+      font-family: "Roboto";
+      width: 80%;
+      max-height: 30px;
+      background-color: #FFFFFF; 
+      margin-left: 10px;  
+      height: 100px; 
+      border-radius: 7.5px;
+      border-color: transparent;
+      margin-bottom: 20px;
+      padding-left: 10px;
+  }
