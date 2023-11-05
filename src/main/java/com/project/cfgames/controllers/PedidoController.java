@@ -54,11 +54,13 @@ public class PedidoController {
             validationPedido.allValidates(pedido);
 
             // instanciando objetos para acessar atributos da classe
-            EnderecoCliente enderecoCliente = enderecoClienteRepository.getReferenceById(pedido.getEnderecoCliente().getId());
+            // EnderecoCliente enderecoCliente = enderecoClienteRepository.getReferenceById(pedido.getEnderecoCliente().getId());
 
             // set Valor do Frete através da API FeignClient (FreteClient) e ResponseDTO (FreteResponse)
-            FreteResponse freteResponse = pedidoService.calcularFrete(enderecoCliente.getEndereco().getCep(), carrinhoCompra.getPesoTotal());
-            pedido.setFrete(Float.valueOf((freteResponse.getValorsedex().replace(",", "."))));
+            // FreteResponse freteResponse = pedidoService.calcularFrete(enderecoCliente.getEndereco().getCep(), carrinhoCompra.getPesoTotal());
+            // pedido.setFrete(0.5F * carrinhoCompra.getPesoTotal());
+
+            pedido.setFrete((float) (0.01 * carrinhoCompra.getPesoTotal()));
 
             pedido.setValorTotal(pedidoService.calcularValorTotal(carrinhoCompra.getValorCarrinho(), pedido.getFrete()));
             pedido.setStatus(StatusPedido.EM_PROCESSAMENTO);
