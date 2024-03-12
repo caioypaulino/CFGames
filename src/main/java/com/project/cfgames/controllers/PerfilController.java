@@ -73,6 +73,7 @@ public class PerfilController {
 
     // perfil - dados da conta
     @GetMapping("/conta")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> dadosContaCliente(@RequestHeader(value = "Authorization") String authToken) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
@@ -85,6 +86,7 @@ public class PerfilController {
 
     // perfil - dados pessoais
     @GetMapping("/pessoal")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> dadosPessoaisCliente(@RequestHeader(value = "Authorization") String authToken) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
@@ -97,6 +99,7 @@ public class PerfilController {
 
     // perfil - endereços
     @GetMapping("/enderecos")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> enderecosCliente(@RequestHeader(value = "Authorization") String authToken) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
@@ -107,6 +110,7 @@ public class PerfilController {
 
     // perfil - cartões
     @GetMapping("/cartoes")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> cartoesCliente(@RequestHeader(value = "Authorization") String authToken) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
@@ -125,6 +129,7 @@ public class PerfilController {
 
     // perfil - pedidos
     @GetMapping("/pedidos")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> pedidosCliente(@RequestHeader(value = "Authorization") String authToken) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
@@ -135,6 +140,7 @@ public class PerfilController {
 
     // perfil - solicitações troca
     @GetMapping("/solicitacoestroca")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> solicitacoesTrocaCliente(@RequestHeader(value = "Authorization") String authToken) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
@@ -145,6 +151,7 @@ public class PerfilController {
 
     // perfil - cupons
     @GetMapping("/cupons")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> cuponsCliente(@RequestHeader(value = "Authorization") String authToken) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
@@ -155,6 +162,7 @@ public class PerfilController {
 
     // adicionar endereco
     @PostMapping("/add/endereco")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> addEndereco(@RequestHeader(value = "Authorization") String authToken, @RequestBody @Valid EnderecoCliente enderecoCliente) {
         try {
             Cliente cliente = clienteService.getClienteByToken(authToken);
@@ -184,6 +192,7 @@ public class PerfilController {
 
     // adicionar cartao
     @PostMapping("/add/cartao")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> addCartao(@RequestHeader(value = "Authorization") String authToken, @RequestBody @Valid Cartao cartao) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
@@ -206,6 +215,7 @@ public class PerfilController {
 
     // solicitar troca
     @PostMapping("/add/solicitacaotroca")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> solicitarTroca(@RequestHeader(value = "Authorization") String authToken, @RequestBody @Valid SolicitacaoTroca solicitacao) {
         try {
             Cliente cliente = clienteService.getClienteByToken(authToken);
@@ -234,6 +244,7 @@ public class PerfilController {
 
     // alterar email
     @PutMapping("/update/email")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> updateEmail(@RequestHeader(value = "Authorization") String authToken, @RequestBody @Valid EmailRequest request) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
@@ -248,6 +259,7 @@ public class PerfilController {
 
     // alterar senha
     @PutMapping("/update/senha")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> updateSenha(@RequestHeader(value = "Authorization") String authToken, @RequestBody @Valid SenhaRequest request) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
@@ -264,6 +276,7 @@ public class PerfilController {
 
     // alterar dados pessoais
     @PutMapping("/update/pessoal")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> updateDadosPessoais(@RequestHeader(value = "Authorization") String authToken, @RequestBody @Valid DadosPessoaisRequest request) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
@@ -278,6 +291,7 @@ public class PerfilController {
 
     // alterar endereço
     @PutMapping("/update/endereco/{id}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> updateEnderecoCliente(@RequestHeader(value = "Authorization") String authToken, @PathVariable Long id, @RequestBody @Valid EnderecoClienteRequest request) {
         try {
             Cliente cliente = clienteService.getClienteByToken(authToken);
@@ -308,6 +322,7 @@ public class PerfilController {
 
     // remover endereco
     @DeleteMapping("/remove/endereco")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> removeEndereco(@RequestHeader(value = "Authorization") String authToken, @RequestBody @Valid IdRequest request) {
         try {
             Cliente cliente = clienteService.getClienteByToken(authToken);
@@ -326,6 +341,7 @@ public class PerfilController {
 
     // remover cartao
     @DeleteMapping("/remove/cartao")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> removeCartao(@RequestHeader(value = "Authorization") String authToken, @RequestBody Cartao cartao) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
@@ -341,6 +357,7 @@ public class PerfilController {
 
     // cancelar pedido
     @DeleteMapping("/cancel/pedido/{id}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> cancelarPedido(@RequestHeader(value = "Authorization") String authToken, @PathVariable Long id) {
         try {
             Cliente cliente = clienteService.getClienteByToken(authToken);
@@ -373,6 +390,7 @@ public class PerfilController {
 
     // cancelar troca
     @DeleteMapping("/cancel/solicitacaotroca/{id}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> cancelarTroca(@RequestHeader(value = "Authorization") String authToken, @PathVariable Long id) {
         try {
             Cliente cliente = clienteService.getClienteByToken(authToken);
@@ -391,6 +409,7 @@ public class PerfilController {
 
     // desativar perfil
     @DeleteMapping("/disable")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> desativarPerfil(@RequestHeader(value = "Authorization") String authToken) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
