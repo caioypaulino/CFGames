@@ -37,6 +37,7 @@ public class AdminPedidoController {
 
     // pedidos - readAll
     @GetMapping("/pedidos") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readAllPedido() {
         List<Pedido> pedidos = pedidoRepository.findAll();
 
@@ -45,6 +46,7 @@ public class AdminPedidoController {
 
     // pedidos - readById
     @GetMapping("/pedidos/buscar/{id}") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readByIdPedido(@PathVariable Long id) {
         Optional<Pedido> pedido = pedidoRepository.findById(id);
 
@@ -58,6 +60,7 @@ public class AdminPedidoController {
 
     // pedidos - listar pedidos aprovados
     @GetMapping("/pedidos/buscar/aprovados") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readPedidosAprovados() {
         List<Pedido> pedidos = pedidoRepository.findByStatus(StatusPedido.PAGAMENTO_APROVADO);
 
@@ -66,6 +69,7 @@ public class AdminPedidoController {
 
     // pedidos - listar pedidos em trânsito
     @GetMapping("/pedidos/buscar/emtransito")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readPedidosEmTransito() {
         List<Pedido> pedidos = pedidoRepository.findByStatus(StatusPedido.EM_TRANSITO);
 
@@ -74,6 +78,7 @@ public class AdminPedidoController {
 
     // pedidos - listar pedidos entregues
     @GetMapping("/pedidos/buscar/entregue")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readPedidosEntregues() {
         List<Pedido> pedidos = pedidoRepository.findByStatus(StatusPedido.ENTREGUE);
 
@@ -82,6 +87,7 @@ public class AdminPedidoController {
 
     // pedidos - atualizar status pedido para EM_TRANSITO
     @PutMapping("/pedidos/despachar/{id}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> despacharPedido(@PathVariable Long id) {
         try {
             Pedido pedido = pedidoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
@@ -106,6 +112,7 @@ public class AdminPedidoController {
 
     // pedidos - atualizar status pedido para ENTREGUE
     @PutMapping("/pedidos/confirmarentrega/{id}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> confirmarEntregaPedido(@PathVariable Long id) {
         try {
             Pedido pedido = pedidoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
@@ -128,6 +135,7 @@ public class AdminPedidoController {
 
     // pedidos - update status
     @PutMapping("/pedidos/update/{id}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> updateStatusPedido(@PathVariable Long id, @RequestBody StatusPedidoRequest request) {
         try {
             Pedido pedido = pedidoRepository.getReferenceById(id);
@@ -148,6 +156,7 @@ public class AdminPedidoController {
 
     // pedidos - delete
     @DeleteMapping("/pedidos/delete/{id}") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> deletePedido(@PathVariable Long id) {
         try {
             cartaoPedidoRepository.deleteCartoes(id);

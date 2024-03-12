@@ -6,10 +6,7 @@ import com.project.cfgames.entities.relations.EnderecoCliente;
 import com.project.cfgames.repositories.EnderecoClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.ArrayList;
@@ -24,6 +21,7 @@ public class AdminEnderecoClienteController {
 
     // enderecos clientes - readAll
     @GetMapping("/enderecosclientes") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readAllEnderecosCliente() {
         List<EnderecoClienteResponse> enderecos = new ArrayList<>();
 
@@ -40,6 +38,7 @@ public class AdminEnderecoClienteController {
 
     // enderecos clientes - readById
     @GetMapping("/enderecosclientes/buscar/{id}") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readByIdEnderecoCliente(@PathVariable Long id) {
         Optional<EnderecoCliente> enderecoCliente = enderecoClienteRepository.findById(id);
 

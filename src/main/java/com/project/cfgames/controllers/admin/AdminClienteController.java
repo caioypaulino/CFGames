@@ -23,6 +23,7 @@ public class AdminClienteController {
 
     // clientes - readAll
     @GetMapping("/clientes") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readAllClientes() {
         List<Cliente> clientes =  clienteRepository.findAll();
 
@@ -41,6 +42,7 @@ public class AdminClienteController {
 
     // clientes - readById
     @GetMapping("/clientes/buscar/{id}") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readByIdCliente(@PathVariable Long id) {
         Optional<Cliente> cliente = clienteRepository.findById(id);
 
@@ -58,6 +60,7 @@ public class AdminClienteController {
 
     // clientes - readByNome
     @GetMapping("/clientes/buscar/nome") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readByNomeClientes(@RequestBody @Valid NomeRequest request) {
         Optional<List<Cliente>> clientes = clienteRepository.findByNome(request.getNome());
 
@@ -81,6 +84,7 @@ public class AdminClienteController {
 
     // clientes - readByEmail
     @GetMapping("/clientes/buscar/email") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readByEmailCliente(@RequestBody @Valid EmailRequest request) {
         Optional<Cliente> cliente = Optional.ofNullable(clienteRepository.findByEmail(request.getEmail()));
 
@@ -98,6 +102,7 @@ public class AdminClienteController {
 
     // clientes - delete
     @DeleteMapping("/clientes/delete/{id}") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> deleteCliente(@PathVariable Long id){
         try {
             clienteRepository.deleteById(id);
