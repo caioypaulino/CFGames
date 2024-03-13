@@ -44,7 +44,6 @@ public class AdminSolicitacaoTrocaController {
 
     // solicitacoes troca - readAll
     @GetMapping("/solicitacoestroca") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readAllSolicitacaoTroca() {
         List<SolicitacaoTroca> solicitacoes = solicitacaoTrocaRepository.findAll();
 
@@ -53,7 +52,6 @@ public class AdminSolicitacaoTrocaController {
 
     // solicitacoes troca - readById
     @GetMapping("/solicitacoestroca/buscar/{id}") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readByIdSolicitacaoTroca(@PathVariable Long id) {
         Optional<SolicitacaoTroca> solicitacao = solicitacaoTrocaRepository.findById(id);
 
@@ -67,7 +65,6 @@ public class AdminSolicitacaoTrocaController {
 
     // solicitacoes troca - listar trocas pendentes
     @GetMapping("/solicitacoestroca/buscar/pendentes") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readTrocasPendentes() {
         List<SolicitacaoTroca> solicitacoes = solicitacaoTrocaRepository.findByStatus(StatusSolicitacao.PENDENTE);
 
@@ -76,7 +73,6 @@ public class AdminSolicitacaoTrocaController {
 
     // solicitacoes troca - listar trocas aprovadas
     @GetMapping("/solicitacoestroca/buscar/aprovadas") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readTrocasAprovadas() {
         List<SolicitacaoTroca> solicitacoes = solicitacaoTrocaRepository.findByStatus(StatusSolicitacao.APROVADA);
 
@@ -85,7 +81,6 @@ public class AdminSolicitacaoTrocaController {
 
     // solicitacoes troca - listar trocas reprovadas
     @GetMapping("/solicitacoestroca/buscar/reprovadas") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readTrocasReprovadas() {
         List<SolicitacaoTroca> solicitacoes = solicitacaoTrocaRepository.findByStatus(StatusSolicitacao.REPROVADA);
 
@@ -94,7 +89,6 @@ public class AdminSolicitacaoTrocaController {
 
     // solicitacoes troca - listar trocas concluídas
     @GetMapping("/solicitacoestroca/buscar/concluidas") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readTrocasConcluidas() {
         List<SolicitacaoTroca> solicitacoes = solicitacaoTrocaRepository.findByStatus(StatusSolicitacao.CONCLUIDA);
 
@@ -103,7 +97,6 @@ public class AdminSolicitacaoTrocaController {
 
     // solicitacoes troca - atualizar status solicitacao para APROVADA
     @PutMapping("/solicitacoestroca/aprovar/{id}") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> aprovarTroca(@PathVariable Long id) {
         try {
             SolicitacaoTroca solicitacaoTroca = solicitacaoTrocaRepository.findById(id).orElseThrow(EntityNotFoundException::new);
@@ -121,7 +114,6 @@ public class AdminSolicitacaoTrocaController {
 
     // solicitacoes troca - atualizar status solicitacao para REPROVADA
     @PutMapping("/solicitacoestroca/reprovar/{id}") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> reprovarTroca(@PathVariable Long id) {
         try {
             SolicitacaoTroca solicitacaoTroca = solicitacaoTrocaRepository.findById(id).orElseThrow(EntityNotFoundException::new);
@@ -138,7 +130,6 @@ public class AdminSolicitacaoTrocaController {
 
     // solicitacoes troca - concluir troca
     @PutMapping("/solicitacoestroca/concluir/{id}") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> concluirTroca(@PathVariable Long id, @RequestBody @Valid ReposicaoEstoqueRequest request) {
         try {
             SolicitacaoTroca solicitacaoTroca = solicitacaoTrocaRepository.findById(id).orElseThrow(EntityNotFoundException::new);
@@ -168,7 +159,6 @@ public class AdminSolicitacaoTrocaController {
 
     // solicitacoes troca - delete
     @DeleteMapping("/solicitacoestroca/delete/{id}") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> deleteTroca(@PathVariable Long id) {
         try {
             itemTrocaRepository.deleteItens(id);

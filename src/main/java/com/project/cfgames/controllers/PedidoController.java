@@ -42,7 +42,6 @@ public class PedidoController {
 
     // adicionar pediddo
     @PostMapping("/add")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> addPedido(@RequestHeader(value = "Authorization") String authToken, @RequestBody @Valid Pedido pedido) {
         try {
             Cliente cliente = clienteService.getClienteByToken(authToken);
@@ -111,7 +110,6 @@ public class PedidoController {
 
     // calculo frete API com Carrinho de Compra em Aberto e Endereço Cliente
     @GetMapping("/calcular/frete")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> calcularFrete(@RequestHeader(value = "Authorization") String authToken, @RequestBody IdRequest request) {
         try {
             Cliente cliente = clienteService.getClienteByToken(authToken);
@@ -132,7 +130,6 @@ public class PedidoController {
 
     // calculo frete API
     @GetMapping("/calcular/frete/{cepDestino}/{peso}")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public FreteResponse calcularFrete(@PathVariable String cepDestino, @PathVariable Integer peso) {
         return pedidoService.calcularFrete(cepDestino, peso);
     }

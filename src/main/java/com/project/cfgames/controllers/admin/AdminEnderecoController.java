@@ -34,7 +34,6 @@ public class AdminEnderecoController {
 
     // enderecos - create
     @PostMapping("/enderecos/add") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> addEndereco(@RequestBody @Valid Endereco endereco) {
         EnderecoResponse enderecoResponse = enderecoService.buscarCep(endereco.getCep());
         endereco = new Endereco(enderecoResponse, "Brasil");
@@ -46,14 +45,12 @@ public class AdminEnderecoController {
 
     // enderecos - readAll
     @GetMapping("/enderecos") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readAllEnderecos() {
         return ResponseEntity.ok(enderecoRepository.findAll());
     }
 
     // enderecos - readByCep
     @GetMapping("/enderecos/buscar/{cep}") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readByCepEndereco(@PathVariable String cep) {
         validationEndereco.cepValidate(cep);
 
@@ -69,7 +66,6 @@ public class AdminEnderecoController {
 
     // enderecos - update
     @PutMapping("/enderecos/update/{cep}") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> updateEndereco(@PathVariable String cep, @RequestBody EnderecoRequest request) {
         try {
             validationEndereco.cepValidate(cep);
@@ -89,7 +85,6 @@ public class AdminEnderecoController {
 
     // enderecos - delete
     @DeleteMapping("/enderecos/delete/{cep}") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> deleteEndereco(@PathVariable String cep) {
         try {
             validationEndereco.cepValidate(cep);

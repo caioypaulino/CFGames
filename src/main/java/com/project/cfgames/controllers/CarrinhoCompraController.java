@@ -43,7 +43,6 @@ public class CarrinhoCompraController {
 
     // adicionar carrinho
     @PostMapping("/add")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> addCarrinho(@RequestHeader(value = "Authorization") String authToken, @RequestBody @Valid CarrinhoCompra carrinhoCompra) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
@@ -61,7 +60,6 @@ public class CarrinhoCompraController {
 
     // mostrar carrinho em aberto
     @GetMapping("/read")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readCarrinhoAberto(@RequestHeader(value = "Authorization") String authToken) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
@@ -72,7 +70,6 @@ public class CarrinhoCompraController {
 
     // alterar carrinho em aberto
     @PutMapping("/update")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> updateCarrinho(@RequestHeader(value = "Authorization") String authToken, @RequestBody @Valid CarrinhoCompraRequest request) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
@@ -92,7 +89,6 @@ public class CarrinhoCompraController {
 
     // adicionar item carrinho
     @PutMapping("/add/itemcarrinho")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> addItem(@RequestHeader(value = "Authorization") String authToken, @RequestBody @Valid ItemCarrinho itemCarrinho) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
@@ -112,7 +108,6 @@ public class CarrinhoCompraController {
 
     // remover item carrinho
     @DeleteMapping("/remove/itemcarrinho/{itemId}")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> removeItem(@RequestHeader(value = "Authorization") String authToken, @PathVariable Long itemId) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
@@ -137,7 +132,6 @@ public class CarrinhoCompraController {
 
     // delete JPA
     @DeleteMapping("/delete")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> deleteCarrinho(@RequestHeader(value = "Authorization") String authToken) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 

@@ -6,7 +6,10 @@ import com.project.cfgames.entities.CarrinhoCompra;
 import com.project.cfgames.repositories.CarrinhoCompraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.*;
@@ -19,7 +22,6 @@ public class AdminCarrinhoCompraController {
 
     // carrinhos de compra - readAll
     @GetMapping("/carrinhosdecompra") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readAllCarrinhos() {
         List<CarrinhoCompra> carrinhos = carrinhoCompraRepository.findAll();
 
@@ -38,7 +40,6 @@ public class AdminCarrinhoCompraController {
 
     // carrinhos de compra - readById
     @GetMapping("/carrinhosdecompra/buscar/{id}") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readByIdCarrinhos(@PathVariable Long id) {
         Optional<CarrinhoCompra> carrinho = carrinhoCompraRepository.findById(id);
 

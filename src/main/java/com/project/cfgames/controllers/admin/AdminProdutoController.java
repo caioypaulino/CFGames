@@ -41,7 +41,6 @@ public class AdminProdutoController {
 
     // produtos - create
     @PostMapping("/produtos/add") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> addProduto(@RequestBody @Valid Produto produto) {
         validationProduto.allValidates(produto);
 
@@ -52,14 +51,12 @@ public class AdminProdutoController {
 
     // produtos - readAll
     @GetMapping("/produtos") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public List<Produto> readAllProduto() {
         return produtoRepository.findAll();
     }
 
     // produtos - readById
     @GetMapping("/produtos/buscar/{id}") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readByIdProduto(@PathVariable Long id) {
         Optional<Produto> produto = produtoRepository.findById(id);
 
@@ -73,7 +70,6 @@ public class AdminProdutoController {
 
     // produtos - update
     @PutMapping("/produtos/update/{id}") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> updateProduto(@PathVariable Long id, @RequestBody @Valid ProdutoRequest request) {
         try {
             Produto produto = produtoRepository.getReferenceById(id);
@@ -93,7 +89,6 @@ public class AdminProdutoController {
 
     // produtos - add quantidade estoque
     @PutMapping("produtos/add/quantidade/produto/{id}") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> addQuantidadeProduto(@PathVariable Long id, @RequestBody @Valid QuantidadeRequest request) {
         try {
             Produto produto = produtoRepository.getReferenceById(id);
@@ -111,7 +106,6 @@ public class AdminProdutoController {
 
     // produtos - adiocionar categoria
     @PutMapping("/produtos/add/categoria/produto/{id}") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> addCategoriaProduto(@PathVariable Long id, @RequestBody Categoria categoria) {
         try {
             Produto produto = produtoRepository.getReferenceById(id);
@@ -144,7 +138,6 @@ public class AdminProdutoController {
 
     // produtos - remover categoria
     @DeleteMapping("/produtos/remove/categoria/produto/{id}") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> removeCategoriaProduto(@PathVariable Long id, @RequestBody Categoria categoria) {
         if (categoriaRepository.selectCategoriaProduto(id, categoria.getId()) != null) {
             produtoRepository.removeCategoria(id, categoria.getId());
@@ -158,7 +151,6 @@ public class AdminProdutoController {
 
     // produtos - delete
     @DeleteMapping("/produtos/delete/{id}") @RolesAllowed("ROLE_ADMIN")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> deleteProduto(@PathVariable Long id) {
         try {
             produtoRepository.removeAllCategorias(id);
