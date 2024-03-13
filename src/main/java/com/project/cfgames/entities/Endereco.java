@@ -1,16 +1,17 @@
 package com.project.cfgames.entities;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.project.cfgames.entities.relations.EnderecoCliente;
 import com.project.cfgames.clients.responses.EnderecoResponse;
+import com.project.cfgames.entities.relations.EnderecoCliente;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Set;
@@ -23,10 +24,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 
-@JsonIdentityInfo(
-        scope = Endereco.class,
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "cep")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Endereco {
     @Id

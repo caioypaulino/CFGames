@@ -1,10 +1,11 @@
 package com.project.cfgames.entities.relations;
 
-import com.fasterxml.jackson.annotation.*;
-import com.project.cfgames.entities.enums.TipoEndereco;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.cfgames.dtos.requests.EnderecoClienteRequest;
 import com.project.cfgames.entities.Cliente;
 import com.project.cfgames.entities.Endereco;
-import com.project.cfgames.dtos.requests.EnderecoClienteRequest;
+import com.project.cfgames.entities.enums.TipoEndereco;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,10 +23,6 @@ import javax.validation.constraints.Pattern;
 @Setter
 @NoArgsConstructor
 
-@JsonIdentityInfo(
-        scope = EnderecoCliente.class,
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class EnderecoCliente {
 

@@ -103,9 +103,9 @@ public class PerfilController {
     public ResponseEntity<?> enderecosCliente(@RequestHeader(value = "Authorization") String authToken) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
-        Set<EnderecoCliente> enderecos = cliente.getEnderecos();
+        Set<EnderecoCliente> enderecosCliente = cliente.getEnderecos();
 
-        return ResponseEntity.ok().body(enderecos);
+        return ResponseEntity.ok().body(enderecosCliente);
     }
 
     // perfil - cartões
@@ -422,6 +422,6 @@ public class PerfilController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public String handleCustomValidationsExceptions (){
-        return "Tipo inválido(Ex:\n0- ENTREGA,\n1- COBRANCA,\n2- AMBOS).";
+        return "Tipo inválido(Exemplo:\n0- ENTREGA,\n1- COBRANCA,\n2- AMBOS).";
     }
 }

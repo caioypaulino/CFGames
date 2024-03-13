@@ -17,4 +17,5 @@ public class EnderecoClienteRequest {
     private String complemento;
     private TipoEndereco tipo;
     private Endereco endereco;
+    private String observacao;
 }
