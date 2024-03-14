@@ -10,6 +10,7 @@ import com.project.cfgames.entities.*;
 import com.project.cfgames.entities.enums.StatusPedido;
 import com.project.cfgames.entities.enums.StatusSolicitacao;
 import com.project.cfgames.entities.relations.EnderecoCliente;
+import com.project.cfgames.exceptions.CustomValidationException;
 import com.project.cfgames.repositories.*;
 import com.project.cfgames.services.*;
 import com.project.cfgames.validations.*;
@@ -298,6 +299,7 @@ public class PerfilController {
             EnderecoCliente enderecoCliente = enderecoClienteRepository.getReferenceById(id);
 
             validationEnderecoCliente.pertenceValidate(cliente, enderecoCliente);
+            validationEnderecoCliente.updateValidate(cliente, request, id);
 
             if (request.getEndereco() != null && enderecoRepository.findById(request.getEndereco().getCep()).isEmpty()) {
                 EnderecoResponse enderecoResponse = enderecoService.buscarCep(request.getEndereco().getCep());
@@ -329,6 +331,16 @@ public class PerfilController {
             EnderecoCliente enderecoCliente = enderecoClienteRepository.getReferenceById(request.getId());
 
             validationEnderecoCliente.pertenceValidate(cliente, enderecoCliente);
+
+            // verifica se endereço cliente está relacionado a um pedido
+            if (!pedidoRepository.selectPedidosByEndereco(enderecoCliente.getId()).isEmpty()) {
+                // Apenas removendo cliente de endereço cliente, mas não deletando o registro
+                enderecoCliente.setCliente(null);
+
+                enderecoClienteRepository.save(enderecoCliente);
+
+                return ResponseEntity.ok("Endereço removido com sucesso!");
+            }
 
             enderecoClienteRepository.deleteById(request.getId());
 

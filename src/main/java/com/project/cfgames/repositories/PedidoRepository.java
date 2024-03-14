@@ -17,6 +17,9 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     @Transactional
     @Query(value = "SELECT * FROM public.pedidos WHERE cliente_cliente_id = ?", nativeQuery = true)
     List<Pedido> selectPedidosByCliente(Long clienteId);
+    @Transactional
+    @Query(value = "SELECT endereco_cliente_endereco_cliente_id FROM public.pedidos WHERE endereco_cliente_endereco_cliente_id = ?", nativeQuery = true)
+    List<Long> selectPedidosByEndereco(Long enderecoClienteId);
 
     List<Pedido> findByStatus(StatusPedido statusPedido);
 }

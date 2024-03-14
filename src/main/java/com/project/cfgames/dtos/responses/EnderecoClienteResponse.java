@@ -10,6 +10,11 @@ import lombok.Data;
 public class EnderecoClienteResponse extends EnderecoCliente {
     @JsonProperty("cliente_id")
     public Long getClienteId() {
-        return super.getCliente().getId();
+        if (super.getCliente() != null) {
+            return super.getCliente().getId();
+        }
+        else {
+            return null;
+        }
     }
 }

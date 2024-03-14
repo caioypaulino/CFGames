@@ -1,10 +1,12 @@
 package com.project.cfgames.validations;
 
+import com.project.cfgames.dtos.requests.EnderecoClienteRequest;
 import com.project.cfgames.entities.Cliente;
 import com.project.cfgames.entities.relations.EnderecoCliente;
 import com.project.cfgames.exceptions.CustomValidationException;
 import com.project.cfgames.repositories.ClienteRepository;
 import com.project.cfgames.repositories.EnderecoClienteRepository;
+import com.project.cfgames.repositories.PedidoRepository;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ import javax.validation.constraints.NotNull;
 public class ValidationEnderecoCliente {
     @Autowired
     EnderecoClienteRepository enderecoClienteRepository;
+    @Autowired
+    PedidoRepository pedidoRepository;
 
     // valida cliente
     @SneakyThrows
@@ -40,6 +44,22 @@ public class ValidationEnderecoCliente {
     public void pertenceValidate (Cliente cliente, EnderecoCliente enderecoCliente) {
         if (!cliente.getId().equals(enderecoCliente.getCliente().getId())) {
             throw new CustomValidationException("Endereço não pertence ao Cliente.");
+        }
+    }
+
+    // valida se endereço cliente já existe ao realizar update
+    @SneakyThrows
+    public void updateValidate (Cliente cliente, EnderecoClienteRequest enderecoCliente, Long id) {
+        if (!enderecoClienteRepository.selectEnderecoCliente(enderecoCliente.getNumero(), cliente.getId(), enderecoCliente.getEndereco().getCep(), id).isEmpty()) {
+            throw new CustomValidationException("Endereço Cliente já existente.");
+        }
+    }
+
+
+    @SneakyThrows
+    public void deleteValidate (EnderecoCliente enderecoCliente) {
+        if (!pedidoRepository.selectPedidosByEndereco(enderecoCliente.getId()).isEmpty()) {
+            throw new CustomValidationException("Endereço Cliente relacionado a um pedido.");
         }
     }
 
