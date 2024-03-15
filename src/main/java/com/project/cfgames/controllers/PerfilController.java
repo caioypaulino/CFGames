@@ -197,14 +197,11 @@ public class PerfilController {
     public ResponseEntity<String> addCartao(@RequestHeader(value = "Authorization") String authToken, @RequestBody @Valid Cartao cartao) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
-        if (cartaoRepository.findById(cartao.getNumeroCartao()).isEmpty()) {
-            validationCartao.allValidates(cartao);
-
-            cartao.setBandeira(cartaoService.bandeiraCartao(cartao));
-            cartaoRepository.save(cartao);
-        }
-
+        validationCartao.allValidates(cartao);
         validationCartao.cartaoClienteValidate(cliente, cartao);
+
+        cartao.setBandeira(cartaoService.bandeiraCartao(cartao));
+        cartaoRepository.save(cartao);
 
         Cartao cartaoReference = cartaoRepository.getReferenceById(cartao.getNumeroCartao());
 

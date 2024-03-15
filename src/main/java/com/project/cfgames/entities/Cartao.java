@@ -41,8 +41,8 @@ public class Cartao {
     @Min(value = 1, message = "Mês Vencimento inválido.")
     @Max(value = 12, message = "Mês Vencimento inválido.")
     private Integer mesVencimento;
-    @NotNull(message = "Campo não informado!")
-    @Min(value = 2023, message = "Ano Vencimento inválido.")
+        @NotNull(message = "Campo não informado!")
+    @Min(value = 2024, message = "Ano Vencimento inválido.")
     private Integer anoVencimento;
     @NotBlank(message = "Campo não informado!")
     @Pattern(regexp = "^[0-9]{3,4}$", message = "CVC inválido.")
