@@ -1,6 +1,7 @@
 package com.project.cfgames.dtos.requests;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.project.cfgames.entities.enums.Genero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class DadosPessoaisRequest {
     private String nome;
     @CPF(message = "CPF inválido.")
     private String cpf;
+    private Genero genero;
     @PastOrPresent(message = "Data de nascimento inválida.")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dataNascimento;
