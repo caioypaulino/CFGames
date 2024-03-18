@@ -39,6 +39,7 @@ public class CadastroController {
 
     // create JPA
     @PostMapping("/cliente")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> cadastroCliente(@RequestBody @Valid Cliente cliente) {
         validationCliente.allValidates(cliente);
 
@@ -51,6 +52,7 @@ public class CadastroController {
 
     // create JPA
     @PostMapping("/endereco")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> cadastroEnderecoCliente(@RequestBody @Valid EnderecoCliente enderecoCliente) {
         try {
             validationEnderecoCliente.allValidates(enderecoCliente);

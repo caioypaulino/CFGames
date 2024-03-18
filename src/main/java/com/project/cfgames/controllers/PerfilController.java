@@ -10,7 +10,6 @@ import com.project.cfgames.entities.*;
 import com.project.cfgames.entities.enums.StatusPedido;
 import com.project.cfgames.entities.enums.StatusSolicitacao;
 import com.project.cfgames.entities.relations.EnderecoCliente;
-import com.project.cfgames.exceptions.CustomValidationException;
 import com.project.cfgames.repositories.*;
 import com.project.cfgames.services.*;
 import com.project.cfgames.validations.*;

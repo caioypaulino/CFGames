@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 // consumindo API externa através de FeignClient e atribuindo ao ResponseDTO (EnderecoResponse)
-@FeignClient(name = "EnderecoClient", url = "https://cdn.apicep.com/file/apicep/")
+@FeignClient(name = "EnderecoClient", url = "https://viacep.com.br/ws/")
 public interface EnderecoClient {
-    @GetMapping(value = "/{cep}" + ".json")
+    @GetMapping(value = "/{cep}" + "/json")
     EnderecoResponse getEndereco(@PathVariable("cep") String cep);
 }

@@ -8,12 +8,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EnderecoResponse {
-    public String code;
-    public String state;
-    public String city;
-    public String district;
-    public String address;
-    public int status;
-    public boolean ok;
-    public String statusText;
+    public String cep;
+    public String logradouro;
+    public String complemento;
+    public String bairro;
+    public String localidade;
+    public String uf;
+    public String ibge;
+    public String gia;
+    public String ddd;
+    public String siafi;
 }

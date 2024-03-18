@@ -6,10 +6,7 @@ import com.project.cfgames.repositories.CategoriaRepository;
 import com.project.cfgames.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
@@ -28,6 +25,7 @@ public class AdminGraficoController {
     CategoriaRepository categoriaRepository;
 
     @GetMapping("/grafico") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> graficoVenda(@RequestBody @Valid GraficoRequest request) {
         List<GraficoResponse> graficoResponses = new ArrayList<>();
         List<Object[]> stats;

@@ -50,11 +50,11 @@ public class Endereco {
     }
 
     public Endereco(EnderecoResponse enderecoResponse, String pais) {
-        this.cep = enderecoResponse.getCode();
-        this.rua = enderecoResponse.getAddress();
-        this.bairro = enderecoResponse.getDistrict();
-        this.cidade = enderecoResponse.getCity();
-        this.estado = enderecoResponse.getState();
+        this.cep = enderecoResponse.getCep();
+        this.rua = enderecoResponse.getLogradouro();
+        this.bairro = enderecoResponse.getBairro();
+        this.cidade = enderecoResponse.getLocalidade();
+        this.estado = enderecoResponse.getUf();
         this.pais = pais;
     }
 }

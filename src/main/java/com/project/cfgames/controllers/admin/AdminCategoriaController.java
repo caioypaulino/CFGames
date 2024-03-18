@@ -28,6 +28,7 @@ public class AdminCategoriaController {
 
     // categorias - create
     @PostMapping("/categorias/add") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> saveCategoria(@RequestBody @Valid Categoria categoria) {
         validationCategoria.allValidates(categoria);
 
@@ -38,12 +39,14 @@ public class AdminCategoriaController {
 
     // categorias - readAll
     @GetMapping("/categorias") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public List<Categoria> readAllCategoria() {
         return categoriaRepository.findAll();
     }
 
     // categorias - readById
     @GetMapping("/categorias/buscar/{id}") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readByIdCategoria(@PathVariable Long id) {
         Optional<Categoria> categoria = categoriaRepository.findById(id);
 
@@ -57,6 +60,7 @@ public class AdminCategoriaController {
 
     // categorias - update
     @PutMapping("/categorias/update/{id}") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> updateCategoria(@PathVariable Long id, @RequestBody @Valid Categoria request) {
         try {
             validationCategoria.nomeValidate(request.getNome(), id);
@@ -76,6 +80,7 @@ public class AdminCategoriaController {
 
     // categorias - delete
     @DeleteMapping("/categorias/delete/{id}") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> deleteCategoria(@PathVariable Long id) {
         try {
             categoriaRepository.deleteById(id);
