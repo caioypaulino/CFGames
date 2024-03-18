@@ -18,6 +18,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/cadastro")
@@ -53,20 +57,28 @@ public class CadastroController {
     // create JPA
     @PostMapping("/endereco")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public ResponseEntity<?> cadastroEnderecoCliente(@RequestBody @Valid EnderecoCliente enderecoCliente) {
+    public ResponseEntity<?> cadastroEnderecoCliente(@RequestHeader(value = "Authorization") String authToken, @RequestBody List<@Valid EnderecoCliente> enderecosCliente) {
         try {
-            validationEnderecoCliente.allValidates(enderecoCliente);
+            Cliente cliente = clienteService.getClienteByToken(authToken);
 
-            if (enderecoRepository.findById(enderecoCliente.getEndereco().getCep()).isEmpty()) {
-                EnderecoResponse enderecoResponse = enderecoService.buscarCep(enderecoCliente.getEndereco().getCep());
-                Endereco endereco = new Endereco(enderecoResponse, "Brasil");
+            validationEnderecoCliente.cadastroValidate(enderecosCliente);
 
-                enderecoRepository.save(endereco);
+            for (EnderecoCliente enderecoCliente : enderecosCliente) {
+                enderecoCliente.setCliente(cliente);
+
+                validationEnderecoCliente.allValidates(enderecoCliente);
+
+                if (enderecoRepository.findById(enderecoCliente.getEndereco().getCep()).isEmpty()) {
+                    EnderecoResponse enderecoResponse = enderecoService.buscarCep(enderecoCliente.getEndereco().getCep());
+                    Endereco endereco = new Endereco(enderecoResponse, "Brasil");
+
+                    enderecoRepository.save(endereco);
+                }
             }
 
-            enderecoClienteRepository.save(enderecoCliente);
+            enderecoClienteRepository.saveAll(enderecosCliente);
 
-            return ResponseEntity.ok().body("Endereço Cliente adicionado com sucesso!");
+            return ResponseEntity.ok().body("Endereço(s) Cliente adicionado(s) com sucesso!");
         }
         catch (FeignException ex) {
             return ResponseEntity.badRequest().body("Cep inválido.");

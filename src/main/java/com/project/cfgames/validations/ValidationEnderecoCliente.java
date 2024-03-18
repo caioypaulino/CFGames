@@ -2,6 +2,7 @@ package com.project.cfgames.validations;
 
 import com.project.cfgames.dtos.requests.EnderecoClienteRequest;
 import com.project.cfgames.entities.Cliente;
+import com.project.cfgames.entities.enums.TipoEndereco;
 import com.project.cfgames.entities.relations.EnderecoCliente;
 import com.project.cfgames.exceptions.CustomValidationException;
 import com.project.cfgames.repositories.ClienteRepository;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ValidationEnderecoCliente {
@@ -49,17 +52,27 @@ public class ValidationEnderecoCliente {
 
     // valida se endereço cliente já existe ao realizar update
     @SneakyThrows
-    public void updateValidate (Cliente cliente, EnderecoClienteRequest enderecoCliente, Long id) {
-        if (!enderecoClienteRepository.selectEnderecoCliente(enderecoCliente.getNumero(), cliente.getId(), enderecoCliente.getEndereco().getCep(), id).isEmpty()) {
-            throw new CustomValidationException("Endereço Cliente já existente.");
+    public void cadastroValidate (List<EnderecoCliente> enderecosCliente) {
+        if (enderecosCliente.size() > 2) {
+            throw new CustomValidationException("Quantidade de Endereços Cliente inválida.");
+        }
+        else if (enderecosCliente.size() == 2) {
+            if (enderecosCliente.get(0).getTipo() == enderecosCliente.get(1).getTipo()) {
+                throw new CustomValidationException("Tipos de endereço iguais.");
+            }
+        }
+        else if (enderecosCliente.size() == 1) {
+            if (enderecosCliente.get(0).getTipo() != TipoEndereco.AMBOS) {
+                throw new CustomValidationException("Tipo de endereço incorreto para apenas um cadastro (não é AMBOS).");
+            }
         }
     }
 
-
+    // valida se endereço cliente já existe ao realizar update
     @SneakyThrows
-    public void deleteValidate (EnderecoCliente enderecoCliente) {
-        if (!pedidoRepository.selectPedidosByEndereco(enderecoCliente.getId()).isEmpty()) {
-            throw new CustomValidationException("Endereço Cliente relacionado a um pedido.");
+    public void updateValidate (Cliente cliente, EnderecoClienteRequest enderecoCliente, Long id) {
+        if (!enderecoClienteRepository.selectEnderecoCliente(enderecoCliente.getNumero(), cliente.getId(), enderecoCliente.getEndereco().getCep(), id).isEmpty()) {
+            throw new CustomValidationException("Endereço Cliente já existente.");
         }
     }
 

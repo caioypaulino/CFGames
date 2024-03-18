@@ -19,10 +19,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 
-@JsonIdentityInfo(
-        scope = Categoria.class,
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Categoria {
     @Id
