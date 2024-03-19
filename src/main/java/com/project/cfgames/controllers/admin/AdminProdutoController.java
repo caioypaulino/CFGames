@@ -176,6 +176,6 @@ public class AdminProdutoController {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public String handleCustomValidationsExceptions (){
         return "Plataforma inválida(Ex:\n0- XBOX360,\n1- XBOXONE,\n2- XBOXS,\n3- PS3,\n4- PS4,\n5- PS5,\n6- PSP,\n7- NINTENDOWII,\n8- NINTENDODS,\n9- NINTENDOSWITCH).\n"
-                + "\nou\n" + "\nStatus Produto inválido(Ex:\n0- INATIVO,\n1- ATIVO,\n2- FORA_DE_MERCADO).\n";
+                + "<br></br>ou\n" + "<br></br>Status Produto inválido(Ex:\n0- INATIVO,\n1- ATIVO,\n2- FORA_DE_MERCADO).\n";
     }
 }

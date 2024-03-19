@@ -5,7 +5,11 @@ import com.project.cfgames.dtos.requests.EmailRequest;
 import com.project.cfgames.dtos.requests.NomeRequest;
 import com.project.cfgames.dtos.responses.ClienteResponse;
 import com.project.cfgames.entities.Cliente;
+import com.project.cfgames.entities.relations.EnderecoCliente;
+import com.project.cfgames.exceptions.CustomValidationException;
 import com.project.cfgames.repositories.ClienteRepository;
+import com.project.cfgames.repositories.EnderecoClienteRepository;
+import com.project.cfgames.validations.ValidationCliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +24,14 @@ import java.util.*;
 public class AdminClienteController {
     @Autowired
     ClienteRepository clienteRepository;
+    @Autowired
+    ValidationCliente validationCliente;
+    @Autowired
+    EnderecoClienteRepository enderecoClienteRepository;
 
     // clientes - readAll
     @GetMapping("/clientes") @RolesAllowed("ROLE_ADMIN")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> readAllClientes() {
         List<Cliente> clientes =  clienteRepository.findAll();
 
@@ -104,9 +113,25 @@ public class AdminClienteController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> deleteCliente(@PathVariable Long id){
         try {
+            List<Long> idEnderecos = enderecoClienteRepository.selectEnderecosByCliente(id);
+
+            // Apenas removendo cliente de endereço cliente, mas não deletando o registro
+            for (Long idEndereco : idEnderecos) {
+                EnderecoCliente enderecoCliente = enderecoClienteRepository.getReferenceById(idEndereco);
+
+                enderecoCliente.setCliente(null);
+
+                enderecoClienteRepository.save(enderecoCliente);
+            }
+
             clienteRepository.deleteById(id);
 
-            return ResponseEntity.ok().body("Cliente deletado com sucesso!");
+            if (!idEnderecos.isEmpty()) {
+                return ResponseEntity.ok().body(idEnderecos.size() + " Endereço(s) Cliente removido(s)<br></br> Cliente deletado com sucesso!");
+            }
+            else {
+                return ResponseEntity.ok().body("Cliente deletado com sucesso!");
+            }
         }
         catch (EmptyResultDataAccessException ex) {
             return ResponseEntity.badRequest().body("Cliente não encontrado pelo Cliente Id: " + id);
