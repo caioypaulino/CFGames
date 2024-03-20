@@ -102,7 +102,7 @@ public class AdminProdutoController {
 
             produtoRepository.save(produto);
 
-            return ResponseEntity.ok().body("Quantidade Produto adicionada com sucesso ao estoque!");
+            return ResponseEntity.ok().body("Estoque atualizado com sucesso!");
         }
         catch (EntityNotFoundException | MappingException ex) {
             return ResponseEntity.badRequest().body("Produto não encontrado pelo id: " + id);

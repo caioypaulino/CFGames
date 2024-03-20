@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Digits;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuantidadeRequest {
-    @Min(value = 0, message = "Quantidade inválida.")
+    @Digits(integer = Integer.MAX_VALUE, fraction = 0, message = "A quantidade deve ser um número inteiro.")
     private Integer quantidade;
 }
