@@ -91,10 +91,10 @@ public class AdminProdutoController {
         }
     }
 
-    // produtos - add quantidade estoque
-    @PutMapping("produtos/add/quantidade/produto/{id}") @RolesAllowed("ROLE_ADMIN")
+    // produtos - alterar estoque
+    @PutMapping("produtos/update/estoque/produto/{id}") @RolesAllowed("ROLE_ADMIN")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public ResponseEntity<String> addQuantidadeProduto(@PathVariable Long id, @RequestBody @Valid QuantidadeRequest request) {
+    public ResponseEntity<String> updateEstoque(@PathVariable Long id, @RequestBody @Valid QuantidadeRequest request) {
         try {
             Produto produto = produtoRepository.getReferenceById(id);
 
