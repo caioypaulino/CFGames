@@ -16,14 +16,14 @@ public class ValidationCategoria {
     @SneakyThrows
     public void nomeValidate(Categoria categoria) {
         if (categoriaRepository.selectCategoriaByName(categoria.getNome()) != null){
-            throw new CustomValidationException("Categoria nome: " + categoria.getNome() + " ,já existente.");
+            throw new CustomValidationException("Uma categoria com este nome já existe! (" + categoria.getNome() + ")");
         }
     }
 
     @SneakyThrows
     public void nomeValidate(String nomeCategoria, Long id){
         if (categoriaRepository.selectCategoriaByNameAndId(nomeCategoria, id) != null) {
-            throw new CustomValidationException("Categoria nome: " + nomeCategoria + " ,já existente.");
+            throw new CustomValidationException("Uma categoria com este nome já existe! (" + nomeCategoria + ")");
         }
     }
 

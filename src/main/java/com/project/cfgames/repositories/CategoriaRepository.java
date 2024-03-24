@@ -25,6 +25,11 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
     @Query(value = "SELECT produto_id FROM public.categorias_produtos WHERE produto_id = ? AND categoria_id = ?", nativeQuery = true)
     Long selectCategoriaProduto(Long id, Long categoriaId);
 
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM categorias_produtos WHERE categoria_id = ?", nativeQuery = true)
+    void removeCategoriasById(Long categoriaId);
+
     @Transactional
     @Query(value = "SELECT\n" +
             "    c.nome AS nome,\n" +

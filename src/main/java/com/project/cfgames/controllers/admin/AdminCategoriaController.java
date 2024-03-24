@@ -83,6 +83,7 @@ public class AdminCategoriaController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> deleteCategoria(@PathVariable Long id) {
         try {
+            categoriaRepository.removeCategoriasById(id);
             categoriaRepository.deleteById(id);
 
             return ResponseEntity.ok().body("Categoria deletada com sucesso!");

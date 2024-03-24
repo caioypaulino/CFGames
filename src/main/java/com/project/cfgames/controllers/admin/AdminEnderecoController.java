@@ -8,9 +8,11 @@ import com.project.cfgames.repositories.EnderecoClienteRepository;
 import com.project.cfgames.repositories.EnderecoRepository;
 import com.project.cfgames.services.EnderecoService;
 import com.project.cfgames.validations.ValidationEndereco;
+import feign.FeignException;
 import org.modelmapper.MappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,12 +38,20 @@ public class AdminEnderecoController {
     @PostMapping("/enderecos/add") @RolesAllowed("ROLE_ADMIN")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> addEndereco(@RequestBody @Valid Endereco endereco) {
-        EnderecoResponse enderecoResponse = enderecoService.buscarCep(endereco.getCep());
-        endereco = new Endereco(enderecoResponse, "Brasil");
+        try {
+            EnderecoResponse enderecoResponse = enderecoService.buscarCep(endereco.getCep());
+            endereco = new Endereco(enderecoResponse, "Brasil");
 
-        enderecoRepository.save(endereco);
+            enderecoRepository.save(endereco);
 
-        return ResponseEntity.ok().body("Endereço adicionado com sucesso!");
+            return ResponseEntity.ok().body("Endereço adicionado com sucesso!");
+        }
+        catch (FeignException ex) {
+            return ResponseEntity.badRequest().body("Cep inválido.");
+        }
+        catch (InvalidDataAccessApiUsageException ex) {
+            return ResponseEntity.badRequest().body("Cliente ou Cep null.");
+        }
     }
 
     // enderecos - readAll
