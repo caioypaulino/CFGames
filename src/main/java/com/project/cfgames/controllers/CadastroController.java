@@ -75,7 +75,7 @@ public class CadastroController {
                     enderecoRepository.save(endereco);
                 }
             }
-
+            
             enderecoClienteRepository.saveAll(enderecosCliente);
 
             return ResponseEntity.ok().body("Endereço(s) Cliente adicionado(s) com sucesso!");

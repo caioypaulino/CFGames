@@ -5,16 +5,15 @@ import com.project.cfgames.entities.Cliente;
 import com.project.cfgames.entities.enums.TipoEndereco;
 import com.project.cfgames.entities.relations.EnderecoCliente;
 import com.project.cfgames.exceptions.CustomValidationException;
-import com.project.cfgames.repositories.ClienteRepository;
 import com.project.cfgames.repositories.EnderecoClienteRepository;
 import com.project.cfgames.repositories.PedidoRepository;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ValidationEnderecoCliente {
@@ -53,18 +52,20 @@ public class ValidationEnderecoCliente {
     // valida se endereço cliente já existe ao realizar update
     @SneakyThrows
     public void cadastroValidate (List<EnderecoCliente> enderecosCliente) {
-        if (enderecosCliente.size() > 2) {
+        if (enderecosCliente.size() > 3) {
             throw new CustomValidationException("Quantidade de Endereços Cliente inválida.");
         }
         else if (enderecosCliente.size() == 2) {
-            if (enderecosCliente.get(0).getTipo() == enderecosCliente.get(1).getTipo()) {
-                throw new CustomValidationException("Tipos de endereço iguais.");
+            Set<TipoEndereco> tipos = new HashSet<>();
+
+            for (EnderecoCliente enderecoCliente : enderecosCliente) {
+                if (!tipos.add(enderecoCliente.getTipo())) {
+                    throw new CustomValidationException("Tipos de endereço duplicados.");
+                }
             }
         }
-        else if (enderecosCliente.size() == 1) {
-            if (enderecosCliente.get(0).getTipo() != TipoEndereco.AMBOS) {
-                throw new CustomValidationException("Tipo de endereço incorreto para apenas um cadastro (não é AMBOS).");
-            }
+        else if (enderecosCliente.size() == 1 && enderecosCliente.get(0).getTipo() != TipoEndereco.GERAL) {
+            throw new CustomValidationException("Tipo de endereço incorreto para apenas um cadastro (não é GERAL).");
         }
     }
 
