@@ -32,6 +32,9 @@ public class EnderecoCliente {
     private Long id;
 
     @NotNull(message = "Campo não informado!")
+    private String apelido;
+
+    @NotNull(message = "Campo não informado!")
     @Pattern(regexp = "^[0-9]+$", message = "Número inválido.")
     private String numero;
     @NotBlank(message = "Campo não informado!")
