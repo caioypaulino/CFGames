@@ -20,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Objects;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/carrinhodecompra")
@@ -98,10 +100,23 @@ public class CarrinhoCompraController {
 
         CarrinhoCompra carrinhoCompra = carrinhoCompraRepository.getReferenceById(clienteRepository.findCarrinhoAberto(cliente.getId()));
 
-        validationCarrinhoCompra.produtoCarrinhoValidate(carrinhoCompra, itemCarrinho);
-        validationItemCarrinho.allValidates(itemCarrinho);
+        // se produto já existe no carrinho de compra
+        if (validationCarrinhoCompra.produtoCarrinhoValidate(carrinhoCompra, itemCarrinho)) {
+            for (ItemCarrinho item: carrinhoCompra.getItens()) {
+                if (Objects.equals(item.getProduto().getId(), itemCarrinho.getProduto().getId())) {
+                    // alterando quantidade item carrinho
+                    Integer novaQuantidade = item.getQuantidade() + itemCarrinho.getQuantidade();
+                    item.setQuantidade(novaQuantidade);
 
-        carrinhoCompra.addItensCarrinho(itemCarrinho);
+                    itemCarrinhoRepository.save(item);
+                }
+            }
+        }
+        else {
+            validationItemCarrinho.allValidates(itemCarrinho);
+            carrinhoCompra.addItensCarrinho(itemCarrinho);
+        }
+
         carrinhoCompra.setValorCarrinho(carrinhoCompraService.valorItens(carrinhoCompra.getItensCarrinho()));
         carrinhoCompra.setPesoTotal(carrinhoCompraService.pesoItens(carrinhoCompra.getItensCarrinho()));
 

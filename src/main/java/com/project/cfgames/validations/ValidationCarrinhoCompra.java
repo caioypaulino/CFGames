@@ -5,7 +5,6 @@ import com.project.cfgames.entities.CarrinhoCompra;
 import com.project.cfgames.entities.ItemCarrinho;
 import com.project.cfgames.repositories.ClienteRepository;
 import com.project.cfgames.repositories.ItemCarrinhoRepository;
-import com.project.cfgames.repositories.PedidoRepository;
 import com.project.cfgames.repositories.ProdutoRepository;
 import com.project.cfgames.exceptions.CustomValidationException;
 import lombok.SneakyThrows;
@@ -94,10 +93,8 @@ public class ValidationCarrinhoCompra {
 
     // valida produto já existente no carrinho
     @SneakyThrows
-    public void produtoCarrinhoValidate(CarrinhoCompra carrinhoCompra, ItemCarrinho itemCarrinho){
-        if (itemCarrinhoRepository.selectItemByCarrinhoAndProduto(carrinhoCompra.getId(), itemCarrinho.getProduto().getId()) != null){
-            throw new CustomValidationException("Produto id: " +itemCarrinho.getProduto().getId() + " já cadastrado no Carrinho de Compra id: " + carrinhoCompra.getId());
-        }
+    public boolean produtoCarrinhoValidate(CarrinhoCompra carrinhoCompra, ItemCarrinho itemCarrinho){
+        return itemCarrinhoRepository.selectItemByCarrinhoAndProduto(carrinhoCompra.getId(), itemCarrinho.getProduto().getId()) != null;
     }
 
     public void allValidates(CarrinhoCompra carrinhoCompra) {
