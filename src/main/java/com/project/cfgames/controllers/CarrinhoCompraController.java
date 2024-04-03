@@ -1,7 +1,6 @@
 package com.project.cfgames.controllers;
 
-import com.project.cfgames.dtos.mappers.CustomMapper;
-import com.project.cfgames.dtos.requests.CarrinhoCompraRequest;
+import com.project.cfgames.dtos.requests.ItemCarrinhoRequest;
 import com.project.cfgames.entities.CarrinhoCompra;
 import com.project.cfgames.entities.Cliente;
 import com.project.cfgames.entities.ItemCarrinho;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Objects;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/carrinhodecompra")
@@ -75,14 +73,22 @@ public class CarrinhoCompraController {
     // alterar carrinho em aberto
     @PutMapping("/update")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public ResponseEntity<String> updateCarrinho(@RequestHeader(value = "Authorization") String authToken, @RequestBody @Valid CarrinhoCompraRequest request) {
+    public ResponseEntity<String> updateCarrinho(@RequestHeader(value = "Authorization") String authToken, @RequestBody @Valid ItemCarrinhoRequest request) {
         Cliente cliente = clienteService.getClienteByToken(authToken);
 
         CarrinhoCompra carrinhoCompra = carrinhoCompraRepository.getReferenceById(clienteRepository.findCarrinhoAberto(cliente.getId()));
 
-        validationCarrinhoCompra.updateAllValidates(request);
+        validationCarrinhoCompra.updateQuantidadeValidate(request);
 
-        CustomMapper.update(request, carrinhoCompra);
+        // se produto já existe no carrinho de compra
+        for (ItemCarrinho item: carrinhoCompra.getItens()) {
+            if (Objects.equals(item.getId(), request.getItemCarrinhoId())) {
+                // alterando quantidade item carrinho
+                item.setQuantidade(request.getQuantidade());
+
+                itemCarrinhoRepository.save(item);
+            }
+        }
 
         carrinhoCompra.setValorCarrinho(carrinhoCompraService.valorItens(carrinhoCompra.getItensCarrinho()));
         carrinhoCompra.setPesoTotal(carrinhoCompraService.pesoItens(carrinhoCompra.getItensCarrinho()));

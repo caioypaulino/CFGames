@@ -1,5 +1,6 @@
 package com.project.cfgames.validations;
 
+import com.project.cfgames.dtos.requests.ItemCarrinhoRequest;
 import com.project.cfgames.entities.ItemCarrinho;
 import com.project.cfgames.entities.Produto;
 import com.project.cfgames.repositories.ProdutoRepository;
@@ -32,6 +33,15 @@ public class ValidationItemCarrinho {
         // quantidade estoque < quantidade item carrinho
         if (produto.getQuantidade() < itemCarrinho.getQuantidade()){
             throw new CustomValidationException("Quantidade do produto id: " + itemCarrinho.getProduto().getId() + " , indisponível em estoque");
+        }
+    }
+    @SneakyThrows
+    public void quantidadeValidate(ItemCarrinhoRequest itemCarrinho){
+        Produto produto = produtoRepository.getReferenceById(itemCarrinho.getProdutoId());
+
+        // quantidade estoque < quantidade item carrinho
+        if (produto.getQuantidade() < itemCarrinho.getQuantidade()){
+            throw new CustomValidationException("Quantidade do produto id: " + itemCarrinho.getProdutoId() + " , indisponível em estoque");
         }
     }
 

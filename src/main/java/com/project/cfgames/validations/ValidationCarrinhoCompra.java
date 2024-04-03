@@ -1,6 +1,7 @@
 package com.project.cfgames.validations;
 
 import com.project.cfgames.dtos.requests.CarrinhoCompraRequest;
+import com.project.cfgames.dtos.requests.ItemCarrinhoRequest;
 import com.project.cfgames.entities.CarrinhoCompra;
 import com.project.cfgames.entities.ItemCarrinho;
 import com.project.cfgames.repositories.ClienteRepository;
@@ -83,12 +84,8 @@ public class ValidationCarrinhoCompra {
 
     // valida quantidade em estoque UPDATE
     @SneakyThrows
-    public void updateQuantidadeValidate(CarrinhoCompraRequest request){
-        Set<ItemCarrinho> itensCarrinho = request.getItensCarrinho();
-
-        for (ItemCarrinho item: itensCarrinho) {
-            validationItemCarrinho.quantidadeValidate(item);
-        }
+    public void updateQuantidadeValidate(ItemCarrinhoRequest request){
+        validationItemCarrinho.quantidadeValidate(request);
     }
 
     // valida produto já existente no carrinho
@@ -102,10 +99,5 @@ public class ValidationCarrinhoCompra {
         carrinhoClienteValidate(carrinhoCompra);
         produtosValidate(carrinhoCompra);
         quantidadeValidate(carrinhoCompra);
-    }
-
-    public void updateAllValidates(CarrinhoCompraRequest request) {
-        updateProdutosValidate(request);
-        updateQuantidadeValidate(request);
     }
 }
