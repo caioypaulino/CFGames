@@ -430,6 +430,6 @@ public class PerfilController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public String handleCustomValidationsExceptions (){
-        return "Tipo inválido(Exemplo:\n0- ENTREGA,\n1- COBRANCA,\n2- AMBOS).";
+        return "Tipo inválido. Exemplo:<br>\n0- ENTREGA,\n<br>1- COBRANCA,\n<br>2- RESIDENCIAL,\b<br> 3- GERAL.";
     }
 }
