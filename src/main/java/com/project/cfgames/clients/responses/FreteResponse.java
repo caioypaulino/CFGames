@@ -1,5 +1,6 @@
 package com.project.cfgames.clients.responses;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,14 +11,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FreteResponse {
-    private List<ShippingOption> options;
-}
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class ShippingOption {
     private int id;
     private String name;
     private String price;
@@ -36,7 +31,6 @@ class ShippingOption {
     @JsonProperty("additional_services")
     private AdditionalServices additionalServices;
     private Company company;
-    private String error;
 }
 
 @Data

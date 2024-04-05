@@ -58,6 +58,8 @@ public class Pedido {
     @JoinTable(name = "cupons_pedidos")
     private Set<Cupom> cupons;
 
+    private Integer prazoDias;
+
     private Float frete;
 
     private Float valorTotal;

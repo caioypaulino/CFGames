@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/pedido")
@@ -55,13 +56,12 @@ public class PedidoController {
             validationPedido.allValidates(pedido);
 
             // instanciando objetos para acessar atributos da classe
-            // EnderecoCliente enderecoCliente = enderecoClienteRepository.getReferenceById(pedido.getEnderecoCliente().getId());
+            EnderecoCliente enderecoCliente = enderecoClienteRepository.getReferenceById(pedido.getEnderecoCliente().getId());
 
-            // set Valor do Frete através da API FeignClient (FreteClient) e ResponseDTO (FreteResponse)
-            // FreteResponse freteResponse = pedidoService.calcularFrete(enderecoCliente.getEndereco().getCep(), carrinhoCompra.getPesoTotal());
-            // pedido.setFrete(0.5F * carrinhoCompra.getPesoTotal());
-
-            pedido.setFrete((float) (0.01 * carrinhoCompra.getPesoTotal()));
+            // set Valor do Frete através da API Melhor Envio
+            FreteResponse freteResponse = pedidoService.calcularFrete(enderecoCliente.getEndereco().getCep(), carrinhoCompra.getPesoTotal());
+            pedido.setFrete(Float.valueOf(freteResponse.getPrice()));
+            pedido.setPrazoDias(freteResponse.getDeliveryTime());
 
             pedido.setValorTotal(pedidoService.calcularValorTotal(carrinhoCompra.getValorCarrinho(), pedido.getFrete()));
             pedido.setStatus(StatusPedido.EM_PROCESSAMENTO);
@@ -99,7 +99,7 @@ public class PedidoController {
             }
 
             // retorna a primeira resposta
-            return ResponseEntity.ok("Pedido adicionado com sucesso! [EM_PROCESSAMENTO]\n" + pedidoService.verificarPagamento(pedido).getBody());
+            return ResponseEntity.ok("Pedido adicionado com sucesso! [EM_PROCESSAMENTO]\n<br>" + pedidoService.verificarPagamento(pedido).getBody());
         }
         catch (EntityNotFoundException ex) {
             return ResponseEntity.badRequest().body("Endereço Cliente não encontrado.");
@@ -110,7 +110,7 @@ public class PedidoController {
     }
 
     // calculo frete API com Carrinho de Compra em Aberto e Endereço Cliente
-    @GetMapping("/calcular/frete")
+    @PostMapping("/calcular/frete")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<?> calcularFrete(@RequestHeader(value = "Authorization") String authToken, @RequestBody IdRequest request) {
         try {

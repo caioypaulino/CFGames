@@ -12,6 +12,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EnderecoClienteRequest {
+    private String apelido;
     @Pattern(regexp = "^[0-9]+$", message = "Número inválido.")
     private String numero;
     private String complemento;
