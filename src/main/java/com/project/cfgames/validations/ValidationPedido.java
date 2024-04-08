@@ -110,7 +110,7 @@ public class ValidationPedido {
                 throw new CustomValidationException("Endereço não corresponde ao Cliente.");
             }
             else if (endereco.getTipo() == TipoEndereco.COBRANCA) {
-                throw new CustomValidationException("Tipo Endereço Inválido.(Permitido tipo 0-ENTREGA ou 2-AMBOS)");
+                throw new CustomValidationException("Tipo Endereço Inválido.(Permitido tipo 0-ENTREGA ou 2-RESIDENCIAL ou 3-GERAL)");
             }
         }
     }

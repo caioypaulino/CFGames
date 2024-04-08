@@ -180,7 +180,7 @@ public class PerfilController {
 
             enderecoClienteRepository.save(enderecoCliente);
 
-            return ResponseEntity.ok().body("Endereço Cliente adicionado com sucesso!");
+            return ResponseEntity.ok().body(enderecoCliente.getId());
         }
         catch (FeignException ex) {
             return ResponseEntity.badRequest().body("Cep inválido.");
