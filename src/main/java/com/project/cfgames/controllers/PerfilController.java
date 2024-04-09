@@ -207,7 +207,7 @@ public class PerfilController {
         cliente.addCartoesCliente(cartaoReference);
         clienteRepository.save(cliente);
 
-        return ResponseEntity.ok().body("Cartão adicionado com sucesso!");
+        return ResponseEntity.ok().body(cartao.getNumeroCartao());
     }
 
     // solicitar troca
