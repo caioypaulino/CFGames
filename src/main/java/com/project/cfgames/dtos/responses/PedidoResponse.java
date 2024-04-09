@@ -6,10 +6,18 @@ import com.project.cfgames.entities.Pedido;
 import lombok.Data;
 
 @Data
-@JsonPropertyOrder({"id", "cliente_id","carrinhoCompra", "cliente", "enderecoCliente", "cartoes", "cupom", "data", "dataAtualizacao", "status", "frete", "valorTotal"})
+@JsonPropertyOrder({"id", "cliente", "carrinhoCompra", "cliente", "enderecoCliente", "cartoes", "cupom", "data", "dataAtualizacao", "status", "frete", "valorTotal"})
 public class PedidoResponse extends Pedido {
-    @JsonProperty("cliente_id")
-    public Long getClienteId() {
-        return super.getCliente().getId();
+    @JsonProperty("cliente")
+    public ClienteResponseAdmin getClienteDTO() {
+        ClienteResponseAdmin cliente = new ClienteResponseAdmin();
+        cliente.setId(super.getCliente().getId());
+        cliente.setNome(super.getCliente().getNome());
+        cliente.setCpf(super.getCliente().getCpf());
+        cliente.setDataNascimento(super.getCliente().getDataNascimento());
+        cliente.setTelefone(super.getCliente().getTelefone());
+        cliente.setEmail(super.getCliente().getEmail());
+
+        return cliente;
     }
 }

@@ -53,7 +53,6 @@ public class Pedido {
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime dataAtualizacao;
 
-    @Size(max = 2, message = "Quantidade de Cupons Inválida.(Max = 2)")
     @OneToMany
     @JoinTable(name = "cupons_pedidos")
     private Set<Cupom> cupons;
@@ -68,7 +67,6 @@ public class Pedido {
     private StatusPedido status;
 
     @Valid
-    @Size(max = 2, message = "Quantidade de Cartões Inválida.(Max = 2)")
     @OneToMany(mappedBy = "pedido")
     private Set<CartaoPedido> cartoes;
 

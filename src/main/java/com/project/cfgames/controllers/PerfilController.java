@@ -363,6 +363,15 @@ public class PerfilController {
         }
     }
 
+    // remover cartões
+    @DeleteMapping("/remove/cartoes")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public void removeCartoes(@RequestHeader(value = "Authorization") String authToken, @RequestBody Set<Cartao> cartoes) {
+        for (Cartao cartao : cartoes) {
+            removeCartao(authToken, cartao);
+        }
+    }
+
     // cancelar pedido
     @DeleteMapping("/cancel/pedido/{id}")
     @CrossOrigin(origins = "*", allowedHeaders = "*")

@@ -35,6 +35,7 @@ public class CartaoPedido {
     @Column(name =  "cartao_pedido_id")
     private Long id;
 
+    @Min(value = 10, message = "Valor parcial mínimo R$ 10,00")
     private Float valorParcial;
 
     @NotNull(message = "Campo não informado!")

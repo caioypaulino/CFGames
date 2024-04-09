@@ -99,7 +99,7 @@ public class PedidoController {
             }
 
             // retorna a primeira resposta
-            return ResponseEntity.ok("Pedido adicionado com sucesso! [EM_PROCESSAMENTO]\n<br>" + pedidoService.verificarPagamento(pedido).getBody());
+            return ResponseEntity.ok("Pedido #" + pedido.getId() + " adicionado com sucesso!<br></br>Status: Em Processamento<br></br>Status: " + pedidoService.verificarPagamento(pedido).getBody());
         }
         catch (EntityNotFoundException ex) {
             return ResponseEntity.badRequest().body("Endereço Cliente não encontrado.");

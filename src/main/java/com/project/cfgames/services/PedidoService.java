@@ -125,7 +125,7 @@ public class PedidoService {
             // baixa no estoque para cada produto em pedido
             estoqueService.baixarEstoque(pedido.getCarrinhoCompra().getItens());
 
-            return ResponseEntity.ok("Pagamento aprovado com sucesso!");
+            return ResponseEntity.ok("Pagamento aprovado!");
         }
         else {
             return ResponseEntity.badRequest().body("Pagamento reprovado.");
