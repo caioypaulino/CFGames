@@ -24,10 +24,6 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 
-@JsonIdentityInfo(
-        scope = CartaoPedido.class,
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class CartaoPedido {
     @Id

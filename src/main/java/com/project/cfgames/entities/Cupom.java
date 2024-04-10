@@ -16,10 +16,6 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 
-@JsonIdentityInfo(
-        scope = Cliente.class,
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "codigoCupom")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Cupom {
     @Id

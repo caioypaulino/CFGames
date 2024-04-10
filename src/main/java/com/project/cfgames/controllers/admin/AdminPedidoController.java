@@ -169,7 +169,7 @@ public class AdminPedidoController {
         }
     }
 
-    // handler Plataforma Enum type Json exception
+    // handler Status Pedido Enum type Json exception
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public String handleCustomValidationsExceptions (){

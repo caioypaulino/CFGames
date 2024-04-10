@@ -22,10 +22,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 
-@JsonIdentityInfo(
-        scope = Produto.class,
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Produto {
     @Id
