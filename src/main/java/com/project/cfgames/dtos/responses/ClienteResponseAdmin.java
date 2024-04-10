@@ -1,13 +1,10 @@
 package com.project.cfgames.dtos.responses;
 
-import com.project.cfgames.entities.Perfil;
-import com.project.cfgames.entities.relations.EnderecoCliente;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor

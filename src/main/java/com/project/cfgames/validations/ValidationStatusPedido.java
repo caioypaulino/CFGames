@@ -48,7 +48,7 @@ public class ValidationStatusPedido {
                 break;
             case CANCELADO:
                 if (statusAtual != StatusPedido.EM_PROCESSAMENTO && statusAtual != StatusPedido.PAGAMENTO_APROVADO) {
-                    throw new CustomValidationException("Pedido não autorizado para cancelamento.");
+                    throw new CustomValidationException("Pedido não autorizado para cancelamento, entre em contato com o suporte.");
                 }
                 break;
         }
