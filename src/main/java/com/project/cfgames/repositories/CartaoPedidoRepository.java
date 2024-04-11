@@ -12,4 +12,6 @@ public interface CartaoPedidoRepository extends JpaRepository<CartaoPedido, Long
     @Transactional
     @Query(value = "DELETE FROM public.cartoes_pedidos WHERE pedido_pedido_id = ?", nativeQuery = true)
     void deleteCartoes(Long pedidoId);
+
+
 }

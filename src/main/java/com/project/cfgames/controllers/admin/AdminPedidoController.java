@@ -3,6 +3,7 @@ package com.project.cfgames.controllers.admin;
 import com.project.cfgames.dtos.requests.StatusPedidoRequest;
 import com.project.cfgames.entities.Pedido;
 import com.project.cfgames.entities.enums.StatusPedido;
+import com.project.cfgames.repositories.CarrinhoCompraRepository;
 import com.project.cfgames.repositories.CartaoPedidoRepository;
 import com.project.cfgames.repositories.PedidoRepository;
 import com.project.cfgames.services.DataService;
@@ -28,6 +29,8 @@ public class AdminPedidoController {
     PedidoRepository pedidoRepository;
     @Autowired
     CartaoPedidoRepository cartaoPedidoRepository;
+    @Autowired
+    CarrinhoCompraRepository carrinhoCompraRepository;
     @Autowired
     ValidationStatusPedido validationStatusPedido;
     @Autowired
@@ -159,8 +162,11 @@ public class AdminPedidoController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> deletePedido(@PathVariable Long id) {
         try {
+            Long carrinhoId = carrinhoCompraRepository.selectCarrinhoPedido(id);
+
             cartaoPedidoRepository.deleteCartoes(id);
             pedidoRepository.deleteById(id);
+            carrinhoCompraRepository.deleteById(carrinhoId);
 
             return ResponseEntity.ok().body("Pedido deletado com sucesso!");
         }
