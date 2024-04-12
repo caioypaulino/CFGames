@@ -42,8 +42,11 @@ public class PedidoService {
     // setter de ValorParcial no cartão pedido
     public void valorParcial(Pedido pedido) {
         Float valorTotal = pedido.getValorTotal();
+
         Set<CartaoPedido> cartoesPedido = pedido.getCartoes();
         Set<Cupom> cupons = pedido.getCupons();
+
+        Float valorParcial = valorTotal / cartoesPedido.size();
 
         for (Cupom cupom : cupons) {
             cupom = cupomRepository.getReferenceById(cupom.getCodigoCupom());
@@ -52,7 +55,7 @@ public class PedidoService {
         }
 
         for (CartaoPedido cartao : cartoesPedido) {
-            cartao.setValorParcial(valorTotal / cartoesPedido.size());
+            cartao.setValorParcial(valorParcial);
         }
     }
 
