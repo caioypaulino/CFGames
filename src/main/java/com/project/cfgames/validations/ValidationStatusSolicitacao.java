@@ -19,7 +19,7 @@ public class ValidationStatusSolicitacao {
                 }
                 break;
             case PRODUTOS_RECEBIDOS:
-                if (statusAtual != StatusSolicitacao.APROVADA) {
+                if (statusAtual != StatusSolicitacao.APROVADA && statusAtual != StatusSolicitacao.PRODUTOS_RECEBIDOS) {
                     throw new CustomValidationException("Solicitação de Troca não autorizada para confirmar recebimento de itens.");
                 }
                 break;

@@ -32,7 +32,7 @@ public class ValidationStatusPedido {
                 }
                 break;
             case PRODUTOS_TROCA_RECEBIDOS:
-                if (statusAtual != StatusPedido.TROCA_APROVADA) {
+                if (statusAtual != StatusPedido.TROCA_APROVADA && statusAtual != PRODUTOS_TROCA_RECEBIDOS) {
                     throw new CustomValidationException("Pedido não autorizado para confirmação de recebimento do(s) item(ns) de troca.");
                 }
                 break;

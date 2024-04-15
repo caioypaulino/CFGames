@@ -55,9 +55,11 @@ public class CupomService {
     // indisponibiliza o uso dos cupons para pedidos futuros
     public void cuponsUsados(Set<Cupom> cupons) {
         for (Cupom cupom : cupons) {
-            cupom.setDisponivel(false);
+            Cupom cupomR = cupomRepository.getReferenceById(cupom.getCodigoCupom());
 
-            cupomRepository.save(cupomRepository.getReferenceById(cupom.getCodigoCupom()));
+            cupomR.setDisponivel(false);
+
+            cupomRepository.save(cupomR);
         }
     }
 }
