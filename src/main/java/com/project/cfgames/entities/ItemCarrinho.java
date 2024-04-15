@@ -18,10 +18,6 @@ import javax.validation.constraints.NotNull;
 @ToString
 @NoArgsConstructor
 
-@JsonIdentityInfo(
-        scope = ItemCarrinho.class,
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ItemCarrinho {
     @Id

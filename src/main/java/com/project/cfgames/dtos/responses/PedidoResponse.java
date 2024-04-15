@@ -6,7 +6,7 @@ import com.project.cfgames.entities.Pedido;
 import lombok.Data;
 
 @Data
-@JsonPropertyOrder({"id", "cliente", "carrinhoCompra", "cliente", "enderecoCliente", "cartoes", "cupom", "data", "dataAtualizacao", "status", "frete", "valorTotal"})
+@JsonPropertyOrder({"id", "cliente", "carrinhoCompra", "enderecoCliente", "cartoes", "cupom", "data", "dataAtualizacao", "status", "frete", "valorTotal"})
 public class PedidoResponse extends Pedido {
     @JsonProperty("cliente")
     public ClienteResponseAdmin getClienteDTO() {

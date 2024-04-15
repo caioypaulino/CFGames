@@ -22,7 +22,7 @@ public class ValidationReposicaoEstoque {
                 if (Objects.equals(itemTroca.getId(), itemReposicao.getItemTroca().getId())) {
                     itemEncontrado = true;
 
-                    if (itemTroca.getQuantidade() < itemReposicao.getQuantidade()) {
+                    if (itemTroca.getQuantidadeTroca() < itemReposicao.getQuantidadeReposicao()) {
                         throw new CustomValidationException("Não foi possível realizar o recebimento de itens. (Quantidade inválida, ItemTroca id: " + itemTroca.getId() + " )");
                     }
 

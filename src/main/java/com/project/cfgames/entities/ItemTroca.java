@@ -1,8 +1,6 @@
 package com.project.cfgames.entities;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,10 +18,6 @@ import javax.validation.constraints.NotNull;
 @ToString
 @NoArgsConstructor
 
-@JsonIdentityInfo(
-        scope = ItemTroca.class,
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ItemTroca {
     @Id
@@ -37,10 +31,10 @@ public class ItemTroca {
 
     @NotNull(message = "Campo não informado!")
     @Min(value = 1, message = "Quantidade inválida.")
-    private Integer quantidade;
+    private Integer quantidadeTroca;
 
-    public ItemTroca(ItemCarrinho itemCarrinho, Integer quantidade) {
+    public ItemTroca(ItemCarrinho itemCarrinho, Integer quantidadeTroca) {
         this.itemCarrinho = itemCarrinho;
-        this.quantidade = quantidade;
+        this.quantidadeTroca = quantidadeTroca;
     }
 }

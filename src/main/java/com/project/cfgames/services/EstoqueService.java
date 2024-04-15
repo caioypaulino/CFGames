@@ -46,7 +46,7 @@ public class EstoqueService {
             ItemTroca itemTroca = itemTrocaRepository.getReferenceById(item.getItemTroca().getId());
             Produto produto = itemTroca.getItemCarrinho().getProduto();
 
-            produto.reporEstoque(item.getQuantidade());
+            produto.reporEstoque(item.getQuantidadeReposicao());
 
             produtoRepository.save(produto);
         }

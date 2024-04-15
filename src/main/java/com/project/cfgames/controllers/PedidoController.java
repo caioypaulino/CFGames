@@ -131,7 +131,7 @@ public class PedidoController {
     }
 
     // calculo frete API
-    @GetMapping("/calcular/frete/{cepDestino}/{peso}")
+    @PostMapping("/calcular/frete/{cepDestino}/{peso}")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public FreteResponse calcularFrete(@PathVariable String cepDestino, @PathVariable Integer peso) {
         return pedidoService.calcularFrete(cepDestino, peso);

@@ -1,6 +1,8 @@
 package com.project.cfgames.controllers.admin;
 
 import com.project.cfgames.dtos.requests.ReposicaoEstoqueRequest;
+import com.project.cfgames.dtos.requests.StatusPedidoRequest;
+import com.project.cfgames.dtos.requests.StatusSolicitacaoRequest;
 import com.project.cfgames.entities.Pedido;
 import com.project.cfgames.entities.SolicitacaoTroca;
 import com.project.cfgames.entities.enums.StatusPedido;
@@ -8,13 +10,17 @@ import com.project.cfgames.entities.enums.StatusSolicitacao;
 import com.project.cfgames.repositories.ItemTrocaRepository;
 import com.project.cfgames.repositories.SolicitacaoTrocaRepository;
 import com.project.cfgames.services.CupomService;
+import com.project.cfgames.services.DataService;
 import com.project.cfgames.services.EstoqueService;
 import com.project.cfgames.services.SolicitacaoTrocaService;
 import com.project.cfgames.services.admin.AdminSolicitacaoTrocaService;
 import com.project.cfgames.validations.ValidationReposicaoEstoque;
+import com.project.cfgames.validations.ValidationStatusSolicitacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -40,7 +46,11 @@ public class AdminSolicitacaoTrocaController {
     @Autowired
     ValidationReposicaoEstoque validationReposicaoEstoque;
     @Autowired
+    ValidationStatusSolicitacao validationStatusSolicitacao;
+    @Autowired
     CupomService cupomService;
+    @Autowired
+    DataService dataService;
 
     // solicitacoes troca - readAll
     @GetMapping("/solicitacoestroca") @RolesAllowed("ROLE_ADMIN")
@@ -109,7 +119,7 @@ public class AdminSolicitacaoTrocaController {
             SolicitacaoTroca solicitacaoTroca = solicitacaoTrocaRepository.findById(id).orElseThrow(EntityNotFoundException::new);
             Pedido pedido = solicitacaoTroca.getPedido();
 
-            solicitacaoTrocaService.updateStatusTroca(solicitacaoTroca, pedido, StatusSolicitacao.REPROVADA, StatusPedido.TROCA_REPROVADA);
+            solicitacaoTrocaService.updateStatusTroca(solicitacaoTroca, pedido, StatusSolicitacao.APROVADA, StatusPedido.TROCA_APROVADA);
 
             return ResponseEntity.ok("Solicitação de Troca id: " + id + " do Pedido id: " + pedido.getId() + ", teve o status aprovado, aguardando recebimento dos itens!");
 
@@ -166,6 +176,26 @@ public class AdminSolicitacaoTrocaController {
         }
     }
 
+    // solicitacoes troca - update status
+    @PutMapping("/solicitacoestroca/update/{id}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public ResponseEntity<String> updateStatusSolicitacao(@PathVariable Long id, @RequestBody StatusSolicitacaoRequest request) {
+        try {
+            SolicitacaoTroca solicitacaoTroca = solicitacaoTrocaRepository.getReferenceById(id);
+            Pedido pedido = solicitacaoTroca.getPedido();
+
+            solicitacaoTrocaService.updateStatusTroca(solicitacaoTroca, pedido, request.getStatusSolicitacao());
+            solicitacaoTroca.setDataAtualizacao(dataService.getDateTimeNow());
+
+            solicitacaoTrocaRepository.save(solicitacaoTroca);
+
+            return ResponseEntity.ok("Status Solicitação Troca/Devolução id:" + id + ", alterado com sucesso!");
+        }
+        catch (EntityNotFoundException ex) {
+            return ResponseEntity.badRequest().body("Solicitação Troca/Devolução não encontrada pelo id: " + id);
+        }
+    }
+
     // solicitacoes troca - delete
     @DeleteMapping("/solicitacoestroca/delete/{id}") @RolesAllowed("ROLE_ADMIN")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -179,5 +209,13 @@ public class AdminSolicitacaoTrocaController {
         catch (EmptyResultDataAccessException ex) {
             return ResponseEntity.badRequest().body("Solicitação de Troca não encontrada pelo id: " + id);
         }
+    }
+
+    // handler Status Solicitacao Enum type Json exception
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public String handleCustomValidationsExceptions (){
+        return "Status inválido(Ex:\n0- PENDENTE,<br>1- APROVADA,<br>2- REPROVADA,<br>3- PRODUTOS_RECEBIDOS,<br>4- CONCLUIDA," +
+                "<br>5- CANCELADA).";
     }
 }

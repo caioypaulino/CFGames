@@ -46,7 +46,7 @@ public class CupomService {
         float valorDesconto = 0f;
 
         for (ItemTroca itemTroca : solicitacaoTroca.getItensTroca()) {
-            valorDesconto += (itemTroca.getItemCarrinho().getProduto().getPreco() * itemTroca.getQuantidade());
+            valorDesconto += (itemTroca.getItemCarrinho().getProduto().getPreco() * itemTroca.getQuantidadeTroca());
         }
 
         return valorDesconto;

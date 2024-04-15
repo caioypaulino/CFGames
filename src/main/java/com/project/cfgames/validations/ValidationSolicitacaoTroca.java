@@ -6,18 +6,10 @@ import com.project.cfgames.entities.Pedido;
 import com.project.cfgames.entities.SolicitacaoTroca;
 import com.project.cfgames.entities.enums.StatusPedido;
 import com.project.cfgames.exceptions.CustomValidationException;
-import com.project.cfgames.repositories.ItemCarrinhoRepository;
-import com.project.cfgames.repositories.PedidoRepository;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
-import java.util.Set;
 
 @Service
 public class ValidationSolicitacaoTroca {
@@ -43,7 +35,7 @@ public class ValidationSolicitacaoTroca {
                 if (Objects.equals(item.getItemCarrinho().getId(), itemCarrinho.getId())) {
                     itemEncontrado = true;
 
-                    if (itemCarrinho.getQuantidade() < item.getQuantidade()) {
+                    if (itemCarrinho.getQuantidade() < item.getQuantidadeTroca()) {
                         throw new CustomValidationException("Não foi possível realizar a solicitação de troca. (Quantidade inválida, ItemCarrinho id: " + itemCarrinho.getId() + " )");
                     }
 

@@ -17,5 +17,5 @@ public class ItemReposicaoRequest {
 
     @NotNull(message = "Campo não informado!")
     @Min(value = 1, message = "Quantidade inválida.")
-    private Integer quantidade;
+    private Integer quantidadeReposicao;
 }
