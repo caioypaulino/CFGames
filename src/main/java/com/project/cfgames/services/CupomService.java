@@ -1,9 +1,6 @@
 package com.project.cfgames.services;
 
-import com.project.cfgames.entities.Cliente;
-import com.project.cfgames.entities.Cupom;
-import com.project.cfgames.entities.ItemTroca;
-import com.project.cfgames.entities.SolicitacaoTroca;
+import com.project.cfgames.entities.*;
 import com.project.cfgames.repositories.CupomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +19,7 @@ public class CupomService {
         Cupom cupom = criarCupom(cliente, valorDesconto);
         cupomRepository.save(cupom);
     }
+
     // gera cupom a partir de uma Troca
     public void gerarCupom (SolicitacaoTroca solicitacaoTroca) {
         Cupom cupom = criarCupom(solicitacaoTroca.getCliente(), calculaDesconto(solicitacaoTroca));

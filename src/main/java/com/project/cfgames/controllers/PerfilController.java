@@ -56,6 +56,8 @@ public class PerfilController {
     @Autowired
     PedidoRepository pedidoRepository;
     @Autowired
+    ValidationPedido validationPedido;
+    @Autowired
     ValidationSolicitacaoTroca validationSolicitacaoTroca;
     @Autowired
     ValidationStatusSolicitacao validationStatusSolicitacao;
@@ -69,6 +71,8 @@ public class PerfilController {
     EstoqueService estoqueService;
     @Autowired
     DataService dataService;
+    @Autowired
+    CupomService cupomService;
 
 
     // perfil - dados da conta
@@ -389,11 +393,19 @@ public class PerfilController {
             pedido.setStatus(StatusPedido.CANCELADO);
             pedido.setDataAtualizacao(dataService.getDateTimeNow());
 
-            // redisponibiliza possíveis cupons utilizados na compra cancelada
-            if (pedido.getCupons() != null && !pedido.getCupons().isEmpty()){
+            // redisponibilizando possíveis cupons utilizados na compra cancelada gerando novo cupom
+            // pedido possui cupons e cartões : pedido possui cupons e não possui cartões
+            if (!pedido.getCupons().isEmpty() && !pedido.getCartoes().isEmpty()) {
+                Float valorCupons = 0f;
+
                 for (Cupom cupom : pedido.getCupons()) {
-                    cupomRepository.redisponibilizaCupom(cupom.getCodigoCupom());
+                    valorCupons += cupom.getValorDesconto();
                 }
+
+                cupomService.gerarCupom(cliente, valorCupons);
+            }
+            else if (!pedido.getCupons().isEmpty()){
+                cupomService.gerarCupom(cliente, pedido.getValorTotal());
             }
 
             pedidoRepository.save(pedido);
