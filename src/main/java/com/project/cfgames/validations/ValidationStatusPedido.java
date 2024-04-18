@@ -15,6 +15,16 @@ public class ValidationStatusPedido {
     @SneakyThrows
     public void updateValidate(StatusPedido statusAtual, StatusPedido statusUpdate) {
         switch (statusUpdate) {
+            case PAGAMENTO_APROVADO:
+                if (statusAtual != StatusPedido.EM_PROCESSAMENTO && statusAtual != StatusPedido.PAGAMENTO_REPROVADO) {
+                    throw new CustomValidationException("Pedido não autorizado para aprovação de pagamento.");
+                }
+                break;
+            case PAGAMENTO_REPROVADO:
+                if (statusAtual != StatusPedido.EM_PROCESSAMENTO && statusAtual != StatusPedido.PAGAMENTO_APROVADO) {
+                    throw new CustomValidationException("Pedido não autorizado para reprovação de pagamento.");
+                }
+                break;
             case EM_TRANSITO:
                 if (statusAtual != StatusPedido.PAGAMENTO_APROVADO) {
                     throw new CustomValidationException("Pedido não autorizado para despache.");

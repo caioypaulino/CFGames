@@ -31,7 +31,7 @@ public class EnderecoCliente {
     @Column(name =  "endereco_cliente_id")
     private Long id;
 
-    @NotNull(message = "Campo não informado!")
+    @NotBlank(message = "Campo não informado!")
     private String apelido;
 
     @NotNull(message = "Campo não informado!")
