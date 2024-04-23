@@ -20,5 +20,5 @@ public interface CupomRepository extends JpaRepository<Cupom, String> {
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM public.cupons_pedidos WHERE cupons_codigo_cupom = ?", nativeQuery = true)
-    void redisponibilizaCupom(String codigoCupom);
+    void removePedido(String codigoCupom);
 }

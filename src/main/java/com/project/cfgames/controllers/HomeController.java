@@ -1,6 +1,7 @@
 package com.project.cfgames.controllers;
 
 import com.project.cfgames.dtos.requests.IdListRequest;
+import com.project.cfgames.dtos.requests.TituloRequest;
 import com.project.cfgames.entities.Produto;
 import com.project.cfgames.repositories.CategoriaRepository;
 import com.project.cfgames.repositories.ProdutoRepository;
@@ -25,9 +26,9 @@ public class HomeController {
     }
 
     // readByTitulo JPA
-    @GetMapping("/buscar/titulo")
+    @GetMapping("/buscar/titulo={titulo}")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public List<Produto> selectByTituloProdutos(@RequestBody String titulo) {
+    public List<Produto> selectByTituloProdutos(@PathVariable String titulo) {
         return produtoRepository.findByTitulo(titulo);
     }
 

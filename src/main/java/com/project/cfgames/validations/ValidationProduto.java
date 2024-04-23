@@ -14,10 +14,8 @@ import java.util.Set;
 
 @Service
 public class ValidationProduto {
-
     @Autowired
     ProdutoRepository produtoRepository;
-
     @Autowired
     CategoriaRepository categoriaRepository;
 
