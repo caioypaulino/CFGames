@@ -108,7 +108,7 @@ public class AdminCupomController {
     }
 
     // cupons - delete
-    @DeleteMapping("/produtos/delete/{codigoCupom}") @RolesAllowed("ROLE_ADMIN")
+    @DeleteMapping("/cupons/delete/{codigoCupom}") @RolesAllowed("ROLE_ADMIN")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public ResponseEntity<String> deleteCupom(@PathVariable String codigoCupom) {
         try {
