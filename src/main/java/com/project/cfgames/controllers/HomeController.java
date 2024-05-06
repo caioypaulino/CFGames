@@ -2,6 +2,7 @@ package com.project.cfgames.controllers;
 
 import com.project.cfgames.dtos.requests.IdListRequest;
 import com.project.cfgames.dtos.requests.TituloRequest;
+import com.project.cfgames.entities.Categoria;
 import com.project.cfgames.entities.Produto;
 import com.project.cfgames.repositories.CategoriaRepository;
 import com.project.cfgames.repositories.ProdutoRepository;
@@ -10,6 +11,7 @@ import com.project.cfgames.validations.ValidationProduto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
@@ -17,6 +19,8 @@ import java.util.List;
 public class HomeController {
     @Autowired
     ProdutoRepository produtoRepository;
+    @Autowired
+    CategoriaRepository categoriaRepository;
 
     // readAll JPA
     @GetMapping()
@@ -25,45 +29,17 @@ public class HomeController {
         return produtoRepository.findAll();
     }
 
+    // categorias - readAll
+    @GetMapping("/buscar/categorias")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public List<Categoria> selectAllCategorias() {
+        return categoriaRepository.findAll();
+    }
+
     // readByTitulo JPA
     @GetMapping("/buscar/titulo={titulo}")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     public List<Produto> selectByTituloProdutos(@PathVariable String titulo) {
         return produtoRepository.findByTitulo(titulo);
-    }
-
-    // readByCategorias JPA
-    @GetMapping("/buscar/categorias")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public List<Produto> selectByCategoriasProdutos(@RequestBody IdListRequest idListRequest) {
-        return produtoRepository.findByCategorias(idListRequest.getIdList());
-    }
-
-    // readByPlataformas JPA
-    @GetMapping("/buscar/plataformas")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public List<Produto> selectByPlataformasProdutos(@RequestBody IdListRequest idListRequest) {
-        return produtoRepository.findByPlataformas(idListRequest.getIdList());
-    }
-
-    // readByPrecoAsc JPA
-    @GetMapping("/preco/asc")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public List<Produto> selectByPrecoProdutosAsc() {
-        return produtoRepository.findByPrecoAsc();
-    }
-
-    // readByPrecoDesc JPA
-    @GetMapping("/preco/desc")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public List<Produto> selectByPrecoProdutosDesc() {
-        return produtoRepository.findByPrecoDesc();
-    }
-
-    // readByDataLancamentoDesc JPA
-    @GetMapping("/data/desc")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public List<Produto> selectByDataLancamentoDesc() {
-        return produtoRepository.findByDataLancamentoDesc();
     }
 }
