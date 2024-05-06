@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GraficoRequest {
-    private boolean produto;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime dataInicio;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm")

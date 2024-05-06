@@ -1,6 +1,5 @@
 package com.project.cfgames.repositories;
 
-import com.project.cfgames.dtos.responses.GraficoResponse;
 import com.project.cfgames.entities.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -32,7 +31,7 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
     @Transactional
     @Query(value = "SELECT\n" +
-            "    c.nome AS nome,\n" +
+            "    c.categoria_id AS id,\n" +
             "    SUM(ic.quantidade) AS quantidadeVendida,\n" +
             "    SUM(ic.valor_item) AS valorTotal\n" +
             "FROM\n" +
@@ -45,7 +44,7 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
             "WHERE\n" +
             "        pe.data >= ? AND pe.data <= ?\n" +
             "GROUP BY\n" +
-            "    c.nome\n" +
+            "    c.categoria_id\n" +
             "ORDER BY\n" +
             "    valorTotal DESC;", nativeQuery = true)
     List<Object[]> selectStatsCategorias(LocalDateTime dataInicio, LocalDateTime dataFim);

@@ -1,6 +1,5 @@
 package com.project.cfgames.repositories;
 
-import com.project.cfgames.dtos.responses.GraficoResponse;
 import com.project.cfgames.entities.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -56,7 +55,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     @Transactional
     @Query(value = "SELECT\n" +
-            "    p.titulo AS nome,\n" +
+            "    p.produto_id AS id,\n" +
             "    SUM(ic.quantidade) AS quantidadeVendida,\n" +
             "    SUM(ic.valor_item) AS valorTotal\n" +
             "FROM\n" +
@@ -67,7 +66,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
             "WHERE\n" +
             "        pe.data >= ? AND pe.data <= ?\n" +
             "GROUP BY\n" +
-            "    p.titulo\n" +
+            "    p.produto_id\n" +
             "ORDER BY\n" +
             "    valorTotal DESC;", nativeQuery = true)
     List<Object[]> selectStatsProdutos(LocalDateTime dataInicio, LocalDateTime dataFim);
