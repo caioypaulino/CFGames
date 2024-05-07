@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -46,7 +47,7 @@ public class SolicitacaoTroca {
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime dataAtualizacao;
 
-    @NotNull(message = "Campo não informado!")
+    @NotBlank(message = "Campo não informado!")
     private String observacao;
 
     private StatusSolicitacao status;
