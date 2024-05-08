@@ -8,6 +8,7 @@ import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import static com.project.cfgames.entities.enums.StatusPedido.PRODUTOS_TROCA_ENVIADOS;
 import static com.project.cfgames.entities.enums.StatusPedido.PRODUTOS_TROCA_RECEBIDOS;
 
 @Service
@@ -41,8 +42,13 @@ public class ValidationStatusPedido {
                     throw new CustomValidationException("Pedido não autorizado para aprovação ou reprovação de troca.");
                 }
                 break;
-            case PRODUTOS_TROCA_RECEBIDOS:
+            case PRODUTOS_TROCA_ENVIADOS:
                 if (statusAtual != StatusPedido.TROCA_APROVADA && statusAtual != PRODUTOS_TROCA_RECEBIDOS) {
+                    throw new CustomValidationException("Pedido não autorizado para envio do(s) item(ns) de troca.");
+                }
+                break;
+            case PRODUTOS_TROCA_RECEBIDOS:
+                if (statusAtual != PRODUTOS_TROCA_ENVIADOS && statusAtual != PRODUTOS_TROCA_RECEBIDOS) {
                     throw new CustomValidationException("Pedido não autorizado para confirmação de recebimento do(s) item(ns) de troca.");
                 }
                 break;

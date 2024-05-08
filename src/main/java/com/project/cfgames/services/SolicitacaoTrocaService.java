@@ -53,6 +53,9 @@ public class SolicitacaoTrocaService {
             case REPROVADA:
                 statusPedidoUpdate = StatusPedido.TROCA_REPROVADA;
                 break;
+            case PRODUTOS_ENVIADOS:
+                statusPedidoUpdate = StatusPedido.PRODUTOS_TROCA_ENVIADOS;
+                break;
             case PRODUTOS_RECEBIDOS:
                 statusPedidoUpdate = StatusPedido.PRODUTOS_TROCA_RECEBIDOS;
                 break;

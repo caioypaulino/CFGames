@@ -322,6 +322,25 @@ public class PerfilController {
         }
     }
 
+    // confirmar envio itens troca
+    @PutMapping("/enviar/solicitacaotroca/{id}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public ResponseEntity<String> enviarItensTroca(@RequestHeader(value = "Authorization") String authToken, @PathVariable Long id) {
+        try {
+            Cliente cliente = clienteService.getClienteByToken(authToken);
+            SolicitacaoTroca solicitacaoTroca = solicitacaoTrocaRepository.getReferenceById(id);
+            Pedido pedido = solicitacaoTroca.getPedido();
+
+            validationStatusSolicitacao.clienteSolicitacaoValidate(cliente, solicitacaoTroca);
+            solicitacaoTrocaService.updateStatusTroca(solicitacaoTroca, pedido, StatusSolicitacao.PRODUTOS_ENVIADOS, StatusPedido.PRODUTOS_TROCA_ENVIADOS);
+
+            return ResponseEntity.ok("Envio do(s) item(ns) solicitação confirmado com sucesso!");
+        }
+        catch (EntityNotFoundException ex) {
+            return ResponseEntity.badRequest().body("Solicitação de Troca não encontrada pelo id: " + id);
+        }
+    }
+
     // remover endereco
     @DeleteMapping("/remove/endereco")
     @CrossOrigin(origins = "*", allowedHeaders = "*")

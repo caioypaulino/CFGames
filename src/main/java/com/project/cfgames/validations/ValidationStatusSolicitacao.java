@@ -18,8 +18,13 @@ public class ValidationStatusSolicitacao {
                     throw new CustomValidationException("Solicitação de Troca não autorizada para aprovação ou reprovação.");
                 }
                 break;
+            case PRODUTOS_ENVIADOS:
+                if (statusAtual != StatusSolicitacao.APROVADA) {
+                    throw new CustomValidationException("Solicitação de Troca não autorizada para envio do(s) item(ns) de troca.");
+                }
+                break;
             case PRODUTOS_RECEBIDOS:
-                if (statusAtual != StatusSolicitacao.APROVADA && statusAtual != StatusSolicitacao.PRODUTOS_RECEBIDOS) {
+                if (statusAtual != StatusSolicitacao.PRODUTOS_ENVIADOS && statusAtual != StatusSolicitacao.PRODUTOS_RECEBIDOS) {
                     throw new CustomValidationException("Solicitação de Troca não autorizada para confirmar recebimento de itens.");
                 }
                 break;
