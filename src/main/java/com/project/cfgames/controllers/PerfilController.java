@@ -426,6 +426,9 @@ public class PerfilController {
             else if (!pedido.getCupons().isEmpty()){
                 cupomService.gerarCupom(cliente, pedido.getValorTotal());
             }
+            else {
+
+            }
 
             pedidoRepository.save(pedido);
 

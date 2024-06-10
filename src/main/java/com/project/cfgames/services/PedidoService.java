@@ -2,16 +2,15 @@ package com.project.cfgames.services;
 
 import com.project.cfgames.clients.FreteClient;
 import com.project.cfgames.clients.requests.AddressRequest;
+import com.project.cfgames.clients.requests.FreteRequest;
 import com.project.cfgames.clients.requests.PackageRequest;
 import com.project.cfgames.clients.responses.FreteResponse;
-import com.project.cfgames.clients.requests.FreteRequest;
 import com.project.cfgames.entities.Cupom;
 import com.project.cfgames.entities.Pedido;
 import com.project.cfgames.entities.enums.StatusPedido;
 import com.project.cfgames.entities.relations.CartaoPedido;
 import com.project.cfgames.repositories.CupomRepository;
 import com.project.cfgames.repositories.PedidoRepository;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
