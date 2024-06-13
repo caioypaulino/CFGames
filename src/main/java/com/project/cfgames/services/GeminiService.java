@@ -23,7 +23,9 @@ public class GeminiService {
         ContentRequest content = new ContentRequest();
         PartRequest part = new PartRequest();
 
-        part.setText("Retorne a Descrição/Sinopse Simples ou Curiosidades sobre o jogo: '" + nomeJogo + "'. Limite a resposta a no máximo 50 palavras.");
+        part.setText("Retorne Curiosidades/Descrição/Sinopse Simples sobre o jogo: '" + nomeJogo + "'. " +
+                     "Limite a resposta a no máximo 50 palavras. " +
+                     "(Caso não seja o nome de um jogo de videogame, retorne que o nome está incorreto)");
 
         List<PartRequest> parts = new ArrayList<>();
         parts.add(part);

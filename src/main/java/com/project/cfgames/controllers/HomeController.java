@@ -1,6 +1,7 @@
 package com.project.cfgames.controllers;
 
 import com.project.cfgames.clients.responses.GeminiResponse;
+import com.project.cfgames.dtos.requests.GeminiRequest;
 import com.project.cfgames.dtos.requests.IdListRequest;
 import com.project.cfgames.dtos.requests.TituloRequest;
 import com.project.cfgames.entities.Categoria;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @RestController
@@ -53,7 +55,7 @@ public class HomeController {
     // Gemini IA
     @PostMapping("/gemini")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public GeminiResponse perguntarGemini(@RequestBody String nomeJogo) {
-        return geminiService.gerarResposta(nomeJogo);
+    public GeminiResponse perguntarGemini(@RequestBody @Valid GeminiRequest request) {
+        return geminiService.gerarResposta(request.getNomeJogo());
     }
 }
