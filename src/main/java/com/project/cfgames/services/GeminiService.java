@@ -4,7 +4,6 @@ import com.project.cfgames.clients.GeminiClient;
 import com.project.cfgames.clients.requests.ContentRequest;
 import com.project.cfgames.clients.requests.GeminiRequest;
 import com.project.cfgames.clients.requests.PartRequest;
-import com.project.cfgames.clients.responses.FreteResponse;
 import com.project.cfgames.clients.responses.GeminiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ public class GeminiService {
     @Autowired
     GeminiClient geminiClient;
 
-    // definindo todos os parâmetros de FreteRequest para cálculo de frete
+    // definindo todos os parâmetros de Gemini Request para gerar resposta através da Gemini IA
     private static GeminiRequest setGeminiRequest(String nomeJogo) {
         GeminiRequest request = new GeminiRequest();
         ContentRequest content = new ContentRequest();
@@ -41,7 +40,7 @@ public class GeminiService {
         return request;
     }
 
-    // calcula frete através da feign client api (FreteClient) e gera uma responseDTO (FreteResponse)
+    // gera resposta através da feign client api (GeminiClient) e retorna uma responseDTO (GeminiResponse)
     public GeminiResponse gerarResposta(String nomeJogo) {
         GeminiRequest request = setGeminiRequest(nomeJogo);
 
