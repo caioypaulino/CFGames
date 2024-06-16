@@ -17,7 +17,7 @@ public class GeminiService {
     @Autowired
     GeminiClient geminiClient;
 
-    // definindo todos os parâmetros de FreteRequest para cálculo de frete
+    // definindo todos os parâmetros de GeminiRequest para gerar resposta via I.A
     private static GeminiRequest setGeminiRequest(String nomeJogo) {
         GeminiRequest request = new GeminiRequest();
         ContentRequest content = new ContentRequest();
@@ -41,7 +41,7 @@ public class GeminiService {
         return request;
     }
 
-    // calcula frete através da feign client api (FreteClient) e gera uma responseDTO (FreteResponse)
+    // gera resposta através da feign client api (GeminClient) e gera uma responseDTO (GeminiResponse)
     public GeminiResponse gerarResposta(String nomeJogo) {
         GeminiRequest request = setGeminiRequest(nomeJogo);
 
